@@ -9,13 +9,13 @@
       <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="http://localhost:8080/#/trailerentry">Trailer Entry</a>
+            <a class="nav-link" href="/#/trailerentry">Trailer Entry</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="http://localhost:8080/#/trailermanagement">Trailer Management</a>
+            <a class="nav-link" href="/#/trailermanagement">Trailer Management</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="http://localhost:8080/#/dashboard">Trailer View</a>
+            <a class="nav-link" href="/#/dashboard">Trailer View</a>
           </li>
         </ul>
       </div>
