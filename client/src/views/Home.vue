@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <h1>Testing Github Webhooks for Jenkins 2</h1>
+    <h1>Home</h1>
   </div>
 </template>
 
