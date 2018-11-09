@@ -2,7 +2,15 @@
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <a class="navbar-brand" href="/#/">Trailer Management</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarColor01"
+        aria-controls="navbarColor01"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -12,7 +20,9 @@
             <a class="nav-link" href="/#/trailerentry">Trailer Entry</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/#/trailermanagement">Trailer Management</a>
+            <a class="nav-link" href="/#/trailermanagement"
+              >Trailer Management</a
+            >
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/#/dashboard">Trailer View</a>
@@ -20,27 +30,26 @@
         </ul>
       </div>
     </nav>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <script>
-  import { mapActions } from 'vuex';
-  export default {
-    mounted() {
-        this.getTrailers();
-      },
-    methods: mapActions(['getTrailers']),
-    sockets: {
-    connect: function() {
-    },
+import { mapActions } from "vuex";
+export default {
+  mounted() {
+    this.getTrailers();
+  },
+  methods: mapActions(["getTrailers"]),
+  sockets: {
+    connect: function() {},
 
     create: function(trailer) {
       console.log(trailer);
-      if(trailer.isJoi){
-        console.log('Error');
+      if (trailer.isJoi) {
+        console.log("Error");
       } else {
-        console.log('No Error');
+        console.log("No Error");
         this.$store.dispatch("ADD_TRAILER", trailer);
       }
     },
@@ -57,5 +66,5 @@
       this.$store.dispatch("DELETE_TRAILER", trailers);
     }
   }
-}
+};
 </script>

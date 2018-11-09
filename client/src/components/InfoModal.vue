@@ -3,12 +3,10 @@
     <!-- Modal content -->
     <div class="modal-content-custom">
       <div class="modal-header-custom">
-        <span class="closeBtn" @click="$emit('close')">&times;</span>
+        <span class="closeBtn" @click="$emit('close');">&times;</span>
         <h2>INFO MODAL</h2>
       </div>
-      <div class="modal-body-custom">
-        <p>INFO MODAL</p>
-      </div>
+      <div class="modal-body-custom"><p>INFO MODAL</p></div>
     </div>
   </div>
 </template>

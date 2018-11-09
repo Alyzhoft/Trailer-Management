@@ -1,16 +1,24 @@
 <template>
   <div class="container">
-    <InfoModal v-if="clicked" @close="clicked = false"/>
+    <InfoModal v-if="clicked" @close="clicked = false;" />
     <div>
-      <div v-for="dock in sectionArray" :key="dock" class="outer-seat" id="div-inline">
+      <div
+        v-for="dock in sectionArray"
+        :key="dock"
+        class="outer-seat"
+        id="div-inline"
+      >
         <h4>{{ dock }}</h4>
         <div
           v-for="trailer in trailers"
           v-if="trailer.trailerLocation == dock"
           data-value="test"
-          v-on:click="test($event)"
+          v-on:click="test($event);"
           :key="trailer._id"
-          :class="{'inner-seat': trailer.trailerLocation == dock, 'populated': trailer.trailerLocation == dock }"
+          :class="{
+            'inner-seat': trailer.trailerLocation == dock,
+            populated: trailer.trailerLocation == dock
+          }"
         >
           <h5>{{ trailer.trailerNumber }}</h5>
           <h5>{{ trailer.trailerName }}</h5>

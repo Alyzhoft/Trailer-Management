@@ -1,6 +1,10 @@
 <template>
   <div class="trailerentry container mt-3">
-    <AlertModal v-if="modal.visible" @close="modal.visible = false" :modalInfo="modal"/>
+    <AlertModal
+      v-if="modal.visible"
+      @close="modal.visible = false;"
+      :modalInfo="modal"
+    />
     <form @submit.prevent="addTrailer">
       <fieldset>
         <div class="form-group">
@@ -13,7 +17,7 @@
             class="form-control"
             id="trailerNumber"
             placeholder="Enter Trailer Number"
-          >
+          />
         </div>
         <div class="form-group">
           <label for="trailerName">Trailer Name</label>
@@ -39,7 +43,9 @@
             v-model="trailer.trailerLocation"
             id="trailerLocation dropdownMenuOffset"
           >
-            <option v-for="dockNumber in 36" :key="dockNumber">{{ dockNumber }}</option>
+            <option v-for="dockNumber in 36" :key="dockNumber">{{
+              dockNumber
+            }}</option>
           </select>
         </div>
       </fieldset>

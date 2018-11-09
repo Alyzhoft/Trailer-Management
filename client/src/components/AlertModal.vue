@@ -3,7 +3,7 @@
     <!-- Modal content -->
     <div class="modal-content-custom">
       <div class="modal-header-custom">
-        <span class="closeBtn" @click="$emit('close')">&times;</span>
+        <span class="closeBtn" @click="$emit('close');">&times;</span>
         <h2>{{ modalInfo.header }}</h2>
       </div>
       <div class="modal-body-custom">

@@ -1,13 +1,17 @@
 <template>
   <div class="trailerManagement container mt-3">
-    <AlertModal v-if="modal.visible" @close="modal.visible = false" :modalInfo="modal"/>
+    <AlertModal
+      v-if="modal.visible"
+      @close="modal.visible = false;"
+      :modalInfo="modal"
+    />
     <div v-if="!found">
       <input
         v-model="searchTerm"
         class="form-control mr-sm-2 mb-1"
         type="text"
         placeholder="Search"
-      >
+      />
       <button class="btn btn-secondary my-sm-0" @click="search">Search</button>
     </div>
     <form v-if="found">
@@ -22,7 +26,7 @@
             class="form-control"
             id="trailerNumber"
             placeholder="Enter Trailer Number"
-          >
+          />
         </div>
         <div class="form-group">
           <label for="trailerName">Trailer Name</label>
@@ -48,17 +52,40 @@
             v-model="trailer.trailerLocation"
             id="trailerLocation dropdownMenuOffset"
           >
-            <option v-for="dockNumber in 36" :key="dockNumber">{{ dockNumber }}</option>
+            <option v-for="dockNumber in 36" :key="dockNumber">{{
+              dockNumber
+            }}</option>
           </select>
         </div>
         <button
           type="button"
-          @click="updateTrailer()"
+          @click="updateTrailer();"
           class="btn btn-primary mt-1 mr-1 mb-1"
-        >Edit Trailer</button>
-        <button type="button" @click="moveTrailer()" class="btn btn-primary mr-1">Move Trailer</button>
-        <button type="button" @click="deleteTrailer()" class="btn btn-primary mr-1">Delete Trailer</button>
-        <button type="button" v-if="found" @click="found = !found" class="btn btn-primary">Search</button>
+        >
+          Edit Trailer
+        </button>
+        <button
+          type="button"
+          @click="moveTrailer();"
+          class="btn btn-primary mr-1"
+        >
+          Move Trailer
+        </button>
+        <button
+          type="button"
+          @click="deleteTrailer();"
+          class="btn btn-primary mr-1"
+        >
+          Delete Trailer
+        </button>
+        <button
+          type="button"
+          v-if="found"
+          @click="found = !found;"
+          class="btn btn-primary"
+        >
+          Search
+        </button>
       </fieldset>
     </form>
   </div>
