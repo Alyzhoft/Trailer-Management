@@ -1,50 +1,49 @@
 <template>
   <div id="myModal" class="modal-custom">
-  <!-- Modal content -->
-  <div class="modal-content-custom">
-    <div class="modal-header-custom">
-      <span class="closeBtn" @click="$emit('close')">&times;</span>
-      <h2>INFO MODAL</h2>
-    </div>
-    <div class="modal-body-custom">
-      <p>INFO MODAL</p>
+    <!-- Modal content -->
+    <div class="modal-content-custom">
+      <div class="modal-header-custom">
+        <span class="closeBtn" @click="$emit('close')">&times;</span>
+        <h2>INFO MODAL</h2>
+      </div>
+      <div class="modal-body-custom">
+        <p>INFO MODAL</p>
+      </div>
     </div>
   </div>
-
-</div>
 </template>
 
 <script>
-  export default {
-    name: 'infoModal',
-  };
+export default {
+  name: "infoModal"
+};
 </script>
 
 <style scoped>
 /* Modal Header */
 .modal-header-custom {
-    padding: 2px 16px;
-    color: white;
+  padding: 2px 16px;
+  color: white;
 }
 
 /* Modal Body */
 .modal-body-custom {
-  padding: 2px 16px
+  padding: 2px 16px;
 }
 
 /* The Modal (background) */
 .modal-custom {
-    display: block; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  display: block; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
 /* Modal Content */
@@ -70,8 +69,8 @@
 
 .closeBtn:hover,
 .closeBtn:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>

@@ -5,13 +5,12 @@
 </template>
 
 <script>
-
 export default {
-  name: 'home',
-}
+  name: "home"
+};
 </script>
 <style>
-  h1 {
-    text-align: center;
-  }
+h1 {
+  text-align: center;
+}
 </style>

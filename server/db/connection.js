@@ -1,6 +1,6 @@
-const monk = require('monk');
+const monk = require("monk");
 
-const connectionString = 'localhost/messageboard';
+const connectionString = "localhost/messageboard";
 
 const db = monk(connectionString);
 
