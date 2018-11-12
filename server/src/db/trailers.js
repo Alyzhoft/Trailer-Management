@@ -5,14 +5,12 @@ const createSchema = Joi.object().keys({
   trailerNumber: Joi.string()
     .alphanum()
     .min(4)
-    .max(5)
+    .max(6)
     .required(),
-  trailerName: Joi.string()
-    .alphanum()
-    .required(),
-  trailerLocation: Joi.string()
-    .alphanum()
-    .required()
+  carrier: Joi.string().required(),
+  trailerLocation: Joi.string().required(),
+  category: Joi.string(),
+  status: Joi.string()
 });
 
 const updateSchema = Joi.object().keys({
@@ -21,12 +19,12 @@ const updateSchema = Joi.object().keys({
     .min(4)
     .max(5)
     .required(),
-  trailerName: Joi.string()
+  carrier: Joi.string()
     .alphanum()
     .required(),
-  trailerLocation: Joi.string()
-    .alphanum()
-    .required(),
+  trailerLocation: Joi.string().required(),
+  category: Joi.string(),
+  status: Joi.string(),
   created: Joi.string(),
   _id: Joi.string()
     .alphanum()
@@ -41,6 +39,8 @@ function getAll() {
 
 async function createTrailer(trailer) {
   const result = Joi.validate(trailer, createSchema);
+
+  console.log(result);
 
   if (result.error === null) {
     trailer.created = new Date();
@@ -65,7 +65,9 @@ async function updateTrailer(trailer) {
       {
         $set: {
           trailerNumber: trailer.trailerNumber,
-          trailerName: trailer.trailerName,
+          carrier: trailer.carrier,
+          category: trailer.category,
+          status: trailer.status,
           update: trailer.update
         }
       }

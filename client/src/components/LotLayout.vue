@@ -1,24 +1,20 @@
 <template>
   <div class="container">
     <InfoModal v-if="clicked" @close="clicked = false;"/>
-    <div>
-      <div v-for="dock in sectionArray" :key="dock" class="outer-seat" id="div-inline">
-        <h4>{{ dock }}</h4>
-        <div
-          v-for="trailer in trailers"
-          v-if="trailer.trailerLocation == dock"
-          data-value="test"
-          v-on:click="test($event);"
-          :key="trailer._id"
-          :class="{
-            'inner-seat': trailer.trailerLocation == dock,
-            populated: trailer.trailerLocation == dock
-          }"
-        >
-          <h5>{{ trailer.trailerNumber }}</h5>
-          <h5>{{ trailer.carrier }}</h5>
-        </div>
-      </div>
+    <div
+      v-for="trailer in trailers"
+      v-if="trailer.trailerLocation == lot"
+      data-value="test"
+      v-on:click="test($event);"
+      :key="trailer._id"
+      id="lot"
+      :class="{
+      'listLot': trailer.trailerLocation == lot,
+      populated: trailer.trailerLocation == lot
+      }"
+    >
+      <h5>{{ trailer.trailerNumber }}</h5>
+      <h5>{{ trailer.carrier }}</h5>
     </div>
   </div>
 </template>
@@ -32,7 +28,7 @@ export default {
     InfoModal
   },
   props: {
-    sectionArray: Array
+    lot: ""
   },
   data: () => ({
     clicked: false,
@@ -58,25 +54,17 @@ h4 {
   color: black;
   background: white;
 }
-.outer-seat {
+
+.listLot {
   width: 70px;
-  height: 125px;
+  height: 100px;
   background: #d8d8d8;
   position: relative;
   margin: 4px;
   margin-top: 2%;
+  border-radius: 4px;
   text-align: center;
   color: white;
-}
-.inner-seat {
-  width: 70px;
-  height: 100px;
-  border-radius: 4px;
-  top: 50%;
-  left: 50%;
-  margin: -35px 0px 0px -35px;
-  background: #d8d8d8;
-  position: absolute;
 }
 
 .populated {
@@ -90,7 +78,7 @@ h4 {
   word-wrap: break-word;
 }
 
-#div-inline {
+#lot {
   float: left;
 }
 

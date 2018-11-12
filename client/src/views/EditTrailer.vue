@@ -13,24 +13,18 @@
     <form v-if="found">
       <fieldset>
         <div class="form-group">
-          <label for="trailerNumber">Trailer Number</label>
-          <input
-            type="text"
-            minlength="4"
-            maxlength="5"
-            v-model="trailer.trailerNumber"
-            class="form-control"
-            id="trailerNumber"
-            placeholder="Enter Trailer Number"
-          >
+          <label for="Category">Category</label>
+          <select class="form-control" v-model="trailer.category" id="Category dropdownMenuOffset">
+            <option>Dunnage</option>
+            <option>Empties for Shipping</option>
+            <option>Patio Trailers</option>
+            <option>Storage/Misc. Shipping Trailers</option>
+            <option>Supermarket/Legacy/Eng</option>
+          </select>
         </div>
         <div class="form-group">
-          <label for="trailerName">Trailer Name</label>
-          <select
-            class="form-control"
-            v-model="trailer.trailerName"
-            id="trailerName dropdownMenuOffset"
-          >
+          <label for="Carrier">Carrier</label>
+          <select class="form-control" v-model="trailer.carrier" id="Carrier dropdownMenuOffset">
             <option>Brockman</option>
             <option>Dart</option>
             <option>Filmore</option>
@@ -42,18 +36,30 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="trailerLocation">Trailer Location</label>
-          <select
+          <label for="trailerNumber">Trailer Number</label>
+          <input
+            type="text"
+            minlength="4"
+            maxlength="6"
+            v-model="trailer.trailerNumber"
             class="form-control"
-            v-model="trailer.trailerLocation"
-            id="trailerLocation dropdownMenuOffset"
+            id="trailerNumber"
+            placeholder="Enter Trailer Number"
           >
-            <option v-for="dockNumber in 36" :key="dockNumber">
+        </div>
+        <div class="form-group">
+          <label for="trailerLocation">Trailer Location</label>
+          <select class="form-control" v-model="trailer.trailerLocation" id="trailerLocation">
+            <option v-for="dockNumber in docks" :key="dockNumber">
               {{
               dockNumber
               }}
             </option>
           </select>
+        </div>
+        <div class="form-froup mb-2">
+          <label for="trailerStatus">Status</label>
+          <textarea class="form-control" v-model="trailer.status" form="trailerStatus"></textarea>
         </div>
         <button
           type="button"
@@ -79,8 +85,10 @@ export default {
   data: () => ({
     trailer: {
       trailerNumber: "",
-      trailerName: "",
+      carrier: "",
       trailerLocation: "",
+      category: "",
+      status: "",
       _id: ""
     },
     modal: {
@@ -92,7 +100,47 @@ export default {
     found: false,
     update: true,
     move: false,
-    searchTerm: ""
+    searchTerm: "",
+    docks: [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      "Lot A",
+      "Lot B"
+    ]
   }),
   methods: {
     async updateTrailer() {
@@ -154,14 +202,17 @@ export default {
 
       const trailers = this.$store.state.trailers;
 
+      console.log(trailers);
+
       switch (searchType) {
         case "trailerNumber":
           for (let i = 0; i < trailers.length; i++) {
             if (trailers[i].trailerNumber === searchTerm) {
               this.trailer.trailerNumber = trailers[i].trailerNumber;
-              this.trailer.trailerName = trailers[i].trailerName;
+              this.trailer.carrier = trailers[i].carrier;
               this.trailer.trailerLocation = trailers[i].trailerLocation;
-              this.trailerCurrentLocation = trailers[i].trailerLocation;
+              this.trailer.category = trailers[i].category;
+              this.trailer.status = trailers[i].status;
               this.trailer._id = trailers[i]._id;
               this.found = true;
               this.searchTerm = "";
@@ -174,9 +225,10 @@ export default {
           for (let i = 0; i < trailers.length; i++) {
             if (trailers[i].trailerLocation === searchTerm) {
               this.trailer.trailerNumber = trailers[i].trailerNumber;
-              this.trailer.trailerName = trailers[i].trailerName;
+              this.trailer.carrier = trailers[i].carrier;
               this.trailer.trailerLocation = trailers[i].trailerLocation;
-              this.trailerCurrentLocation = trailers[i].trailerLocation;
+              this.trailer.category = trailers[i].category;
+              this.trailer.status = trailers[i].status;
               this.trailer._id = trailers[i]._id;
               this.found = true;
               this.searchTerm = "";
