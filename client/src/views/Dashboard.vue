@@ -1,18 +1,20 @@
 <template>
   <div class="dashboard">
     <div class="container">
-      <label>section</label>
-      <select
-        class="form-control"
-        v-model="section"
-        id="section dropdownMenuOffset"
-      >
+      <label>Section</label>
+      <select class="form-control" v-model="section" id="section dropdownMenuOffset">
         <option v-for="section in 3" :key="section">{{ section }}</option>
       </select>
     </div>
-    <div v-if="section == '1'"><DockLayout :sectionArray="sectionOne" /></div>
-    <div v-if="section == '2'"><DockLayout :sectionArray="sectionTwo" /></div>
-    <div v-if="section == '3'"><DockLayout :sectionArray="sectionThree" /></div>
+    <div v-if="section == '1'">
+      <DockLayout :sectionArray="sectionOne"/>
+    </div>
+    <div v-if="section == '2'">
+      <DockLayout :sectionArray="sectionTwo"/>
+    </div>
+    <div v-if="section == '3'">
+      <DockLayout :sectionArray="sectionThree"/>
+    </div>
   </div>
 </template>
 

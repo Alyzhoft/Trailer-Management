@@ -13,16 +13,13 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-
       <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
             <a class="nav-link" href="/#/trailerentry">Trailer Entry</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/#/trailermanagement"
-              >Trailer Management</a
-            >
+            <a class="nav-link" href="/#/edittrailer">Edit Trailer</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/#/dashboard">Trailer View</a>
@@ -30,7 +27,7 @@
         </ul>
       </div>
     </nav>
-    <router-view />
+    <router-view/>
   </div>
 </template>
 

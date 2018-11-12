@@ -3,7 +3,7 @@ import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Dashboard from "./views/Dashboard.vue";
 import TrailerEntry from "./views/TrailerEntry.vue";
-import TrailerManagement from "./views/TrailerManagement";
+import EditTrailer from "./views/EditTrailer";
 
 Vue.use(Router);
 
@@ -25,9 +25,9 @@ export default new Router({
       component: TrailerEntry
     },
     {
-      path: "/trailermanagement",
-      name: "trailermanagement",
-      component: TrailerManagement
+      path: "/edittrailer",
+      name: "edittrailer",
+      component: EditTrailer
     }
   ]
 });
