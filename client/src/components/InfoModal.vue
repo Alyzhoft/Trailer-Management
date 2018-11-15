@@ -4,16 +4,23 @@
     <div class="modal-content-custom">
       <div class="modal-header-custom">
         <span class="closeBtn" @click="$emit('close');">&times;</span>
-        <h2>INFO MODAL</h2>
+        <h2>{{clickedTrailer.trailerNumber}}</h2>
       </div>
-      <div class="modal-body-custom"><p>INFO MODAL</p></div>
+      <div class="modal-body-custom">
+        <h5>{{clickedTrailer.carrier}}</h5>
+        <h5>{{clickedTrailer.category}}</h5>
+        <p>{{clickedTrailer.status}}</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "infoModal"
+  name: "infoModal",
+  props: {
+    clickedTrailer: Object
+  }
 };
 </script>
 

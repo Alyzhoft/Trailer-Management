@@ -1,14 +1,13 @@
 <template>
   <div class="container">
-    <InfoModal v-if="clicked" @close="clicked = false;"/>
+    <InfoModal :clickedTrailer="this.clickedTrailer" v-if="clicked" @close="handleModalClose()"/>
     <div>
       <div v-for="dock in sectionArray" :key="dock" class="outer-seat" id="div-inline">
         <h4>{{ dock }}</h4>
         <div
           v-for="trailer in trailers"
           v-if="trailer.trailerLocation == dock"
-          data-value="test"
-          v-on:click="test($event);"
+          v-on:click="handleOnTrialerClick(trailer);"
           :key="trailer._id"
           :class="{
             'inner-seat': trailer.trailerLocation == dock,
@@ -22,7 +21,7 @@
     </div>
   </div>
 </template>
-
+// :data-value="trailer._id"
 <script>
 import InfoModal from "./InfoModal.vue";
 
@@ -36,7 +35,7 @@ export default {
   },
   data: () => ({
     clicked: false,
-    testData: ""
+    clickedTrailer: {}
   }),
   computed: {
     trailers() {
@@ -44,9 +43,13 @@ export default {
     }
   },
   methods: {
-    async test(e) {
+    async handleOnTrialerClick(trailer) {
+      this.clickedTrailer = trailer; //Continue working on getting data from event
       this.clicked = true;
-      this.testData = e.target.dataset.value; //Continue working on getting data from event
+    },
+    async handleModalClose() {
+      this.clickedTrailer = {};
+      this.clicked = false;
     }
   }
 };

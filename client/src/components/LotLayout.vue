@@ -1,11 +1,10 @@
 <template>
   <div class="container">
-    <InfoModal v-if="clicked" @close="clicked = false;"/>
+    <InfoModal :clickedTrailer="this.clickedTrailer" v-if="clicked" @close="handleModalClose()"/>
     <div
       v-for="trailer in trailers"
       v-if="trailer.trailerLocation == lot"
-      data-value="test"
-      v-on:click="test($event);"
+      v-on:click="handleOnTrialerClick(trailer);"
       :key="trailer._id"
       id="lot"
       :class="{
@@ -32,7 +31,7 @@ export default {
   },
   data: () => ({
     clicked: false,
-    testData: ""
+    clickedTrailer: {}
   }),
   computed: {
     trailers() {
@@ -40,9 +39,13 @@ export default {
     }
   },
   methods: {
-    async test(e) {
+    async handleOnTrialerClick(trailer) {
+      this.clickedTrailer = trailer; //Continue working on getting data from event
       this.clicked = true;
-      this.testData = e.target.dataset.value; //Continue working on getting data from event
+    },
+    async handleModalClose() {
+      this.clickedTrailer = {};
+      this.clicked = false;
     }
   }
 };
