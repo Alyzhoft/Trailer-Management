@@ -1,25 +1,87 @@
 <template>
-  <div id="myModal" class="modal-custom">
-    <!-- Modal content -->
-    <div class="modal-content-custom">
-      <div class="modal-header-custom">
-        <span class="closeBtn" @click="$emit('close');">&times;</span>
-        <h2>{{clickedTrailer.trailerNumber}}</h2>
-      </div>
-      <div class="modal-body-custom">
-        <h5>{{clickedTrailer.carrier}}</h5>
-        <h5>{{clickedTrailer.category}}</h5>
-        <p>{{clickedTrailer.status}}</p>
+  <div>
+    <div v-if="edit">
+      <EditModal :clickedTrailer="this.trailer" @close="handleEditModalClose"/>
+    </div>
+    <div v-else-if="move">
+      <MoveModal :clickedTrailer="this.trailer" @close="handleMoveModalClose"/>
+    </div>
+    <div v-else>
+      <div id="myModal" class="modal-custom">
+        <!-- Modal content -->
+        <div class="modal-content-custom">
+          <div class="modal-header-custom">
+            <span class="closeBtn" @click="$emit('close');">&times;</span>
+            <h2>{{this.trailer.trailerNumber}}</h2>
+          </div>
+          <div class="modal-body-custom">
+            <h5>{{this.trailer.carrier}}</h5>
+            <h5>{{this.trailer.category}}</h5>
+            <p>{{this.trailer.status}}</p>
+            <button @click="handleEditClicked()" class="btn btn-primary mr-1">Edit</button>
+            <button @click="handleMoveClicked()" class="btn btn-primary mr-1">Move</button>
+            <button @click="deleteTrailer()" class="btn btn-danger">Delete</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import EditModal from "@/components/EditModal.vue";
+import MoveModal from "@/components/MoveModal.vue";
+
 export default {
   name: "infoModal",
   props: {
     clickedTrailer: Object
+  },
+  components: {
+    EditModal,
+    MoveModal
+  },
+  data: function() {
+    return {
+      edit: false,
+      move: false,
+      trailer: {
+        trailerNumber: this.clickedTrailer.trailerNumber,
+        carrier: this.clickedTrailer.carrier,
+        trailerLocation: this.clickedTrailer.trailerLocation,
+        category: this.clickedTrailer.category,
+        status: this.clickedTrailer.status,
+        _id: this.clickedTrailer._id
+      }
+    };
+  },
+  methods: {
+    async deleteTrailer() {
+      let res = await this.$socket.emit("delete", this.clickedTrailer);
+
+      this.$emit("close");
+    },
+
+    async handleMoveClicked() {
+      this.move = true;
+    },
+    async handleEditClicked() {
+      this.edit = true;
+    },
+    async handleEditModalClose(value) {
+      this.edit = false;
+      this.trailer.trailerNumber = value.trailerNumber;
+      this.trailer.carrier = value.carrier;
+      this.trailer.category = value.category;
+      this.trailer.status = value.status;
+      this.trailer.trailerLocation = value.trailerLocation;
+      this.$emit("close");
+    },
+    async handleMoveModalClose(value) {
+      this.move = false;
+      this.trailer.trailerLocation = value;
+      this.$emit("close");
+    }
   }
 };
 </script>
@@ -40,7 +102,7 @@ export default {
 .modal-custom {
   display: block; /* Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  z-index: 5; /* Sit on top */
   padding-top: 100px; /* Location of the box */
   left: 0;
   top: 0;

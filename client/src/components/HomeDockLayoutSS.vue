@@ -1,29 +1,20 @@
 <template>
   <div>
-    <!-- <InfoModal :clickedTrailer="this.clickedTrailer" v-if="clicked" @close="handleModalClose()"/> -->
-    <!-- <EntryModal :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose()"/> -->
-
-    <div class="noWrap">
-      <div
-        v-for="dock in dockDoors"
-        v-on:click="handleEntryLocation(dock)"
-        :key="dock"
-        class="trailers"
-        id="left"
-      >
+    <InfoModal :clickedTrailer="this.clickedTrailer" v-if="clicked" @close="handleModalClose()"/>
+    <div>
+      <h1 class="mt-2">Docks Doors</h1>
+      <div v-for="dock in dockDoors" :key="dock" class="trailers" id="left">
         <h6>{{ dock }}</h6>
         <div
           v-for="trailer in trailers"
           v-if="trailer.trailerLocation == dock"
+          v-on:click="handleOnTrialerClick(trailer);"
           :key="trailer._id"
-          v-on:click.stop="handleOnTrialerClick(trailer)"
           :class="{
             'inner-seat': trailer.trailerLocation == dock,
             populated: trailer.trailerLocation == dock
           }"
-        >
-          <p>{{ trailer.trailerNumber }}</p>
-        </div>
+        ></div>
       </div>
     </div>
   </div>
@@ -31,19 +22,15 @@
 
 <script>
 import InfoModal from "./InfoModal.vue";
-import EntryModal from "@/components/EntryModal.vue";
 
 export default {
   name: "HomeDockLayout",
   components: {
-    InfoModal,
-    EntryModal
+    InfoModal
   },
   data: () => ({
     clicked: false,
-    entry: false,
     clickedTrailer: {},
-    clickedDock: "",
     dockDoors: [
       36,
       35,
@@ -91,20 +78,11 @@ export default {
   methods: {
     async handleOnTrialerClick(trailer) {
       this.clickedTrailer = trailer; //Continue working on getting data from event
-      this.$emit("trailer", this.clickedTrailer);
-      // this.clicked = true;
-    },
-    async handleEntryLocation(dock) {
-      this.clickedDock = dock.toString();
-      this.$emit("entry", this.clickedDock);
-      // this.entry = true;
+      this.clicked = true;
     },
     async handleModalClose() {
       this.clickedTrailer = {};
       this.clicked = false;
-    },
-    async handleEntryModalClose() {
-      this.entry = false;
     }
   }
 };
@@ -112,51 +90,33 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.noWrap {
-  white-space: nowrap;
+#left {
+  float: left;
 }
-
-.modalTest {
-  width: 20px;
-  height: 68px;
-  border-radius: 4px;
-  margin: -98px 0px 0px 0px;
-  /* position: relative; */
-}
-
-.populated p {
-  font-size: 10px;
-  color: white;
-  position: relative;
-  right: 7px;
-  writing-mode: vertical-lr;
-  text-orientation: upright;
-}
-
 .trailers {
-  width: 1.54%;
-  height: 85px;
+  width: 70px;
+  height: 125px;
   background: #d8d8d8;
-  display: inline-block;
   position: relative;
-  margin-right: 15px;
-  margin-top: 1.9%;
-  left: 10px;
+  left: 15px;
+  margin: 4px;
+  margin-top: 2%;
   text-align: center;
   color: white;
 }
 
 .inner-seat {
-  width: 20px;
-  height: 68px;
+  width: 70px;
+  height: 106px;
   border-radius: 4px;
-  margin: -98px 0px 0px 0px;
+  top: 50%;
+  left: 50%;
+  margin: -44px 0px 0px -35px;
   background: #d8d8d8;
-  /* position: relative; */
+  position: absolute;
 }
 
 h6 {
-  margin-top: 70px;
   color: black;
   background: white;
 }
