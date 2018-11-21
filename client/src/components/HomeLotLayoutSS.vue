@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <InfoModal :clickedTrailer="this.clickedTrailer" v-if="clicked" @close="handleModalClose()"/>
+    <!-- <InfoModal :clickedTrailer="this.clickedTrailer" v-if="clicked" @close="handleModalClose()"/> -->
+
     <div
       v-for="trailer in trailers"
       v-if="trailer.trailerLocation == lot"
@@ -12,7 +13,7 @@
       populated: trailer.trailerLocation == lot
       }"
     >
-      <h6>{{ trailer.trailerNumber }}</h6>
+      <p>{{ trailer.trailerNumber }}</p>
     </div>
   </div>
 </template>
@@ -39,8 +40,8 @@ export default {
   },
   methods: {
     async handleOnTrialerClick(trailer) {
-      this.clickedTrailer = trailer; //Continue working on getting data from event
-      this.clicked = true;
+      this.clickedTrailer = trailer;
+      this.$emit("trailer", this.clickedTrailer);
     },
     async handleModalClose() {
       this.clickedTrailer = {};
@@ -58,8 +59,8 @@ h4 {
 }
 
 .listLot {
-  width: 70px;
-  height: 105px;
+  width: 20px;
+  height: 68px;
   background: #d8d8d8;
   margin: 4px;
   margin-top: 2%;
@@ -74,10 +75,11 @@ h4 {
   text-align: center;
 }
 
-.populated h6 {
+.populated p {
   color: white;
+  font-size: 10px;
   position: relative;
-  right: 10px;
+  right: 7px;
   writing-mode: vertical-lr;
   text-orientation: upright;
 }

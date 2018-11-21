@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     async handleOnTrialerClick(trailer) {
-      this.clickedTrailer = trailer; //Continue working on getting data from event
+      this.clickedTrailer = trailer;
       this.$emit("trailer", this.clickedTrailer);
       // this.clicked = true;
     },
@@ -169,6 +169,13 @@ h6 {
 
 .populated:hover,
 .populated:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.trailers:hover,
+.trailers:focus {
   color: #000;
   text-decoration: none;
   cursor: pointer;

@@ -11,14 +11,14 @@
           <div class="lotA col-sm">
             <div>
               <h1 class="center">Lot A</h1>
-              <span v-on:click.stop="handleEntryLocation()" class="addBtn">+</span>
+              <span v-on:click.stop="handleEntryLotALocation" class="addBtn">+</span>
               <HomeLotLayout lot="Lot A" @trailer="handleTrailerClicked"/>
             </div>
           </div>
           <div class="lotB col-sm">
             <div>
               <h1 class="center">Lot B</h1>
-              <span v-on:click.stop="handleEntryLocation()" class="addBtn">+</span>
+              <span v-on:click.stop="handleEntryLotBLocation" class="addBtn">+</span>
               <HomeLotLayout lot="Lot B" @trailer="handleTrailerClicked"/>
             </div>
           </div>
@@ -27,19 +27,24 @@
       <div class="building"></div>
     </div>
     <div v-else class="container">
-      <div class="test">
-        <HomeDockLayoutSS/>
+      <div class="row">
+        <h1 class="mt-2 test">Docks Doors</h1>
+        <HomeDockLayoutSS @entry="handleEmptyClicked" @trailer="handleTrailerClicked"/>
       </div>
-      <div class="lotASS test">
+      <div class="lotASS row">
         <div>
-          <h1>Lot A</h1>
-          <HomeLotLayoutSS lot="Lot A"/>
+          <span v-on:click.stop="handleEntryLotALocation" class="addBtn">+</span>
+          <h1 class="test">Lot A</h1>
+          <HomeLotLayoutSS lot="Lot A" @trailer="handleTrailerClicked"/>
         </div>
       </div>
-      <div class="lotBSS test">
-        <div>
-          <h1>Lot B</h1>
-          <HomeLotLayoutSS lot="Lot B"/>
+      <div>
+        <div class="lotBSS row">
+          <div>
+            <span v-on:click.stop="handleEntryLotALocation" class="addBtn">+</span>
+            <h1 class="test">Lot B</h1>
+            <HomeLotLayoutSS lot="Lot B" @trailer="handleTrailerClicked"/>
+          </div>
         </div>
       </div>
     </div>
@@ -127,12 +132,17 @@ export default {
     handleResize() {
       this.windowWidth = window.innerWidth;
     },
-    async handleEntryLocation() {
-      // this.clickedDock = dock.toString();
+    async handleEntryLotALocation() {
+      this.clickedDock = "Lot A";
+      this.entry = true;
+    },
+    async handleEntryLotBLocation() {
+      this.clickedDock = "Lot B";
       this.entry = true;
     },
     async handleEntryModalClose() {
       this.entry = false;
+      this.clickedDock = "";
     },
     async handleTrailerClicked(value) {
       this.trailer.carrier = value.carrier;
@@ -157,8 +167,12 @@ export default {
 </script>
 
 <style>
+.row {
+  width: 100%;
+}
 .test {
   border-bottom: 4px solid black;
+  width: 100%;
 }
 
 .lotA {
@@ -174,14 +188,6 @@ export default {
 
 .center {
   text-align: center;
-}
-
-.lotASS {
-  clear: both;
-}
-
-.lotBSS {
-  clear: both;
 }
 
 .building {
@@ -217,10 +223,27 @@ export default {
 .lotA .addBtn {
   position: absolute;
   top: 10%;
-  left: 90%;
+  margin-bottom: 10px;
+  left: 85%;
   color: #aaaaaa;
   font-size: 28px;
   font-weight: bold;
+}
+
+.lotASS .addBtn {
+  position: absolute;
+  color: #aaaaaa;
+  font-size: 28px;
+  font-weight: bold;
+  left: 85%;
+}
+
+.lotBSS .addBtn {
+  position: absolute;
+  color: #aaaaaa;
+  font-size: 28px;
+  font-weight: bold;
+  left: 85%;
 }
 
 .addBtn:hover,

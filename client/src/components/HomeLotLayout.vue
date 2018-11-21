@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     async handleOnTrialerClick(trailer) {
-      this.clickedTrailer = trailer; //Continue working on getting data from event
+      this.clickedTrailer = trailer;
       this.$emit("trailer", this.clickedTrailer);
     },
     async handleModalClose() {

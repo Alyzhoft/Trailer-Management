@@ -1,20 +1,26 @@
 <template>
   <div>
-    <InfoModal :clickedTrailer="this.clickedTrailer" v-if="clicked" @close="handleModalClose()"/>
     <div>
-      <h1 class="mt-2">Docks Doors</h1>
-      <div v-for="dock in dockDoors" :key="dock" class="trailers" id="left">
+      <div
+        v-for="dock in dockDoors"
+        v-on:click="handleEntryLocation(dock)"
+        :key="dock"
+        class="trailers"
+        id="left"
+      >
         <h6>{{ dock }}</h6>
         <div
           v-for="trailer in trailers"
           v-if="trailer.trailerLocation == dock"
-          v-on:click="handleOnTrialerClick(trailer);"
+          v-on:click.stop="handleOnTrialerClick(trailer);"
           :key="trailer._id"
           :class="{
             'inner-seat': trailer.trailerLocation == dock,
             populated: trailer.trailerLocation == dock
           }"
-        ></div>
+        >
+          <p>{{ trailer.trailerNumber }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -77,8 +83,13 @@ export default {
   },
   methods: {
     async handleOnTrialerClick(trailer) {
-      this.clickedTrailer = trailer; //Continue working on getting data from event
-      this.clicked = true;
+      this.clickedTrailer = trailer;
+      this.$emit("trailer", this.clickedTrailer);
+    },
+    async handleEntryLocation(dock) {
+      this.clickedDock = dock.toString();
+      this.$emit("entry", this.clickedDock);
+      // this.entry = true;
     },
     async handleModalClose() {
       this.clickedTrailer = {};
@@ -94,8 +105,8 @@ export default {
   float: left;
 }
 .trailers {
-  width: 70px;
-  height: 125px;
+  width: 20px;
+  height: 85px;
   background: #d8d8d8;
   position: relative;
   left: 15px;
@@ -105,13 +116,22 @@ export default {
   color: white;
 }
 
+.populated p {
+  font-size: 10px;
+  color: white;
+  position: relative;
+  right: 7px;
+  writing-mode: vertical-lr;
+  text-orientation: upright;
+}
+
 .inner-seat {
-  width: 70px;
-  height: 106px;
+  width: 20px;
+  height: 68px;
   border-radius: 4px;
   top: 50%;
   left: 50%;
-  margin: -44px 0px 0px -35px;
+  margin: -25px 0px 0px -10px;
   background: #d8d8d8;
   position: absolute;
 }
@@ -129,6 +149,13 @@ h6 {
 
 .populated:hover,
 .populated:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.trailers:hover,
+.trailers:focus {
   color: #000;
   text-decoration: none;
   cursor: pointer;
