@@ -21,7 +21,6 @@
     </div>
   </div>
 </template>
-// :data-value="trailer._id"
 <script>
 import InfoModal from "./InfoModal.vue";
 

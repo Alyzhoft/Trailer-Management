@@ -8,6 +8,7 @@
       </div>
       <div class="modal-body-custom">
         <p>{{ modalInfo.text }}</p>
+        <button @click="$emit('close')" class="btn btn-primary">Ok</button>
       </div>
     </div>
   </div>
