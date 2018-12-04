@@ -3,8 +3,8 @@
     <!-- Modal content -->
     <div class="modal-content-custom">
       <div class="modal-header-custom">
-        <span class="closeBtn" @click="$emit('cancle');">&times;</span>
-        <h2>Edit Trailer</h2>
+        <span class="closeBtn" @click="$emit('close');">&times;</span>
+        <h2>Add Trailer</h2>
       </div>
       <div class="modal-body-custom">
         <div class="trailerManagement container mt-3">
@@ -12,12 +12,13 @@
         </div>
         <form>
           <fieldset>
-            <div class="inline">
+            <div>
               <label for="Category">Category</label>
               <select
                 class="form-control"
                 v-model="trailer.category"
                 id="Category dropdownMenuOffset"
+                required
               >
                 <option>Dunnage</option>
                 <option>Empties for Shipping</option>
@@ -26,12 +27,13 @@
                 <option>Supermarket/Legacy/Eng</option>
               </select>
             </div>
-            <div class="inline">
+            <div>
               <label for="Carrier">Carrier</label>
               <select
                 class="form-control"
                 v-model="trailer.carrier"
                 id="Carrier dropdownMenuOffset"
+                required
               >
                 <option>Brockman</option>
                 <option>Dart</option>
@@ -43,28 +45,39 @@
                 <option>Wali</option>
               </select>
             </div>
-            <div class="inline">
+            <div>
               <label for="trailerNumber">Trailer Number</label>
               <input
                 type="text"
                 minlength="4"
-                maxlength="6"
+                maxlength="5"
                 v-model="trailer.trailerNumber"
                 class="form-control"
                 id="trailerNumber"
                 placeholder="Enter Trailer Number"
+                required
+              >
+            </div>
+            <div>
+              <label for="trailerLocation">Trailer Location</label>
+              <input
+                type="text"
+                v-model="trailer.trailerLocation"
+                class="form-control"
+                id="trailerNumber"
+                readonly
               >
             </div>
             <div class="form-froup mb-2">
               <label for="trailerStatus">Status</label>
-              <textarea class="form-control" v-model="trailer.status" form="trailerStatus"></textarea>
+              <textarea class="form-control" v-model="trailer.status" form="trailerStatus" required></textarea>
             </div>
             <button
               type="button"
-              @click="updateTrailer();"
+              @click="addTrailer();"
               class="btn btn-primary mt-1 mr-1 mb-1"
-            >Edit Trailer</button>
-            <button type="button" @click="$emit('cancle');" class="btn btn-secondary">Cancel</button>
+            >Add Trailer</button>
+            <button type="button" @click="$emit('close');" class="btn btn-secondary">Cancel</button>
           </fieldset>
         </form>
       </div>
@@ -75,16 +88,17 @@
 <script>
 export default {
   name: "modal",
-  props: ["clickedTrailer"],
+  props: {
+    clickedDock: String
+  },
   data: function() {
     return {
       trailer: {
-        trailerNumber: this.clickedTrailer.trailerNumber,
-        carrier: this.clickedTrailer.carrier,
-        trailerLocation: this.clickedTrailer.trailerLocation,
-        category: this.clickedTrailer.category,
-        status: this.clickedTrailer.status,
-        _id: this.clickedTrailer._id
+        trailerNumber: "",
+        carrier: "",
+        trailerLocation: this.clickedDock,
+        category: "",
+        status: ""
       },
       docks: [
         1,
@@ -130,28 +144,48 @@ export default {
     };
   },
   methods: {
-    async updateTrailer() {
-      let res = await this.$socket.emit("update", this.trailer);
-      this.$emit("close", this.trailer);
-      // this.modal.visible = true;
-      // this.modal.header = "Updated";
-      // this.modal.text = "Trailer Updated";
+    async addTrailer() {
+      this.create = true;
+
+      if (
+        this.trailer.trailerLocation != "Lot A" &&
+        this.trailer.trailerLocation != "Lot B" &&
+        this.trailer.trailerLocation != "Off-Site Lot"
+      ) {
+        const trailers = this.$store.state.trailers;
+        for (let i = 0; i < trailers.length; i++) {
+          if (trailers[i].trailerLocation === this.trailer.trailerLocation) {
+            this.create = false;
+          }
+        }
+      }
+
+      if (this.create) {
+        let res = await this.$socket.emit("create", this.trailer);
+        // this.modal.visible = true;
+        // this.modal.header = "Created";
+        // this.modal.text = `Trailer ${
+        //   this.trailer.trailerNumber
+        // } was Created at Dock: ${this.trailer.trailerLocation}`;
+        this.trailer.trailerNumber = "";
+        this.trailer.carrier = "";
+        this.trailer.trailerLocation = "";
+        this.trailer.category = "";
+        this.trailer.status = "";
+        this.$emit("close");
+      } else {
+        // this.modal.visible = true;
+        // this.modal.header = "Error";
+        // this.modal.text =
+        //   "Trailer Already at Location. Please Select a different Location";
+        this.create = true;
+      }
     }
   }
 };
 </script>
 
 <style scoped>
-/* .right {
-  float: right;
-} */
-
-.inline {
-  display: inline-block;
-  margin-right: 10px;
-  width: calc(50% - 10px);
-}
-
 /* Modal Header */
 .modal-header-custom {
   padding: 0px 16px;
@@ -185,7 +219,7 @@ export default {
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 50%;
+  width: 80%;
   border-radius: 20px;
 }
 

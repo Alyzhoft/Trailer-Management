@@ -16,13 +16,7 @@
       <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/#/trailerentry">Trailer Entry</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/#/edittrailer">Edit Trailer</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/#/dashboard">Trailer View</a>
+            <a class="nav-link" href="/#/offsitelot">Off-Site Lot</a>
           </li>
         </ul>
       </div>

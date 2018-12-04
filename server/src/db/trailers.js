@@ -5,7 +5,7 @@ const createSchema = Joi.object().keys({
   trailerNumber: Joi.string()
     .alphanum()
     .min(4)
-    .max(6)
+    .max(5)
     .required(),
   carrier: Joi.string().required(),
   trailerLocation: Joi.string().required(),

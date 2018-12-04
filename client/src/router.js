@@ -4,6 +4,7 @@ import Home from "./views/Home.vue";
 import Dashboard from "./views/Dashboard.vue";
 import TrailerEntry from "./views/TrailerEntry.vue";
 import EditTrailer from "./views/EditTrailer";
+import OffSiteLot from "./views/OffSiteLot";
 
 Vue.use(Router);
 
@@ -28,6 +29,11 @@ export default new Router({
       path: "/edittrailer",
       name: "edittrailer",
       component: EditTrailer
+    },
+    {
+      path: "/offsitelot",
+      name: "offsitelot",
+      component: OffSiteLot
     }
   ]
 });

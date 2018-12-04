@@ -50,7 +50,7 @@
               <input
                 type="text"
                 minlength="4"
-                maxlength="6"
+                maxlength="5"
                 v-model="trailer.trailerNumber"
                 class="form-control"
                 id="trailerNumber"
@@ -138,7 +138,8 @@ export default {
         35,
         36,
         "Lot A",
-        "Lot B"
+        "Lot B",
+        "Off-Site Lot"
       ]
     };
   },
@@ -148,7 +149,8 @@ export default {
 
       if (
         this.trailer.trailerLocation != "Lot A" &&
-        this.trailer.trailerLocation != "Lot B"
+        this.trailer.trailerLocation != "Lot B" &&
+        this.trailer.trailerLocation != "Off-Site Lot"
       ) {
         const trailers = this.$store.state.trailers;
         for (let i = 0; i < trailers.length; i++) {

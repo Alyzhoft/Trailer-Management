@@ -1,14 +1,18 @@
 <template>
   <div>
     <div v-if="edit">
-      <EditModal
+      <EditModalSS
         :clickedTrailer="this.trailer"
         @close="handleEditModalClose"
-        @cancle="handleCancle"
+        @cancle="handleEditCancle"
       />
     </div>
     <div v-else-if="move">
-      <MoveModal :clickedTrailer="this.trailer" @close="handleMoveModalClose"/>
+      <MoveModalSS
+        :clickedTrailer="this.trailer"
+        @close="handleMoveModalClose"
+        @cancle="handleMoveCancle"
+      />
     </div>
     <div v-else>
       <div id="myModal" class="modal-custom">
@@ -33,17 +37,18 @@
 </template>
 
 <script>
-import EditModal from "@/components/EditModal.vue";
-import MoveModal from "@/components/MoveModal.vue";
+import EditModalSS from "@/components/EditModalSS.vue";
+import MoveModalSS from "@/components/MoveModalSS.vue";
 
 export default {
   name: "infoModal",
   props: {
-    clickedTrailer: Object
+    clickedTrailer: Object,
+    windowWidth: Number
   },
   components: {
-    EditModal,
-    MoveModal
+    EditModalSS,
+    MoveModalSS
   },
   data: function() {
     return {
@@ -72,9 +77,11 @@ export default {
     async handleEditClicked() {
       this.edit = true;
     },
-    async handleCancle() {
-      console.log("Cancle");
+    async handleEditCancle() {
       this.edit = false;
+    },
+    async handleMoveCancle() {
+      this.move = false;
     },
     async handleEditModalClose(value) {
       this.edit = false;
@@ -129,7 +136,7 @@ export default {
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 50%;
+  width: 80%;
   border-radius: 20px;
 }
 
