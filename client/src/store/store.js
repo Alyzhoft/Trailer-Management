@@ -1,16 +1,22 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { stat } from "fs";
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    trailers: []
+    trailers: [],
+    departedTrailers: []
   },
 
   mutations: {
     getTrailers(state, trailers) {
       state.trailers = trailers;
+    },
+
+    getDepartedTrailers(state, departedTrailers) {
+      state.departedTrailers = departedTrailers;
     },
 
     ADD_TRAILER: (state, payload) => {
@@ -23,15 +29,28 @@ export const store = new Vuex.Store({
 
     DELETE_TRAILER: (state, payload) => {
       state.trailers = payload;
+    },
+
+    DEPARTED_TRAILER: (state, payload) => {
+      state.trailers = payload.trialerResults;
+      state.departedTrailers = payload.departedTrailersResults;
     }
   },
 
   actions: {
     getTrailers(state) {
-      fetch("http://localhost:3000/trailers/dashboard")
+      fetch("http://localhost:3000/trailers")
         .then(res => res.json())
         .then(trailers => {
           state.commit("getTrailers", trailers);
+        });
+    },
+
+    getDepartedTrailers(state) {
+      fetch("http://localhost:3000/departedtrailers")
+        .then(res => res.json())
+        .then(departedTrailers => {
+          state.commit("getDepartedTrailers", departedTrailers);
         });
     },
 
@@ -45,6 +64,11 @@ export const store = new Vuex.Store({
 
     DELETE_TRAILER: (state, payload) => {
       state.commit("DELETE_TRAILER", payload);
+    },
+
+    DEPARTED_TRAILER: (state, payload) => {
+      state.commit("DEPARTED_TRAILER", payload);
+      console.log(payload);
     }
   },
   getters: {

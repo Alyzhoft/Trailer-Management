@@ -5,6 +5,7 @@ import Dashboard from "./views/Dashboard.vue";
 import TrailerEntry from "./views/TrailerEntry.vue";
 import EditTrailer from "./views/EditTrailer";
 import OffSiteLot from "./views/OffSiteLot";
+import Departed from "./views/Departed";
 
 Vue.use(Router);
 
@@ -34,6 +35,11 @@ export default new Router({
       path: "/offsitelot",
       name: "offsitelot",
       component: OffSiteLot
+    },
+    {
+      path: "/departed",
+      name: "departed",
+      component: Departed
     }
   ]
 });

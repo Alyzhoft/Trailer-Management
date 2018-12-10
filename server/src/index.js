@@ -36,6 +36,11 @@ io.on("connection", socket => {
     const response = await trailers.removeTrailer(trailer);
     io.emit("delete", response);
   });
+
+  socket.on("departed", async trailer => {
+    const response = await trailers.departedTrailer(trailer);
+    io.emit("departed", response);
+  });
 });
 
 app.get("/", (req, res) => {
@@ -44,8 +49,20 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/trailers/dashboard", (req, res) => {
-  trailers.getAll().then(trailers => {
+app.get("/trailers", (req, res) => {
+  trailers.getAllTrailers().then(trailers => {
+    res.json(trailers);
+  });
+});
+
+app.get("/departedtrailers", (req, res) => {
+  trailers.getDepartedTrailers().then(trailers => {
+    res.json(trailers);
+  });
+});
+
+app.post("/departedtrailers", (req, res) => {
+  trailers.departedTrailerSearch(req.body).then(trailers => {
     res.json(trailers);
   });
 });

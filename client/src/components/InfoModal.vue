@@ -24,6 +24,10 @@
             <p>{{this.trailer.status}}</p>
             <button @click="handleEditClicked()" class="btn btn-primary mr-1 mb-1">Edit</button>
             <button @click="handleMoveClicked()" class="btn btn-primary mr-1 mb-1">Move</button>
+            <button
+              @click="handleDepartedClicked(trailer)"
+              class="btn btn-primary mr-1 mb-1"
+            >Departed</button>
             <button @click="deleteTrailer()" class="btn btn-danger mb-1">Delete</button>
           </div>
         </div>
@@ -63,6 +67,10 @@ export default {
     async deleteTrailer() {
       let res = await this.$socket.emit("delete", this.clickedTrailer);
 
+      this.$emit("close");
+    },
+    async handleDepartedClicked(trailer) {
+      let res = await this.$socket.emit("departed", trailer);
       this.$emit("close");
     },
 
