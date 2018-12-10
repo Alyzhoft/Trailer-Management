@@ -12,7 +12,7 @@
         </div>
         <form>
           <fieldset>
-            <div class="inline">
+            <div>
               <label for="trailerLocation">Current Trailer Location</label>
               <input
                 type="text"
@@ -22,7 +22,7 @@
                 readonly
               >
             </div>
-            <div class="inline">
+            <div>
               <label for="trailerLocation">New Trailer Location</label>
               <select class="form-control" v-model="trailer.trailerLocation" id="trailerLocation">
                 <option v-for="dockNumber in docks" :key="dockNumber">
@@ -35,9 +35,9 @@
             <button
               type="button"
               @click="moveTrailer();"
-              class="btn btn-primary mt-1 mr-1 mb-1"
+              class="btn btn-primary mt-2 mr-1 mb-1"
             >Move Trailer</button>
-            <button type="button" @click="$emit('close');" class="btn btn-secondary">Cancel</button>
+            <button type="button" @click="$emit('cancle');" class="btn btn-secondary mt-2">Cancel</button>
           </fieldset>
         </form>
       </div>
@@ -146,16 +146,6 @@ export default {
 </script>
 
 <style scoped>
-/* .right {
-  float: right;
-} */
-
-.inline {
-  display: inline-block;
-  margin-right: 10px;
-  width: calc(50% - 10px);
-}
-
 /* Modal Header */
 .modal-header-custom {
   padding: 0px 16px;
@@ -189,7 +179,7 @@ export default {
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 50%;
+  width: 80%;
   border-radius: 20px;
 }
 

@@ -16,13 +16,10 @@
       <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/#/trailerentry">Trailer Entry</a>
+            <a class="nav-link" href="/#/offsitelot">Off-Site Lot</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/#/edittrailer">Edit Trailer</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/#/dashboard">Trailer View</a>
+            <a class="nav-link" href="/#/departed">Departed</a>
           </li>
         </ul>
       </div>
@@ -36,8 +33,9 @@ import { mapActions } from "vuex";
 export default {
   mounted() {
     this.getTrailers();
+    this.getDepartedTrailers();
   },
-  methods: mapActions(["getTrailers"]),
+  methods: mapActions(["getTrailers", "getDepartedTrailers"]),
   sockets: {
     connect: function() {},
 
@@ -61,6 +59,11 @@ export default {
 
     delete: function(trailers) {
       this.$store.dispatch("DELETE_TRAILER", trailers);
+    },
+
+    departed: function(res) {
+      console.log(res);
+      this.$store.dispatch("DEPARTED_TRAILER", res);
     }
   }
 };

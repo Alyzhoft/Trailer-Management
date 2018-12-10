@@ -3,41 +3,68 @@
     <!-- Modal content -->
     <div class="modal-content-custom">
       <div class="modal-header-custom">
-        <span class="closeBtn" @click="$emit('close');">&times;</span>
-        <h2>Move Trailer</h2>
+        <span class="closeBtn" @click="$emit('cancle');">&times;</span>
+        <h2>Edit Trailer</h2>
       </div>
       <div class="modal-body-custom">
         <div class="trailerManagement container mt-3">
-          <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+          <!-- <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/> -->
         </div>
         <form>
           <fieldset>
-            <div class="inline">
-              <label for="trailerLocation">Current Trailer Location</label>
+            <div>
+              <label for="Category">Category</label>
+              <select
+                class="form-control"
+                v-model="trailer.category"
+                id="Category dropdownMenuOffset"
+              >
+                <option>Dunnage</option>
+                <option>Empties for Shipping</option>
+                <option>Patio Trailers</option>
+                <option>Storage/Misc. Shipping Trailers</option>
+                <option>Supermarket/Legacy/Eng</option>
+              </select>
+            </div>
+            <div>
+              <label for="Carrier">Carrier</label>
+              <select
+                class="form-control"
+                v-model="trailer.carrier"
+                id="Carrier dropdownMenuOffset"
+              >
+                <option>Brockman</option>
+                <option>Dart</option>
+                <option>Filmore</option>
+                <option>Ryder</option>
+                <option>Taylor</option>
+                <option>Transport</option>
+                <option>Wale</option>
+                <option>Wali</option>
+              </select>
+            </div>
+            <div>
+              <label for="trailerNumber">Trailer Number</label>
               <input
                 type="text"
-                v-model="trailer.currentTrailerLocation"
+                minlength="4"
+                maxlength="6"
+                v-model="trailer.trailerNumber"
                 class="form-control"
                 id="trailerNumber"
-                readonly
+                placeholder="Enter Trailer Number"
               >
             </div>
-            <div class="inline">
-              <label for="trailerLocation">New Trailer Location</label>
-              <select class="form-control" v-model="trailer.trailerLocation" id="trailerLocation">
-                <option v-for="dockNumber in docks" :key="dockNumber">
-                  {{
-                  dockNumber
-                  }}
-                </option>
-              </select>
+            <div class="form-froup mb-2">
+              <label for="trailerStatus">Status</label>
+              <textarea class="form-control" v-model="trailer.status" form="trailerStatus"></textarea>
             </div>
             <button
               type="button"
-              @click="moveTrailer();"
+              @click="updateTrailer();"
               class="btn btn-primary mt-1 mr-1 mb-1"
-            >Move Trailer</button>
-            <button type="button" @click="$emit('close');" class="btn btn-secondary">Cancel</button>
+            >Edit Trailer</button>
+            <button type="button" @click="$emit('cancle');" class="btn btn-secondary">Cancel</button>
           </fieldset>
         </form>
       </div>
@@ -46,25 +73,18 @@
 </template>
 
 <script>
-import AlertModal from "@/components/AlertModal.vue";
-
 export default {
   name: "modal",
   props: ["clickedTrailer"],
-  components: {
-    AlertModal
-  },
   data: function() {
     return {
       trailer: {
-        currentTrailerLocation: this.clickedTrailer.trailerLocation,
-        trailerLocation: "",
+        trailerNumber: this.clickedTrailer.trailerNumber,
+        carrier: this.clickedTrailer.carrier,
+        trailerLocation: this.clickedTrailer.trailerLocation,
+        category: this.clickedTrailer.category,
+        status: this.clickedTrailer.status,
         _id: this.clickedTrailer._id
-      },
-      modal: {
-        visible: false,
-        text: "",
-        header: ""
       },
       docks: [
         1,
@@ -110,52 +130,15 @@ export default {
     };
   },
   methods: {
-    async moveTrailer() {
-      this.update = true;
-      const trailers = this.$store.state.trailers;
-
-      if (
-        this.trailer.trailerLocation != "Lot A" &&
-        this.trailer.trailerLocation != "Lot B" &&
-        this.trailer.trailerLocation != "Off-Site Lot"
-      ) {
-        for (let i = 0; i < trailers.length; i++) {
-          if (trailers[i].trailerLocation === this.trailer.trailerLocation) {
-            this.update = false;
-          }
-        }
-      }
-
-      if (this.update) {
-        let res = await this.$socket.emit("move", this.trailer);
-
-        this.trailer.currentTrailerLocation = this.trailer.trailerLocation;
-        this.$emit("close", this.trailer.trailerLocation);
-        // this.trailer.trailerLocation = "";
-        // this.modal.header = "Moved";
-        // this.modal.text = "Trailer Moved";
-      } else {
-        this.modal.visible = true;
-        this.modal.header = "Error";
-        this.modal.text =
-          "Trailer Already at Location. Please Select a different Location";
-      }
+    async updateTrailer() {
+      let res = await this.$socket.emit("update", this.trailer);
+      this.$emit("close", this.trailer);
     }
   }
 };
 </script>
 
 <style scoped>
-/* .right {
-  float: right;
-} */
-
-.inline {
-  display: inline-block;
-  margin-right: 10px;
-  width: calc(50% - 10px);
-}
-
 /* Modal Header */
 .modal-header-custom {
   padding: 0px 16px;
@@ -189,7 +172,7 @@ export default {
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 50%;
+  width: 80%;
   border-radius: 20px;
 }
 
