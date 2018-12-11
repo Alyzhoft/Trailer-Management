@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { stat } from "fs";
 
 Vue.use(Vuex);
 
@@ -20,7 +19,7 @@ export const store = new Vuex.Store({
     },
 
     ADD_TRAILER: (state, payload) => {
-      state.trailers.push(payload);
+      state.trailers = payload;
     },
 
     UPDATE_TRAILER: (state, payload) => {
@@ -32,8 +31,8 @@ export const store = new Vuex.Store({
     },
 
     DEPARTED_TRAILER: (state, payload) => {
-      state.trailers = payload.trialerResults;
-      state.departedTrailers = payload.departedTrailersResults;
+      state.trailers = payload.trailers;
+      state.departedTrailers = payload.departed;
     }
   },
 

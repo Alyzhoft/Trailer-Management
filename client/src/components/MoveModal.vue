@@ -13,7 +13,7 @@
         <form>
           <fieldset>
             <div class="inline">
-              <label for="trailerLocation">Current Trailer Location</label>
+              <label for="trailerlocation">Current Trailer Location</label>
               <input
                 type="text"
                 v-model="trailer.currentTrailerLocation"
@@ -120,7 +120,7 @@ export default {
         this.trailer.trailerLocation != "Off-Site Lot"
       ) {
         for (let i = 0; i < trailers.length; i++) {
-          if (trailers[i].trailerLocation === this.trailer.trailerLocation) {
+          if (trailers[i].trailerlocation === this.trailer.trailerLocation) {
             this.update = false;
           }
         }
@@ -131,7 +131,7 @@ export default {
 
         this.trailer.currentTrailerLocation = this.trailer.trailerLocation;
         this.$emit("close", this.trailer.trailerLocation);
-        // this.trailer.trailerLocation = "";
+        // this.trailer.trailerlocation = "";
         // this.modal.header = "Moved";
         // this.modal.text = "Trailer Moved";
       } else {

@@ -161,11 +161,12 @@ export default {
       this.clickedDock = "";
     },
     async handleTrailerClicked(value) {
+      console.log(value.trailerlocation);
       this.trailer.carrier = value.carrier;
       this.trailer.category = value.category;
       this.trailer.status = value.status;
-      this.trailer.trailerLocation = value.trailerLocation;
-      this.trailer.trailerNumber = value.trailerNumber;
+      this.trailer.trailerLocation = value.trailerlocation;
+      this.trailer.trailerNumber = value.trailernumber;
       this.trailer.status = value.status;
       this.trailer._id = value._id;
       this.clicked = true;
@@ -174,8 +175,8 @@ export default {
       this.trailer.carrier = value.carrier;
       this.trailer.category = value.category;
       this.trailer.status = value.status;
-      this.trailer.trailerLocation = value.trailerLocation;
-      this.trailer.trailerNumber = value.trailerNumber;
+      this.trailer.trailerLocation = value.trailerlocation;
+      this.trailer.trailerNumber = value.trailernumber;
       this.trailer.status = value.status;
       this.trailer._id = value._id;
       this.clickedSS = true;

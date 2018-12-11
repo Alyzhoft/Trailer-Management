@@ -44,14 +44,14 @@
               </select>
             </div>
             <div class="inline">
-              <label for="trailerNumber">Trailer Number</label>
+              <label for="trailernumber">Trailer Number</label>
               <input
                 type="text"
                 minlength="4"
                 maxlength="6"
                 v-model="trailer.trailerNumber"
                 class="form-control"
-                id="trailerNumber"
+                id="trailernumber"
                 placeholder="Enter Trailer Number"
               >
             </div>

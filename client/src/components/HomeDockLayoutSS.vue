@@ -11,15 +11,15 @@
         <h6>{{ dock }}</h6>
         <div
           v-for="trailer in trailers"
-          v-if="trailer.trailerLocation == dock"
+          v-if="trailer.trailerlocation == dock"
           v-on:click.stop="handleOnTrialerClick(trailer);"
           :key="trailer._id"
           :class="{
-            'inner-seat': trailer.trailerLocation == dock,
-            populated: trailer.trailerLocation == dock
+            'inner-seat': trailer.trailerlocation == dock,
+            populated: trailer.trailerlocation == dock
           }"
         >
-          <p>{{ trailer.trailerNumber }}</p>
+          <p>{{ trailer.trailernumber }}</p>
         </div>
       </div>
     </div>

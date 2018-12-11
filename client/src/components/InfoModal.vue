@@ -87,16 +87,16 @@ export default {
     async handleEditModalClose(value) {
       this.edit = false;
       console.log(value);
-      this.trailer.trailerNumber = value.trailerNumber;
+      this.trailer.trailerNumber = value.trailernumber;
       this.trailer.carrier = value.carrier;
       this.trailer.category = value.category;
       this.trailer.status = value.status;
-      this.trailer.trailerLocation = value.trailerLocation;
+      this.trailer.trailerLocation = value.trailerlocation;
       this.$emit("close");
     },
     async handleMoveModalClose(value) {
       this.move = false;
-      this.trailer.trailerLocation = value;
+      this.trailer.trailerlocation = value;
       this.$emit("close");
     }
   }

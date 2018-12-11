@@ -12,16 +12,16 @@
     <span v-on:click.stop="handleEntryOffSiteLocation" class="addBtn">+</span>
     <div
       v-for="trailer in trailers"
-      v-if="trailer.trailerLocation == lot"
+      v-if="trailer.trailerlocation == lot"
       v-on:click="handleOnTrialerClick(trailer);"
       :key="trailer._id"
       id="lot"
       :class="{
-      'listLot': trailer.trailerLocation == lot,
-      populated: trailer.trailerLocation == lot
+      'listLot': trailer.trailerlocation == lot,
+      populated: trailer.trailerlocation == lot
       }"
     >
-      <p>{{ trailer.trailerNumber }}</p>
+      <p>{{ trailer.trailernumber }}</p>
     </div>
   </div>
 </template>
@@ -82,8 +82,8 @@ export default {
       this.trailer.carrier = trailer.carrier;
       this.trailer.category = trailer.category;
       this.trailer.status = trailer.status;
-      this.trailer.trailerLocation = trailer.trailerLocation;
-      this.trailer.trailerNumber = trailer.trailerNumber;
+      this.trailer.trailerLocation = trailer.trailerlocation;
+      this.trailer.trailerNumber = trailer.trailernumber;
       this.trailer.status = trailer.status;
       this.trailer._id = trailer._id;
       this.clicked = true;

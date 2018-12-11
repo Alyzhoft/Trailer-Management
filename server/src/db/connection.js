@@ -1,7 +1,22 @@
-const monk = require("monk");
+const { Pool, Client } = require("pg");
 
-const connectionString = "localhost/messageboard";
+const client = new Client({
+  user: "postgres",
+  host: "localhost",
+  database: "Trailer Management",
+  password: "Al475500",
+  port: 5432
+});
 
-const db = monk(connectionString);
+const pool = new Pool({
+  user: "postgres",
+  host: "localhost",
+  database: "Trailer Management",
+  password: "Al475500",
+  port: 5432
+});
 
-module.exports = db;
+module.exports = {
+  client,
+  pool
+};

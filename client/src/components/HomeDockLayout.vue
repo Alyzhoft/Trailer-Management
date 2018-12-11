@@ -1,8 +1,5 @@
 <template>
   <div>
-    <!-- <InfoModal :clickedTrailer="this.clickedTrailer" v-if="clicked" @close="handleModalClose()"/> -->
-    <!-- <EntryModal :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose()"/> -->
-
     <div class="noWrap">
       <div
         v-for="dock in dockDoors"
@@ -14,15 +11,15 @@
         <h6>{{ dock }}</h6>
         <div
           v-for="trailer in trailers"
-          v-if="trailer.trailerLocation == dock"
+          v-if="trailer.trailerlocation == dock"
           :key="trailer._id"
           v-on:click.stop="handleOnTrialerClick(trailer)"
           :class="{
-            'inner-seat': trailer.trailerLocation == dock,
-            populated: trailer.trailerLocation == dock
+            'inner-seat': trailer.trailerlocation == dock,
+            populated: trailer.trailerlocation == dock
           }"
         >
-          <p>{{ trailer.trailerNumber }}</p>
+          <p>{{ trailer.trailernumber }}</p>
         </div>
       </div>
     </div>
@@ -91,6 +88,7 @@ export default {
   methods: {
     async handleOnTrialerClick(trailer) {
       this.clickedTrailer = trailer;
+      console.log(trailer);
       this.$emit("trailer", this.clickedTrailer);
       // this.clicked = true;
     },

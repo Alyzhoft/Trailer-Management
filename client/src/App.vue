@@ -19,7 +19,7 @@
             <a class="nav-link" href="/#/offsitelot">Off-Site Lot</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/#/departed">Departed</a>
+            <a class="nav-link" href="/#/search">Search</a>
           </li>
         </ul>
       </div>

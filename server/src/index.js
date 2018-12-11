@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-const trailers = require("./db/trailers");
+const queries = require("./db/queries");
 const socket = require("socket.io");
 
 const app = express();
@@ -18,27 +18,27 @@ let io = socket(server);
 
 io.on("connection", socket => {
   socket.on("create", async trailer => {
-    const response = await trailers.createTrailer(trailer);
+    const response = await queries.insertTrailer(trailer);
     io.emit("create", response);
   });
 
   socket.on("update", async trailer => {
-    const response = await trailers.updateTrailer(trailer);
+    const response = await queries.updateTrailer(trailer);
     io.emit("update", response);
   });
 
   socket.on("move", async trailer => {
-    const response = await trailers.moveTrailer(trailer);
+    const response = await queries.moveTrailer(trailer);
     io.emit("move", response);
   });
 
   socket.on("delete", async trailer => {
-    const response = await trailers.removeTrailer(trailer);
+    const response = await queries.deleteTrailer(trailer);
     io.emit("delete", response);
   });
 
   socket.on("departed", async trailer => {
-    const response = await trailers.departedTrailer(trailer);
+    const response = await queries.insertDeparted(trailer);
     io.emit("departed", response);
   });
 });
@@ -49,20 +49,17 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/trailers", (req, res) => {
-  trailers.getAllTrailers().then(trailers => {
-    res.json(trailers);
-  });
+app.get("/trailers", async (req, res) => {
+  const results = await queries.getTrailers();
+  res.json(results);
 });
 
-app.get("/departedtrailers", (req, res) => {
-  trailers.getDepartedTrailers().then(trailers => {
-    res.json(trailers);
-  });
+app.get("/departedtrailers", async (req, res) => {
+  const results = await queries.getDeparted();
+  res.json(results);
 });
 
-app.post("/departedtrailers", (req, res) => {
-  trailers.departedTrailerSearch(req.body).then(trailers => {
-    res.json(trailers);
-  });
+app.post("/departedtrailers", async (req, res) => {
+  const results = await queries.trailerSearch(req.body);
+  res.json(results.rows);
 });

@@ -1,19 +1,18 @@
 <template>
   <div class="container">
     <!-- <InfoModal :clickedTrailer="this.clickedTrailer" v-if="clicked" @close="handleModalClose()"/> -->
-
     <div
       v-for="trailer in trailers"
-      v-if="trailer.trailerLocation == lot"
+      v-if="trailer.trailerlocation == lot"
       v-on:click="handleOnTrialerClick(trailer);"
       :key="trailer._id"
       id="lot"
       :class="{
-      'listLot': trailer.trailerLocation == lot,
-      populated: trailer.trailerLocation == lot
+      'listLot': trailer.trailerlocation == lot,
+      populated: trailer.trailerlocation == lot
       }"
     >
-      <p>{{ trailer.trailerNumber }}</p>
+      <p>{{ trailer.trailernumber }}</p>
     </div>
   </div>
 </template>
