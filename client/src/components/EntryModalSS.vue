@@ -10,7 +10,7 @@
         <div class="trailerManagement container mt-3">
           <!-- <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/> -->
         </div>
-        <form>
+        <form v-on:submit.prevent="checkForm">
           <fieldset>
             <div>
               <label for="Category">Category</label>
@@ -68,15 +68,33 @@
                 readonly
               >
             </div>
+            <div
+              class="form-group mb-2"
+              v-if="trailer.category == 'Patio Trailers' || trailer.category == 'Storage/Misc. Shipping Trailers' "
+            >
+              <label for="shipDate">Ship Date</label>
+              <div class="input-group mb-3">
+                <input type="date" v-model="shipDate" class="form-control">
+                <div class="input-group-append">
+                  <button @click="addDate()" class="btn btn-outline-primary" type="button">+</button>
+                </div>
+                <div class="input-group" v-if="trailer.shipDates.length > 0">
+                  <span
+                    v-for="sd in trailer.shipDates"
+                    :key="sd"
+                    class="mt-1 mr-1 badge badge-pill badge-primary"
+                  >
+                    {{ sd }}
+                    <span v-on:click.stop="removeDate(sd)" class="addBtn">x</span>
+                  </span>
+                </div>
+              </div>
+            </div>
             <div class="form-froup mb-2">
               <label for="trailerStatus">Status</label>
               <textarea class="form-control" v-model="trailer.status" form="trailerStatus" required></textarea>
             </div>
-            <button
-              type="button"
-              @click="addTrailer();"
-              class="btn btn-primary mt-1 mr-1 mb-1"
-            >Add Trailer</button>
+            <input class="btn btn-primary mt-1 mr-1 mb-1" type="submit" value="Add Trailer">
             <button type="button" @click="$emit('close');" class="btn btn-secondary">Cancel</button>
           </fieldset>
         </form>
@@ -93,12 +111,14 @@ export default {
   },
   data: function() {
     return {
+      shipDate: "",
       trailer: {
         trailerNumber: "",
         carrier: "",
         trailerLocation: this.clickedDock,
         category: "",
-        status: ""
+        status: "",
+        shipDates: []
       },
       docks: [
         1,
@@ -144,7 +164,7 @@ export default {
     };
   },
   methods: {
-    async addTrailer() {
+    async checkForm() {
       this.create = true;
 
       if (
@@ -162,11 +182,7 @@ export default {
 
       if (this.create) {
         let res = await this.$socket.emit("create", this.trailer);
-        // this.modal.visible = true;
-        // this.modal.header = "Created";
-        // this.modal.text = `Trailer ${
-        //   this.trailer.trailerNumber
-        // } was Created at Dock: ${this.trailer.trailerLocation}`;
+
         this.trailer.trailerNumber = "";
         this.trailer.carrier = "";
         this.trailer.trailerLocation = "";
@@ -174,11 +190,19 @@ export default {
         this.trailer.status = "";
         this.$emit("close");
       } else {
-        // this.modal.visible = true;
-        // this.modal.header = "Error";
-        // this.modal.text =
-        //   "Trailer Already at Location. Please Select a different Location";
         this.create = true;
+      }
+    },
+    addDate() {
+      if (this.shipDate != "") {
+        this.trailer.shipDates.push(this.shipDate);
+        this.shipDate = "";
+      }
+    },
+    removeDate(sd) {
+      const index = this.trailer.shipDates.indexOf(sd);
+      if (index > -1) {
+        this.trailer.shipDates.splice(index, 1);
       }
     }
   }

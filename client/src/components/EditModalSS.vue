@@ -55,6 +55,31 @@
                 placeholder="Enter Trailer Number"
               >
             </div>
+            <div
+              class="form-group mb-2"
+              v-if="trailer.category == 'Patio Trailers' || trailer.category == 'Storage/Misc. Shipping Trailers' "
+            >
+              <label for="shipDate">Ship Date</label>
+              <div class="input-group mb-3">
+                <input type="date" v-model="shipDate" class="form-control">
+                <div class="input-group-append">
+                  <button @click="addDate()" class="btn btn-outline-primary" type="button">+</button>
+                </div>
+                <div
+                  class="input-group"
+                  v-if="trailer.shipDates != null && trailer.shipDates.length > 0"
+                >
+                  <span
+                    v-for="sd in trailer.shipDates"
+                    :key="sd"
+                    class="mt-1 mr-1 badge badge-pill badge-primary"
+                  >
+                    {{ sd }}
+                    <span v-on:click.stop="removeDate(sd)" class="addBtn">x</span>
+                  </span>
+                </div>
+              </div>
+            </div>
             <div class="form-froup mb-2">
               <label for="trailerStatus">Status</label>
               <textarea class="form-control" v-model="trailer.status" form="trailerStatus"></textarea>
@@ -78,11 +103,13 @@ export default {
   props: ["clickedTrailer"],
   data: function() {
     return {
+      shipDate: "",
       trailer: {
         trailerNumber: this.clickedTrailer.trailerNumber,
         carrier: this.clickedTrailer.carrier,
         trailerLocation: this.clickedTrailer.trailerLocation,
         category: this.clickedTrailer.category,
+        shipDates: [],
         status: this.clickedTrailer.status,
         _id: this.clickedTrailer._id
       },
@@ -129,10 +156,34 @@ export default {
       ]
     };
   },
+  mounted() {
+    let shipDates = "";
+    if (this.clickedTrailer.shipDates != null) {
+      if (this.clickedTrailer.shipDates.length > 1) {
+        for (let i = 0; i < this.clickedTrailer.shipDates.length; i++) {
+          this.trailer.shipDates.push(this.clickedTrailer.shipDates[i]);
+        }
+      } else {
+        this.trailer.shipDates.push(this.clickedTrailer.shipDates[0]);
+      }
+    }
+  },
   methods: {
     async updateTrailer() {
       let res = await this.$socket.emit("update", this.trailer);
       this.$emit("close", this.trailer);
+    },
+    addDate() {
+      if (this.shipDate != "") {
+        this.trailer.shipDates.push(this.shipDate);
+        this.shipDate = "";
+      }
+    },
+    removeDate(sd) {
+      const index = this.trailer.shipDates.indexOf(sd);
+      if (index > -1) {
+        this.trailer.shipDates.splice(index, 1);
+      }
     }
   }
 };

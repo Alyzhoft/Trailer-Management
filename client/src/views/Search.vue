@@ -69,6 +69,7 @@
             <th scope="col">Carrier</th>
             <th scope="col">Inserted</th>
             <th scope="col">Trailer Location</th>
+            <th scope="col">Ship Dates</th>
           </tr>
         </thead>
         <tbody>
@@ -78,6 +79,7 @@
             <td>{{ sr.carrier }}</td>
             <td>{{ sr.datetime }}</td>
             <td>{{ sr.trailerlocation }}</td>
+            <td>{{ sr.shipdates }}</td>
           </tr>
         </tbody>
       </table>

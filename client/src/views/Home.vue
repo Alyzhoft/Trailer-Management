@@ -40,13 +40,13 @@
         @close="handleModalClose()"
       />
       <div class="row">
-        <h1 class="mt-2 test">Docks Doors</h1>
+        <h1 class="mt-2 boarder">Docks Doors</h1>
         <HomeDockLayoutSS @entry="handleEmptyClicked" @trailer="handleTrailerClicked"/>
       </div>
       <div class="lotASS row">
         <div>
           <span v-on:click.stop="handleEntryLotALocation" class="addBtn">+</span>
-          <h1 class="test">Lot A</h1>
+          <h1 class="boarder">Lot A</h1>
           <HomeLotLayoutSS lot="Lot A" @trailer="handleTrailerClicked"/>
         </div>
       </div>
@@ -54,7 +54,7 @@
         <div class="lotBSS row">
           <div>
             <span v-on:click.stop="handleEntryLotBLocation" class="addBtn">+</span>
-            <h1 class="test">Lot B</h1>
+            <h1 class="boarder">Lot B</h1>
             <HomeLotLayoutSS lot="Lot B" @trailer="handleTrailerClicked"/>
           </div>
         </div>
@@ -96,6 +96,7 @@ export default {
       category: "",
       trailerLocation: "",
       status: "",
+      shipDates: [],
       _id: ""
     },
     test: [
@@ -161,12 +162,13 @@ export default {
       this.clickedDock = "";
     },
     async handleTrailerClicked(value) {
-      console.log(value.trailerlocation);
+      console.log(value);
       this.trailer.carrier = value.carrier;
       this.trailer.category = value.category;
       this.trailer.status = value.status;
       this.trailer.trailerLocation = value.trailerlocation;
       this.trailer.trailerNumber = value.trailernumber;
+      this.trailer.shipDates = value.shipdates;
       this.trailer.status = value.status;
       this.trailer._id = value._id;
       this.clicked = true;
@@ -177,6 +179,7 @@ export default {
       this.trailer.status = value.status;
       this.trailer.trailerLocation = value.trailerlocation;
       this.trailer.trailerNumber = value.trailernumber;
+      this.trailer.shipDates = value.shipdates;
       this.trailer.status = value.status;
       this.trailer._id = value._id;
       this.clickedSS = true;
@@ -201,7 +204,7 @@ export default {
 .row {
   width: 100%;
 }
-.test {
+.boarder {
   border-bottom: 4px solid black;
   width: 100%;
 }

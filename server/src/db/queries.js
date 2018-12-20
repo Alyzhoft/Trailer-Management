@@ -3,7 +3,7 @@ const conn = require("./connection");
 const getTrailers = async () => {
   const client = await conn.pool.connect();
   const results = await client.query(
-    "SELECT * FROM trailers WHERE departed = 'n'"
+    "SELECT _id, trailernumber, carrier, trailerlocation, category, status, inserted, updated, string_to_array(trim(shipdates), ' ') shipdates FROM trailers WHERE departed = 'n'"
   );
   client.release();
   return results.rows;
@@ -12,37 +12,99 @@ const getTrailers = async () => {
 const getDeparted = async () => {
   const client = await conn.pool.connect();
   const results = await client.query(
-    "SELECT _id, trailernumber, category, carrier, to_char(departedtime, 'MM-DD-YYYY HH24:MI') datetime FROM trailers WHERE departed = 'y'"
+    "SELECT _id, trailernumber, category, carrier, to_char(departedtime, 'MM-DD-YYYY HH24:MI') datetime, string_to_array(trim(shipdates), ' ') shipdates FROM trailers WHERE departed = 'y'"
   );
   client.release();
   return results.rows;
 };
 
 const insertTrailer = async trailer => {
-  const client = await conn.pool.connect();
-  const results = await client.query(
-    `INSERT INTO trailers(trailernumber, carrier, trailerlocation, category, status) VALUES(\'${
+  let shipDates = "";
+  if (
+    trailer.category == "Patio Trailers" ||
+    trailer.category == "Storage/Misc. Shipping Trailers"
+  ) {
+    if (trailer.shipDates.length > 1) {
+      for (let i = 0; i < trailer.shipDates.length; i++) {
+        shipDates += trailer.shipDates[i] + " ";
+      }
+    } else {
+      shipDates = trailer.shipDates[0];
+    }
+
+    if (shipDates == undefined) {
+      sqlQuery = `INSERT INTO trailers(trailernumber, carrier, trailerlocation, category, status) VALUES(\'${
+        trailer.trailerNumber
+      }\', \'${trailer.carrier}\', \'${trailer.trailerLocation}\', \'${
+        trailer.category
+      }\', \'${trailer.status}\')`;
+    } else {
+      sqlQuery = `INSERT INTO trailers(trailernumber, carrier, trailerlocation, category, status, shipdates) VALUES(\'${
+        trailer.trailerNumber
+      }\', \'${trailer.carrier}\', \'${trailer.trailerLocation}\', \'${
+        trailer.category
+      }\', \'${trailer.status}\', \'${shipDates}\')`;
+    }
+  } else {
+    sqlQuery = `INSERT INTO trailers(trailernumber, carrier, trailerlocation, category, status) VALUES(\'${
       trailer.trailerNumber
     }\', \'${trailer.carrier}\', \'${trailer.trailerLocation}\', \'${
       trailer.category
-    }\', \'${trailer.status}\')`
-  );
+    }\', \'${trailer.status}\')`;
+  }
+
+  const client = await conn.pool.connect();
+  const results = await client.query(sqlQuery);
   const trailers = await getTrailers();
   client.release();
   return trailers;
 };
 
 const updateTrailer = async trailer => {
-  const client = await conn.pool.connect();
-  const results = await client.query(
-    `UPDATE trailers SET trailernumber = \'${
+  let shipDates = "";
+  if (
+    trailer.category == "Patio Trailers" ||
+    trailer.category == "Storage/Misc. Shipping Trailers"
+  ) {
+    if (trailer.shipDates.length > 1) {
+      for (let i = 0; i < trailer.shipDates.length; i++) {
+        shipDates += trailer.shipDates[i] + " ";
+      }
+    } else {
+      shipDates = trailer.shipDates[0];
+    }
+
+    if (shipDates == undefined) {
+      sqlQuery = `UPDATE trailers SET trailernumber = \'${
+        trailer.trailerNumber
+      }\', carrier = \'${trailer.carrier}\', category = \'${
+        trailer.category
+      }\', status = \'${
+        trailer.status
+      }\', shipdates = null,updated = now() WHERE _id = ${trailer._id}`;
+    } else {
+      sqlQuery = `UPDATE trailers SET trailernumber = \'${
+        trailer.trailerNumber
+      }\', carrier = \'${trailer.carrier}\', category = \'${
+        trailer.category
+      }\', status = \'${
+        trailer.status
+      }\', shipdates = \'${shipDates}\', updated = now() WHERE _id = ${
+        trailer._id
+      }`;
+    }
+  } else {
+    sqlQuery = `UPDATE trailers SET trailernumber = \'${
       trailer.trailerNumber
     }\', carrier = \'${trailer.carrier}\', category = \'${
       trailer.category
     }\', status = \'${trailer.status}\', updated = now() WHERE _id = ${
       trailer._id
-    }`
-  );
+    }`;
+  }
+
+  const client = await conn.pool.connect();
+  const results = await client.query(sqlQuery);
   const trailers = await getTrailers();
   client.release();
   return trailers;
@@ -96,7 +158,7 @@ const trailerSearch = async body => {
     sqlQuery = `SELECT _id, trailernumber, category, carrier, to_char(departedtime, 'MM-DD-YYYY HH24:MI') datetime  
     FROM trailers `;
   } else {
-    sqlQuery = `SELECT _id, trailernumber, category, carrier, trailerlocation, to_char(inserted, 'MM-DD-YYYY HH24:MI') datetime  
+    sqlQuery = `SELECT _id, trailernumber, category, carrier, trailerlocation, shipdates,to_char(inserted, 'MM-DD-YYYY HH24:MI') datetime  
     FROM trailers `;
   }
 
