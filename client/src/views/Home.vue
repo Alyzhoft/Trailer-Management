@@ -1,12 +1,12 @@
 <template>
   <div class="home">
     <div v-if="windowWidth > 1230">
-      <EntryModal :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose()"/>
+      <EntryModal :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose();"/>
       <InfoModal
         :clickedTrailer="this.trailer"
         :windowWidth="this.windowWidth"
         v-if="clicked"
-        @close="handleModalClose()"
+        @close="handleModalClose();"
       />
       <div class="dock">
         <HomeDockLayout @entry="handleEmptyClicked" @trailer="handleTrailerClicked"/>
@@ -32,12 +32,12 @@
       <div class="building"></div>
     </div>
     <div v-else class="container">
-      <EntryModalSS :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose()"/>
+      <EntryModalSS :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose();"/>
       <InfoModalSS
         :clickedTrailer="this.trailer"
         :windowWidth="this.windowWidth"
         v-if="clicked"
-        @close="handleModalClose()"
+        @close="handleModalClose();"
       />
       <div class="row">
         <h1 class="mt-2 boarder">Docks Doors</h1>
@@ -100,6 +100,7 @@ export default {
       _id: ""
     },
     test: [
+      37,
       36,
       35,
       34,
@@ -109,8 +110,6 @@ export default {
       30,
       29,
       28,
-      27,
-      26,
       25,
       24,
       23,

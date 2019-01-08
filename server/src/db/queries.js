@@ -18,6 +18,15 @@ const getDeparted = async () => {
   return results.rows;
 };
 
+const getRequests = async () => {
+  const client = await conn.pool.connect();
+  const results = await client.query(
+    "SELECT _id, out, outtrailernumber, outcarrier, incarrier, intrailernumber, to_char(inserted, 'MM-DD-YYYY HH24:MI') inserted, urgent, trailer_id, dock FROM requests where completed = 'n' order by CASE WHEN urgent = 'true' THEN urgent END, inserted"
+  );
+  client.release();
+  return results.rows;
+};
+
 const insertTrailer = async trailer => {
   let shipDates = "";
   if (
@@ -145,6 +154,75 @@ const insertDeparted = async trailer => {
   return { departed, trailers };
 };
 
+const request = async data => {
+  const client = await conn.pool.connect();
+  if (data.inRequest) {
+    const response = await client.query(
+      `INSERT INTO requests(dock, outtrailernumber, outcarrier, incarrier, intrailernumber, urgent, trailer_id) VALUES(\'${
+        data.outTrailer.trailerLocation
+      }\',\'${data.outTrailer.trailerNumber}\',\'${
+        data.outTrailer.carrier
+      }\',\'${data.inTrailer.carrier}\', \'${
+        data.inTrailer.trailerNumber
+      }\',\'${data.inTrailer.urgent}\',
+      \'${data.outTrailer._id}\')`
+    );
+  } else {
+    const response = await client.query(
+      `INSERT INTO requests(dock, outtrailernumber, outcarrier, urgent, trailer_id) VALUES(\'${
+        data.outTrailer.trailerLocation
+      }\',\'${data.outTrailer.trailerNumber}\',\'${
+        data.outTrailer.carrier
+      }\',\'${data.inTrailer.urgent}\',
+      \'${data.outTrailer._id}\')`
+    );
+  }
+  const requests = getRequests();
+  client.release();
+  return requests;
+};
+
+const inRequest = async data => {
+  const client = await conn.pool.connect();
+  const response = await client.query(
+    `INSERT INTO requests(incarrier, intrailernumber, urgent, trailer_id, dock) VALUES(\'${
+      data.inTrailer.carrier
+    }\', \'${data.inTrailer.trailerNumber}\',\'${data.urgent}\',
+      \'${data.inTrailer._id}\', \'${data.inTrailer.trailerLocation}\')`
+  );
+  const requests = await getRequests();
+  client.release();
+  return requests;
+};
+
+const completed = async data => {
+  const client = await conn.pool.connect();
+  const requestResponse = await client.query(
+    `UPDATE requests set completed = 'y', completedtime = now() where _id = \'${
+      data._id
+    }\'`
+  );
+
+  const outResponse = await client.query(
+    `UPDATE trailers set trailerlocation = \'${
+      data.outPlacement
+    }\', updated = now() where _id = \'${data.trailer_id}\'`
+  );
+  if (data.intrailernumber) {
+    const requestResponse = await client.query(
+      `UPDATE trailers set trailerlocation = \'${
+        data.dock
+      }\', updated = now() where carrier = \'${
+        data.incarrier
+      }\' and trailernumber = \'${data.intrailernumber}\'`
+    );
+  }
+  const requests = await getRequests();
+  const trailers = await getTrailers();
+  client.release();
+  return { requests, trailers };
+};
+
 const trailerSearch = async body => {
   const trailerNumber = body.trailerNumber;
   const startDateTime = body.startDateTime;
@@ -244,5 +322,9 @@ module.exports = {
   deleteTrailer,
   getDeparted,
   insertDeparted,
-  trailerSearch
+  trailerSearch,
+  getRequests,
+  request,
+  inRequest,
+  completed
 };

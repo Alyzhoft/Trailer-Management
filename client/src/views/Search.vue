@@ -35,8 +35,10 @@
         >
         <label class="custom-control-label" for="customCheck1">Departed</label>
       </div>
-      <!-- <input type="datetime-local" v-model="startDateTime" name="test" id>
-      <input type="datetime-local" class="ml-2" v-model="endDateTime" name="test" id>-->
+      <!--
+        <input type="datetime-local" v-model="startDateTime" name="test" id>
+        <input type="datetime-local" class="ml-2" v-model="endDateTime" name="test" id>
+      -->
       <button type="button" @click="search" class="btn btn-secondary ml-2">Search</button>
       <button type="button" @click="clear" class="btn btn-secondary ml-2">Clear</button>
     </div>
@@ -143,5 +145,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

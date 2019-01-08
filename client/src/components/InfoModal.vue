@@ -10,25 +10,39 @@
     <div v-else-if="move">
       <MoveModal :clickedTrailer="this.trailer" @close="handleMoveModalClose"/>
     </div>
+    <div v-else-if="out">
+      <OutInModal
+        :clickedTrailer="this.trailer"
+        @close="handleInOutClose"
+        @cancle="handleInOutClose"
+      ></OutInModal>
+    </div>
+    <div v-else-if="inTrailer">
+      <InModal :clickedTrailer="this.trailer" @close="handleInClose" @cancle="handleInClose"></InModal>
+    </div>
     <div v-else>
       <div id="myModal" class="modal-custom">
         <!-- Modal content -->
         <div class="modal-content-custom">
           <div class="modal-header-custom">
             <span class="closeBtn" @click="$emit('close');">&times;</span>
-            <h2>{{this.trailer.trailerNumber}}</h2>
+            <h2>{{ this.trailer.trailerNumber }}</h2>
           </div>
           <div class="modal-body-custom">
             <h5>
               Carrier:
-              <span>{{this.trailer.carrier}}</span>
+              <span>{{ this.trailer.carrier }}</span>
             </h5>
             <h5>
               Category:
-              <span>{{this.trailer.category}}</span>
+              <span>{{ this.trailer.category }}</span>
             </h5>
             <h5
-              v-if="trailer.shipDates != null && trailer.shipDates.length > 0 && trailer.shipDates != 'undefined'"
+              v-if="
+                trailer.shipDates != null &&
+                  trailer.shipDates.length > 0 &&
+                  trailer.shipDates != 'undefined'
+              "
             >
               Ship Dates:
               <span
@@ -38,13 +52,23 @@
               >{{ sd }}</span>
             </h5>
             <p>{{ this.trailer.status }}</p>
-            <button @click="handleEditClicked()" class="btn btn-primary mr-1 mb-1">Edit</button>
-            <button @click="handleMoveClicked()" class="btn btn-primary mr-1 mb-1">Move</button>
+            <button @click="handleEditClicked();" class="btn btn-primary mr-1 mb-1">Edit</button>
+            <button @click="handleMoveClicked();" class="btn btn-primary mr-1 mb-1">Move</button>
             <button
-              @click="handleDepartedClicked(trailer)"
+              @click="handleDepartedClicked(trailer);"
               class="btn btn-primary mr-1 mb-1"
             >Departed</button>
-            <button @click="deleteTrailer()" class="btn btn-danger mb-1">Delete</button>
+            <button
+              v-if="
+                trailer.trailerLocation != 'Lot A' &&
+                  trailer.trailerLocation != 'Lot B' &&
+                  trailer.trailerLocation != 'Off-Site Lot'
+              "
+              class="btn btn-primary mr-1 mb-1"
+              @click="handleOutClicked();"
+            >Out</button>
+            <button v-else class="btn btn-primary mr-1 mb-1" @click="handleInClicked();">In</button>
+            <button @click="deleteTrailer();" class="btn btn-danger mb-1">Delete</button>
           </div>
         </div>
       </div>
@@ -55,6 +79,8 @@
 <script>
 import EditModal from "@/components/EditModal.vue";
 import MoveModal from "@/components/MoveModal.vue";
+import OutInModal from "@/components/OutInModal.vue";
+import InModal from "@/components/InModal.vue";
 
 export default {
   name: "infoModal",
@@ -63,12 +89,16 @@ export default {
   },
   components: {
     EditModal,
-    MoveModal
+    MoveModal,
+    OutInModal,
+    InModal
   },
   data: function() {
     return {
       edit: false,
       move: false,
+      out: false,
+      inTrailer: false,
       trailer: {
         trailerNumber: this.clickedTrailer.trailerNumber,
         carrier: this.clickedTrailer.carrier,
@@ -97,6 +127,12 @@ export default {
     async handleEditClicked() {
       this.edit = true;
     },
+    async handleOutClicked() {
+      this.out = true;
+    },
+    async handleInClicked() {
+      this.inTrailer = true;
+    },
     async handleCancle() {
       console.log("Cancle");
       this.edit = false;
@@ -109,6 +145,14 @@ export default {
       this.trailer.category = value.category;
       this.trailer.status = value.status;
       this.trailer.trailerLocation = value.trailerlocation;
+      this.$emit("close");
+    },
+    async handleInOutClose() {
+      this.out = false;
+      this.$emit("close");
+    },
+    async handleInClose() {
+      this.inTrailer = false;
       this.$emit("close");
     },
     async handleMoveModalClose(value) {

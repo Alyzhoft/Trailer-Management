@@ -8,7 +8,9 @@
       </div>
       <div class="modal-body-custom">
         <div class="trailerManagement container mt-3">
-          <!-- <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/> -->
+          <!--
+            <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+          -->
         </div>
         <form>
           <fieldset>
@@ -57,17 +59,22 @@
             </div>
             <div
               class="form-group mb-2"
-              v-if="trailer.category == 'Patio Trailers' || trailer.category == 'Storage/Misc. Shipping Trailers' "
+              v-if="
+                trailer.category == 'Patio Trailers' ||
+                  trailer.category == 'Storage/Misc. Shipping Trailers'
+              "
             >
               <label for="shipDate">Ship Date</label>
               <div class="input-group mb-3">
                 <input type="date" v-model="shipDate" class="form-control">
                 <div class="input-group-append">
-                  <button @click="addDate()" class="btn btn-outline-primary" type="button">+</button>
+                  <button @click="addDate();" class="btn btn-outline-primary" type="button">+</button>
                 </div>
                 <div
                   class="input-group"
-                  v-if="trailer.shipDates != null && trailer.shipDates.length > 0"
+                  v-if="
+                    trailer.shipDates != null && trailer.shipDates.length > 0
+                  "
                 >
                   <span
                     v-for="sd in trailer.shipDates"
@@ -75,7 +82,7 @@
                     class="mt-1 mr-1 badge badge-pill badge-primary"
                   >
                     {{ sd }}
-                    <span v-on:click.stop="removeDate(sd)" class="addBtn">x</span>
+                    <span v-on:click.stop="removeDate(sd);" class="addBtn">x</span>
                   </span>
                 </div>
               </div>

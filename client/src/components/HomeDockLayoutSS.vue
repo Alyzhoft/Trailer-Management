@@ -3,7 +3,7 @@
     <div>
       <div
         v-for="dock in dockDoors"
-        v-on:click="handleEntryLocation(dock)"
+        v-on:click="handleEntryLocation(dock);"
         :key="dock"
         class="trailers"
         id="left"

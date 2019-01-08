@@ -3,7 +3,7 @@
     <div class="noWrap">
       <div
         v-for="dock in dockDoors"
-        v-on:click="handleEntryLocation(dock)"
+        v-on:click="handleEntryLocation(dock);"
         :key="dock"
         class="trailers"
         id="left"
@@ -13,7 +13,7 @@
           v-for="trailer in trailers"
           v-if="trailer.trailerlocation == dock"
           :key="trailer._id"
-          v-on:click.stop="handleOnTrialerClick(trailer)"
+          v-on:click.stop="handleOnTrialerClick(trailer);"
           :class="{
             'inner-seat': trailer.trailerlocation == dock,
             populated: trailer.trailerlocation == dock
@@ -42,6 +42,7 @@ export default {
     clickedTrailer: {},
     clickedDock: "",
     dockDoors: [
+      37,
       36,
       35,
       34,
@@ -51,8 +52,6 @@ export default {
       30,
       29,
       28,
-      27,
-      26,
       25,
       24,
       23,
@@ -60,6 +59,7 @@ export default {
       21,
       20,
       19,
+      "18a",
       18,
       17,
       16,

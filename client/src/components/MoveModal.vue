@@ -25,11 +25,7 @@
             <div class="inline">
               <label for="trailerLocation">New Trailer Location</label>
               <select class="form-control" v-model="trailer.trailerLocation" id="trailerLocation">
-                <option v-for="dockNumber in docks" :key="dockNumber">
-                  {{
-                  dockNumber
-                  }}
-                </option>
+                <option v-for="dockNumber in docks" :key="dockNumber">{{ dockNumber }}</option>
               </select>
             </div>
             <button

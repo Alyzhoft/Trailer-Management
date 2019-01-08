@@ -6,6 +6,7 @@ import TrailerEntry from "./views/TrailerEntry.vue";
 import EditTrailer from "./views/EditTrailer";
 import OffSiteLot from "./views/OffSiteLot";
 import Search from "./views/Search";
+import Requests from "./views/Requests";
 
 Vue.use(Router);
 
@@ -40,6 +41,11 @@ export default new Router({
       path: "/search",
       name: "search",
       component: Search
+    },
+    {
+      path: "/requests",
+      name: "requests",
+      component: Requests
     }
   ]
 });

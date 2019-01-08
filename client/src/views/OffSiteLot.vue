@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <div v-if="windowWidth > 1230">
-      <EntryModal :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose()"/>
-      <InfoModal :clickedTrailer="this.trailer" v-if="clicked" @close="handleModalClose()"/>
+      <EntryModal :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose();"/>
+      <InfoModal :clickedTrailer="this.trailer" v-if="clicked" @close="handleModalClose();"/>
     </div>
     <div v-else>
-      <EntryModalSS :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose()"/>
-      <InfoModalSS :clickedTrailer="this.trailer" v-if="clicked" @close="handleModalClose()"/>
+      <EntryModalSS :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose();"/>
+      <InfoModalSS :clickedTrailer="this.trailer" v-if="clicked" @close="handleModalClose();"/>
     </div>
     <h1>Off-Site Lot</h1>
     <span v-on:click.stop="handleEntryOffSiteLocation" class="addBtn">+</span>
@@ -17,8 +17,8 @@
       :key="trailer._id"
       id="lot"
       :class="{
-      'listLot': trailer.trailerlocation == lot,
-      populated: trailer.trailerlocation == lot
+        listLot: trailer.trailerlocation == lot,
+        populated: trailer.trailerlocation == lot
       }"
     >
       <p>{{ trailer.trailernumber }}</p>

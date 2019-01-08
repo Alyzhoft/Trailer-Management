@@ -20,19 +20,21 @@
         <div class="modal-content-custom">
           <div class="modal-header-custom">
             <span class="closeBtn" @click="$emit('close');">&times;</span>
-            <h2>{{this.trailer.trailerNumber}}</h2>
+            <h2>{{ this.trailer.trailerNumber }}</h2>
           </div>
           <div class="modal-body-custom">
-            <h5>
-              Carrier:
-              <span>{{this.trailer.carrier}}</span>
+            <h5>Carrier:
+              <span>{{ this.trailer.carrier }}</span>
             </h5>
-            <h5>
-              Category:
-              <span>{{this.trailer.category}}</span>
+            <h5>Category:
+              <span>{{ this.trailer.category }}</span>
             </h5>
             <h5
-              v-if="trailer.shipDates != null && trailer.shipDates.length > 0 && trailer.shipDates != 'undefined'"
+              v-if="
+                trailer.shipDates != null &&
+                  trailer.shipDates.length > 0 &&
+                  trailer.shipDates != 'undefined'
+              "
             >
               Ship Dates:
               <span
@@ -41,10 +43,10 @@
                 class="inline"
               >{{ sd }}</span>
             </h5>
-            <p>{{this.trailer.status}}</p>
-            <button @click="handleEditClicked()" class="btn btn-primary mr-1 mb-1">Edit</button>
-            <button @click="handleMoveClicked()" class="btn btn-primary mr-1 mb-1">Move</button>
-            <button @click="deleteTrailer()" class="btn btn-danger mb-1">Delete</button>
+            <p>{{ this.trailer.status }}</p>
+            <button @click="handleEditClicked();" class="btn btn-primary mr-1 mb-1">Edit</button>
+            <button @click="handleMoveClicked();" class="btn btn-primary mr-1 mb-1">Move</button>
+            <button @click="deleteTrailer();" class="btn btn-danger mb-1">Delete</button>
           </div>
         </div>
       </div>

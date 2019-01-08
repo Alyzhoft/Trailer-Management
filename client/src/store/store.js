@@ -1,12 +1,14 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { stat } from "fs";
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
     trailers: [],
-    departedTrailers: []
+    departedTrailers: [],
+    requests: []
   },
 
   mutations: {
@@ -16,6 +18,10 @@ export const store = new Vuex.Store({
 
     getDepartedTrailers(state, departedTrailers) {
       state.departedTrailers = departedTrailers;
+    },
+
+    getRequests(state, requests) {
+      state.requests = requests;
     },
 
     ADD_TRAILER: (state, payload) => {
@@ -28,6 +34,15 @@ export const store = new Vuex.Store({
 
     DELETE_TRAILER: (state, payload) => {
       state.trailers = payload;
+    },
+
+    REQUEST: (state, payload) => {
+      state.requests = payload;
+    },
+
+    COMPLETED: (state, payload) => {
+      state.trailers = payload.trailers;
+      state.requests = payload.requests;
     },
 
     DEPARTED_TRAILER: (state, payload) => {
@@ -53,6 +68,14 @@ export const store = new Vuex.Store({
         });
     },
 
+    getRequests(state) {
+      fetch("http://localhost:3000/requests")
+        .then(res => res.json())
+        .then(requests => {
+          state.commit("getRequests", requests);
+        });
+    },
+
     ADD_TRAILER: (state, payload) => {
       state.commit("ADD_TRAILER", payload);
     },
@@ -63,6 +86,14 @@ export const store = new Vuex.Store({
 
     DELETE_TRAILER: (state, payload) => {
       state.commit("DELETE_TRAILER", payload);
+    },
+
+    REQUEST: (state, payload) => {
+      state.commit("REQUEST", payload);
+    },
+
+    COMPLETED: (state, payload) => {
+      state.commit("COMPLETED", payload);
     },
 
     DEPARTED_TRAILER: (state, payload) => {

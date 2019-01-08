@@ -50,11 +50,7 @@
         <div class="form-group">
           <label for="trailerLocation">Trailer Location</label>
           <select class="form-control" v-model="trailer.trailerLocation" id="trailerLocation">
-            <option v-for="dockNumber in docks" :key="dockNumber">
-              {{
-              dockNumber
-              }}
-            </option>
+            <option v-for="dockNumber in docks" :key="dockNumber">{{ dockNumber }}</option>
           </select>
         </div>
         <div class="form-froup mb-2">

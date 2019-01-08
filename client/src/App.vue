@@ -16,6 +16,9 @@
       <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
+            <a class="nav-link" href="/#/requests">Requests</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="/#/offsitelot">Off-Site Lot</a>
           </li>
           <li class="nav-item">
@@ -34,8 +37,9 @@ export default {
   mounted() {
     this.getTrailers();
     this.getDepartedTrailers();
+    this.getRequests();
   },
-  methods: mapActions(["getTrailers", "getDepartedTrailers"]),
+  methods: mapActions(["getTrailers", "getDepartedTrailers", "getRequests"]),
   sockets: {
     connect: function() {},
 
@@ -61,6 +65,14 @@ export default {
       this.$store.dispatch("DELETE_TRAILER", trailers);
     },
 
+    request: function(requests) {
+      this.$store.dispatch("REQUEST", requests);
+    },
+
+    completed: function(res) {
+      this.$store.dispatch("COMPLETED", res);
+    },
+
     departed: function(res) {
       console.log(res);
       this.$store.dispatch("DEPARTED_TRAILER", res);
@@ -68,4 +80,3 @@ export default {
   }
 };
 </script>
-

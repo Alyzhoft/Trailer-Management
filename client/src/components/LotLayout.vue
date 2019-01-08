@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <InfoModal :clickedTrailer="this.clickedTrailer" v-if="clicked" @close="handleModalClose()"/>
+    <InfoModal :clickedTrailer="this.clickedTrailer" v-if="clicked" @close="handleModalClose();"/>
     <div
       v-for="trailer in trailers"
       v-if="trailer.trailerLocation == lot"
@@ -8,8 +8,8 @@
       :key="trailer._id"
       id="lot"
       :class="{
-      'listLot': trailer.trailerLocation == lot,
-      populated: trailer.trailerLocation == lot
+        listLot: trailer.trailerLocation == lot,
+        populated: trailer.trailerLocation == lot
       }"
     >
       <h5>{{ trailer.trailerNumber }}</h5>

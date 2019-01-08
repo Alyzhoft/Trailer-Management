@@ -41,6 +41,21 @@ io.on("connection", socket => {
     const response = await queries.insertDeparted(trailer);
     io.emit("departed", response);
   });
+
+  socket.on("request", async data => {
+    const response = await queries.request(data);
+    io.emit("request", response);
+  });
+
+  socket.on("inRequest", async data => {
+    const response = await queries.inRequest(data);
+    io.emit("request", response);
+  });
+
+  socket.on("completed", async data => {
+    const response = await queries.completed(data);
+    io.emit("completed", response);
+  });
 });
 
 app.get("/", (req, res) => {
@@ -56,6 +71,11 @@ app.get("/trailers", async (req, res) => {
 
 app.get("/departedtrailers", async (req, res) => {
   const results = await queries.getDeparted();
+  res.json(results);
+});
+
+app.get("/requests", async (req, res) => {
+  const results = await queries.getRequests();
   res.json(results);
 });
 

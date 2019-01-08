@@ -3,7 +3,11 @@
     <div class="container">
       <label>Section</label>
       <select class="form-control" v-model="section" id="section dropdownMenuOffset">
-        <option v-for="section in sectionOptions" :key="section">{{ section }}</option>
+        <option v-for="section in sectionOptions" :key="section">
+          {{
+          section
+          }}
+        </option>
       </select>
     </div>
     <div v-if="section == '1'">
