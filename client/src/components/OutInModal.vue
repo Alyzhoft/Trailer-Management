@@ -22,6 +22,7 @@
                   class="form-control"
                   id="Carrier dropdownMenuOffset"
                   v-model="inTrailer.carrier"
+                  @change="getTrailerNumbers()"
                 >
                   <option></option>
                   <option>Brockman</option>
@@ -35,26 +36,15 @@
                 </select>
               </div>
               <div class="inline">
-                <label for="trailernumber">Trailer Number</label>
-                <input
-                  type="text"
-                  minlength="4"
-                  maxlength="6"
+                <label for="TrailerNumber">Trailer Number</label>
+                <select
                   class="form-control"
+                  id="TrailerNumber dropdownMenuOffset"
                   v-model="inTrailer.trailerNumber"
-                  id="trailernumber"
-                  placeholder="Enter Trailer Number"
                 >
-              </div>
-              <div class="inline custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  v-model="inTrailer.urgent"
-                  class="custom-control-input"
-                  id="urgent"
-                  checked
-                >
-                <label class="custom-control-label" for="urgent">Urgent</label>
+                  <option></option>
+                  <option v-for="tn in trailerNumbers" :key="tn.trailernumber">{{tn.trailernumber}}</option>
+                </select>
               </div>
             </div>
             <button
@@ -74,6 +64,16 @@
               >
               <label class="custom-control-label" for="inRequest">In Request</label>
             </div>
+            <div class="inline custom-control custom-checkbox">
+              <input
+                type="checkbox"
+                v-model="inTrailer.urgent"
+                class="custom-control-input"
+                id="urgent"
+                checked
+              >
+              <label class="custom-control-label" for="urgent">Urgent</label>
+            </div>
           </fieldset>
         </form>
       </div>
@@ -89,6 +89,7 @@ export default {
     return {
       shipDate: "",
       inRequest: false,
+      trailerNumbers: [],
       outTrailer: {
         trailerNumber: this.clickedTrailer.trailerNumber,
         carrier: this.clickedTrailer.carrier,
@@ -102,48 +103,7 @@ export default {
         trailerNumber: "",
         carrier: "",
         urgent: false
-      },
-      docks: [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-        25,
-        26,
-        27,
-        28,
-        29,
-        30,
-        31,
-        32,
-        33,
-        34,
-        35,
-        36,
-        "Lot A",
-        "Lot B",
-        "Off-Site Lot"
-      ]
+      }
     };
   },
   mounted() {},
@@ -162,6 +122,24 @@ export default {
       };
       let res = await this.$socket.emit("request", data);
       this.$emit("close", this.trailer);
+    },
+
+    async getTrailerNumbers() {
+      console.log(this.inTrailer.carrier);
+      fetch("http://localhost:3000/trailerNumbers", {
+        method: "POST",
+        body: JSON.stringify({
+          carrier: this.inTrailer.carrier
+        }),
+        headers: {
+          "content-type": "application/json"
+        }
+      })
+        .then(res => res.json())
+        .then(trailerNumbers => {
+          console.log(trailerNumbers);
+          this.trailerNumbers = trailerNumbers;
+        });
     }
   }
 };

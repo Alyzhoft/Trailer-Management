@@ -40,49 +40,14 @@ export default {
     clicked: false,
     entry: false,
     clickedTrailer: {},
-    clickedDock: "",
-    dockDoors: [
-      37,
-      36,
-      35,
-      34,
-      33,
-      32,
-      31,
-      30,
-      29,
-      28,
-      25,
-      24,
-      23,
-      22,
-      21,
-      20,
-      19,
-      "18a",
-      18,
-      17,
-      16,
-      15,
-      14,
-      13,
-      12,
-      11,
-      10,
-      9,
-      8,
-      7,
-      6,
-      5,
-      4,
-      3,
-      2,
-      1
-    ]
+    clickedDock: ""
   }),
   computed: {
     trailers() {
       return this.$store.state.trailers;
+    },
+    dockDoors() {
+      return this.$store.state.dockDoors;
     }
   },
   methods: {
@@ -95,7 +60,6 @@ export default {
     async handleEntryLocation(dock) {
       this.clickedDock = dock.toString();
       this.$emit("entry", this.clickedDock);
-      // this.entry = true;
     },
     async handleModalClose() {
       this.clickedTrailer = {};
@@ -114,14 +78,6 @@ export default {
   white-space: nowrap;
 }
 
-.modalTest {
-  width: 20px;
-  height: 68px;
-  border-radius: 4px;
-  margin: -98px 0px 0px 0px;
-  /* position: relative; */
-}
-
 .populated p {
   font-size: 10px;
   color: white;
@@ -133,24 +89,24 @@ export default {
 
 .trailers {
   width: 1.54%;
-  height: 85px;
+  height: 5em;
   background: #d8d8d8;
   display: inline-block;
   position: relative;
-  margin-right: 15px;
+  margin-right: 1.2%;
   margin-top: 1.9%;
-  left: 10px;
+  left: 1%;
   text-align: center;
   color: white;
 }
 
 .inner-seat {
-  width: 20px;
-  height: 68px;
+  width: 1.3em;
+  height: 4.4em;
   border-radius: 4px;
   margin: -98px 0px 0px 0px;
   background: #d8d8d8;
-  /* position: relative; */
+  position: relative;
 }
 
 h6 {

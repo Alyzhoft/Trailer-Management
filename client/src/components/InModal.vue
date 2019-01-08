@@ -18,7 +18,7 @@
                   v-model="inTrailer.trailerLocation"
                   id="trailerLocation"
                 >
-                  <option v-for="dockNumber in docks" :key="dockNumber">{{ dockNumber }}</option>
+                  <option v-for="dockNumber in dockDoors" :key="dockNumber">{{ dockNumber }}</option>
                 </select>
               </div>
             </div>
@@ -63,46 +63,13 @@ export default {
         shipDates: [],
         status: this.clickedTrailer.status,
         _id: this.clickedTrailer._id
-      },
-      docks: [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-        25,
-        26,
-        27,
-        28,
-        29,
-        30,
-        31,
-        32,
-        33,
-        34,
-        35,
-        36
-      ]
+      }
     };
+  },
+  computed: {
+    dockDoors() {
+      return this.$store.state.dockDoors;
+    }
   },
   mounted() {},
   methods: {

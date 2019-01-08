@@ -223,6 +223,18 @@ const completed = async data => {
   return { requests, trailers };
 };
 
+const getTrailerNumbers = async body => {
+  const carrier = body.carrier;
+
+  const client = await conn.pool.connect();
+
+  const requestResponse = await client.query(
+    `SELECT trailernumber FROM trailers WHERE trailerlocation in ('Lot A', 'Lot B', 'Off-Site Lot') AND carrier = \'${carrier}\'`
+  );
+
+  return requestResponse;
+};
+
 const trailerSearch = async body => {
   const trailerNumber = body.trailerNumber;
   const startDateTime = body.startDateTime;
@@ -241,7 +253,7 @@ const trailerSearch = async body => {
   }
 
   if (trailerNumber != "") {
-    const trailerNumberSQL = `WHERE trailernumber = \'${trailerNumber}\' `;
+    const trailerNumberSQL = `WHERE trailernumber like \'%${trailerNumber}%\' `;
     sqlQuery += trailerNumberSQL;
   }
 
@@ -326,5 +338,6 @@ module.exports = {
   getRequests,
   request,
   inRequest,
-  completed
+  completed,
+  getTrailerNumbers
 };

@@ -79,6 +79,11 @@ app.get("/requests", async (req, res) => {
   res.json(results);
 });
 
+app.post("/trailerNumbers", async (req, res) => {
+  const results = await queries.getTrailerNumbers(req.body);
+  res.json(results.rows);
+});
+
 app.post("/departedtrailers", async (req, res) => {
   const results = await queries.trailerSearch(req.body);
   res.json(results.rows);
