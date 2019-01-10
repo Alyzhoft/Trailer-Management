@@ -2,27 +2,22 @@
   <div @keyup.enter="search">
     <div class="container">
       <div class="mt-2 mb-2 form-inline">
-        <input type="text" v-model="trailerNumber" class="form-control mr-sm-2">
+        <input
+          type="text"
+          v-model="trailerNumber"
+          placeholder="Trailer Number"
+          class="form-control mr-sm-2"
+        >
         <div class="inline mr-sm-2">
           <select class="form-control" v-model="category" id="Category dropdownMenuOffset">
-            <option></option>
-            <option>Dunnage</option>
-            <option>Empties for Shipping</option>
-            <option>Patio Trailers</option>
-            <option>Storage/Misc. Shipping Trailers</option>
-            <option>Supermarket/Legacy/Eng</option>
+            <option value selected disabled>Category</option>
+            <option v-for="c in categories" :key="c">{{c}}</option>
           </select>
         </div>
         <div class="inline mr-sm-2">
           <select class="form-control" v-model="carrier" id="Carrier dropdownMenuOffset">
-            <option></option>
-            <option>Brockman</option>
-            <option>Dart</option>
-            <option>Filmore</option>
-            <option>Ryder</option>
-            <option>Taylor</option>
-            <option>Transport</option>
-            <option>Waletich</option>
+            <option value selected disabled>Carrier</option>
+            <option v-for="c in carriers" :key="c">{{c}}</option>
           </select>
         </div>
         <div class="custom-control custom-checkbox">
@@ -105,6 +100,12 @@ export default {
   computed: {
     departedTrailers() {
       return this.$store.state.departedTrailers;
+    },
+    carriers() {
+      return this.$store.state.carriers;
+    },
+    categories() {
+      return this.$store.state.categories;
     }
   },
   methods: {

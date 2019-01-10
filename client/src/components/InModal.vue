@@ -1,5 +1,7 @@
 <template>
   <div id="myModal" class="modal-custom">
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+
     <!-- Modal content -->
     <div class="modal-content-custom">
       <div class="modal-header-custom">
@@ -19,13 +21,7 @@
                   id="Carrier dropdownMenuOffset"
                   required
                 >
-                  <option>Brockman</option>
-                  <option>Dart</option>
-                  <option>Filmore</option>
-                  <option>Ryder</option>
-                  <option>Taylor</option>
-                  <option>Transport</option>
-                  <option>Waletich</option>
+                  <option v-for="c in carriers" :key="c">{{c}}</option>
                 </select>
               </div>
               <div class="inline">
@@ -51,7 +47,7 @@
               @click="submitRequest();"
               class="btn btn-primary mt-1 mr-1 mb-1"
             >Submit</button>
-            <button type="button" @click="$emit('cancle');" class="btn btn-secondary mr-2">Cancel</button>
+            <button type="button" @click="$emit('close');" class="btn btn-secondary mr-2">Cancel</button>
             <div class="inline custom-control custom-checkbox">
               <input
                 type="checkbox"
@@ -70,22 +66,35 @@
 </template>
 
 <script>
+import AlertModal from "@/components/AlertModal.vue";
+
 export default {
   name: "modal",
   props: {
     clickedDock: String
+  },
+  components: {
+    AlertModal
   },
   data: function() {
     return {
       carrier: "",
       inRequest: false,
       urgent: false,
-      special: ""
+      special: "",
+      modal: {
+        visible: false,
+        text: "",
+        header: ""
+      }
     };
   },
   computed: {
     dockDoors() {
       return this.$store.state.dockDoors;
+    },
+    carriers() {
+      return this.$store.state.carriers;
     }
   },
   mounted() {},
@@ -104,8 +113,22 @@ export default {
         special: this.special,
         inRequest: true
       };
-      let res = await this.$socket.emit("inRequest", data);
-      this.$emit("close", this.trailer);
+      this.submit = true;
+      const requests = this.$store.state.requests;
+      for (let i = 0; i < requests.length; i++) {
+        if (requests[i].dock === this.clickedDock) {
+          this.submit = false;
+        }
+      }
+
+      if (this.submit) {
+        let res = await this.$socket.emit("inRequest", data);
+        this.$emit("close", this.trailer);
+      } else {
+        this.modal.visible = true;
+        this.modal.header = "Alert";
+        this.modal.text = "Request has already been submitted for this dock";
+      }
     }
   }
 };

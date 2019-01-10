@@ -9,6 +9,27 @@ export const store = new Vuex.Store({
     trailers: [],
     departedTrailers: [],
     requests: [],
+    categories: [
+      "Dunnage",
+      "Empties for Shipping",
+      "Patio Trailers",
+      "Storage/Misc. Shipping Trailers",
+      "Supermarket/Legacy/Eng"
+    ],
+    carriers: [
+      "Dart",
+      "Transport Design",
+      "DRT",
+      "Waletich",
+      "Taylor",
+      "Terminal",
+      "Trucking Proz",
+      "UTS",
+      "J&R",
+      "Kuehl",
+      "American Fast Freight",
+      "Ryder"
+    ],
     dockDoors: [
       37,
       36,

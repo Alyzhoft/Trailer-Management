@@ -22,11 +22,7 @@
                 id="Category dropdownMenuOffset"
                 required
               >
-                <option>Dunnage</option>
-                <option>Empties for Shipping</option>
-                <option>Patio Trailers</option>
-                <option>Storage/Misc. Shipping Trailers</option>
-                <option>Supermarket/Legacy/Eng</option>
+                <option v-for="c in categories" :key="c">{{c}}</option>
               </select>
             </div>
             <div>
@@ -37,21 +33,15 @@
                 id="Carrier dropdownMenuOffset"
                 required
               >
-                <option>Brockman</option>
-                <option>Dart</option>
-                <option>Filmore</option>
-                <option>Ryder</option>
-                <option>Taylor</option>
-                <option>Transport</option>
-                <option>Waletich</option>
+                <option v-for="c in carriers" :key="c">{{c}}</option>
               </select>
             </div>
             <div>
               <label for="trailerNumber">Trailer Number</label>
               <input
                 type="number"
-                minlength="4"
-                maxlength="6"
+                minlength="3"
+                maxlength="7"
                 v-model="trailer.trailerNumber"
                 class="form-control"
                 id="trailerNumber"
@@ -125,6 +115,14 @@ export default {
         shipDates: []
       }
     };
+  },
+  computed: {
+    carriers() {
+      return this.$store.state.carriers;
+    },
+    categories() {
+      return this.$store.state.categories;
+    }
   },
   methods: {
     async checkForm() {

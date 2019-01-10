@@ -1,5 +1,7 @@
 <template>
   <div id="myModal" class="modal-custom">
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+
     <!-- Modal content -->
     <div class="modal-content-custom">
       <div class="modal-header-custom">
@@ -24,14 +26,7 @@
                   id="Carrier dropdownMenuOffset"
                   v-model="inTrailer.carrier"
                 >
-                  <option></option>
-                  <option>Brockman</option>
-                  <option>Dart</option>
-                  <option>Filmore</option>
-                  <option>Ryder</option>
-                  <option>Taylor</option>
-                  <option>Transport</option>
-                  <option>Waletich</option>
+                  <option v-for="c in carriers" :key="c">{{c}}</option>
                 </select>
               </div>
               <div class="inline">
@@ -86,9 +81,14 @@
 </template>
 
 <script>
+import AlertModal from "@/components/AlertModal.vue";
+
 export default {
   name: "modal",
   props: ["clickedTrailer"],
+  components: {
+    AlertModal
+  },
   data: function() {
     return {
       shipDate: "",
@@ -107,10 +107,19 @@ export default {
         carrier: "",
         special: "",
         urgent: false
+      },
+      modal: {
+        visible: false,
+        text: "",
+        header: ""
       }
     };
   },
-  mounted() {},
+  computed: {
+    carriers() {
+      return this.$store.state.carriers;
+    }
+  },
   methods: {
     handleCheckBox() {
       if (this.inRequest == false) {
@@ -124,8 +133,23 @@ export default {
         inTrailer: this.inTrailer,
         inRequest: this.inRequest
       };
-      let res = await this.$socket.emit("request", data);
-      this.$emit("close", this.trailer);
+
+      this.submit = true;
+      const requests = this.$store.state.requests;
+      for (let i = 0; i < requests.length; i++) {
+        if (requests[i].dock === this.clickedTrailer.trailerLocation) {
+          this.submit = false;
+        }
+      }
+
+      if (this.submit) {
+        let res = await this.$socket.emit("request", data);
+        this.$emit("close", this.trailer);
+      } else {
+        this.modal.visible = true;
+        this.modal.header = "Alert";
+        this.modal.text = "Request has already been submitted for this dock";
+      }
     }
   }
 };

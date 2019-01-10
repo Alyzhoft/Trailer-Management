@@ -90,12 +90,12 @@ export default {
 
 .trailers {
   width: 1.54%;
-  height: 6em;
+  height: 7em;
   background: #d8d8d8;
   display: inline-block;
   position: relative;
   margin-right: 1.2%;
-  margin-top: 1%;
+  margin-top: -0.5%;
   left: 1%;
   text-align: center;
   color: white;
@@ -103,15 +103,15 @@ export default {
 
 .inner-seat {
   width: 1.3em;
-  height: 5em;
+  height: 6em;
   border-radius: 4px;
-  margin: -109px 0px 0px 0px;
+  margin: -125px 0px 0px 0px;
   background: #d8d8d8;
   position: relative;
 }
 
 h6 {
-  margin-top: 80px;
+  margin-top: 100px;
   color: black;
   background: white;
 }
