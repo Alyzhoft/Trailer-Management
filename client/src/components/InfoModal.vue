@@ -60,8 +60,7 @@
             >Departed</button>
             <button
               v-if="
-                trailer.trailerLocation != 'Lot A' &&
-                  trailer.trailerLocation != 'Lot B' &&
+                trailer.trailerLocation != 'Primary Lot' &&
                   trailer.trailerLocation != 'Off-Site Lot'
               "
               class="btn btn-primary mr-1 mb-1"

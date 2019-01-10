@@ -22,8 +22,7 @@
             <option>Ryder</option>
             <option>Taylor</option>
             <option>Transport</option>
-            <option>Wale</option>
-            <option>Wali</option>
+            <option>Waletich</option>
           </select>
         </div>
         <div class="custom-control custom-checkbox">

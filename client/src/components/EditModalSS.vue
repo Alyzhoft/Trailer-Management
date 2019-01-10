@@ -41,14 +41,12 @@
                 <option>Ryder</option>
                 <option>Taylor</option>
                 <option>Transport</option>
-                <option>Wale</option>
-                <option>Wali</option>
+                <option>Waletich</option>
               </select>
             </div>
             <div>
               <label for="trailerNumber">Trailer Number</label>
-              <input
-                type="text"
+              <input type="text"
                 minlength="4"
                 maxlength="6"
                 v-model="trailer.trailerNumber"

@@ -9,7 +9,8 @@
       id="lot"
       :class="{
         listLot: trailer.trailerLocation == lot,
-        populated: trailer.trailerLocation == lot
+        populated: trailer.trailerLocation == lot,
+        dart: trailer.carrier == 'Dart'
       }"
     >
       <h5>{{ trailer.trailerNumber }}</h5>
@@ -71,9 +72,12 @@ h4 {
 }
 
 .populated {
-  background-color: green;
   color: white;
   text-align: center;
+}
+
+.dart {
+  background-color: orange;
 }
 
 .populated h5 {

@@ -11,8 +11,14 @@
       id="lot"
       :class="{
         listLot: trailer.trailerlocation == lot,
-        populated: trailer.trailerlocation == lot
+        populated: trailer.trailerlocation == lot,
+        dart: trailer.carrier == 'Dart',
+        ryder: trailer.carrier == 'Ryder'
       }"
+      data-toggle="tooltip"
+      data-placement="top"
+      title
+      :data-original-title="trailer.carrier"
     >
       <p>{{ trailer.trailernumber }}</p>
     </div>
@@ -39,6 +45,11 @@ export default {
       return this.$store.state.trailers;
     }
   },
+  mounted() {
+    $(function() {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+  },
   methods: {
     async handleOnTrialerClick(trailer) {
       this.clickedTrailer = trailer;
@@ -61,7 +72,7 @@ h4 {
 
 .listLot {
   width: 20px;
-  height: 68px;
+  height: 81px;
   background: #d8d8d8;
   margin: 4px;
   margin-top: 2%;
@@ -75,6 +86,14 @@ h4 {
   background-color: green;
   color: white;
   text-align: center;
+}
+
+.dart {
+  background-color: blue;
+}
+
+.ryder {
+  background-color: black;
 }
 
 p {

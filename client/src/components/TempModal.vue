@@ -2,13 +2,10 @@
   <div id="myModal" class="modal-custom">
     <!-- Modal content -->
     <div class="modal-content-custom">
-      <div class="modal-header-custom">
-        <span class="closeBtn" @click="$emit('close');">&times;</span>
-        <h2>Out Placement</h2>
-      </div>
       <div class="modal-body-custom">
-        <button class="btn btn-primary mr-2" @click="primaryLot();">Primary Lot</button>
-        <button class="btn btn-primary" @click="offSiteLot();">Off-Site Lot</button>
+        <span class="closeBtn" @click="$emit('close');">&times;</span>
+        <button class="btn btn-primary mr-2" @click="addTrailer();">Add</button>
+        <button class="btn btn-primary" @click="inTrailer();">In</button>
       </div>
     </div>
   </div>
@@ -18,26 +15,19 @@
 export default {
   name: "modal",
   props: {
-    request: Object
+    clickedDock: String
   },
   data: function() {
     return {};
   },
   methods: {
-    async primaryLot() {
-      this.request.outPlacement = "Primary Lot";
-      let res = await this.$socket.emit("completed", this.request);
+    async addTrailer() {
       this.$emit("close");
+      this.$emit("addTrailer", this.clickedDock);
     },
-    async lotB() {
-      this.request.outPlacement = "Lot B";
-      let res = await this.$socket.emit("completed", this.request);
+    async inTrailer() {
       this.$emit("close");
-    },
-    async offSiteLot() {
-      this.request.outPlacement = "Off-Site Lot";
-      let res = await this.$socket.emit("completed", this.request);
-      this.$emit("close");
+      this.$emit("inTrailer", this.clickedDock);
     }
   }
 };
@@ -89,6 +79,11 @@ export default {
   border: 1px solid #888;
   width: 30%;
   border-radius: 20px;
+}
+
+.btn {
+  display: inline-block;
+  width: calc(50% - 10px);
 }
 
 /* The Close Button */

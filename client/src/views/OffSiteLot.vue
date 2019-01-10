@@ -142,7 +142,7 @@ h4 {
 
 .listLot {
   width: 20px;
-  height: 68px;
+  height: 81px;
   background: #d8d8d8;
   margin: 4px;
   margin-top: 2%;

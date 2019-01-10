@@ -63,8 +63,7 @@ export default {
         header: ""
       },
       dockDoors: [
-        "Lot A",
-        "Lot B",
+        "Primary Lot",
         "Off-Site Lot",
         37,
         36,
@@ -111,8 +110,7 @@ export default {
       const trailers = this.$store.state.trailers;
 
       if (
-        this.trailer.trailerLocation != "Lot A" &&
-        this.trailer.trailerLocation != "Lot B" &&
+        this.trailer.trailerLocation != "Primary Lot" &&
         this.trailer.trailerLocation != "Off-Site Lot"
       ) {
         for (let i = 0; i < trailers.length; i++) {

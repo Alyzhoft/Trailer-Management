@@ -3,22 +3,45 @@
     <!-- Modal content -->
     <div class="modal-content-custom">
       <div class="modal-header-custom">
-        <span class="closeBtn" @click="$emit('cancle');">&times;</span>
-        <h2>In: {{ inTrailer.carrier }} - {{inTrailer.trailerNumber}}</h2>
+        <span class="closeBtn" @click="$emit('close');">&times;</span>
+        <h2>Dock: {{this.clickedDock}}</h2>
       </div>
       <div class="modal-body-custom">
         <div class="trailerManagement container mt-3"></div>
         <form>
           <fieldset>
             <div>
-              <h4 class="headerInline">Dock #:</h4>
               <div class="inline">
+                <label for="Carrier">Carrier</label>
                 <select
                   class="form-control"
-                  v-model="inTrailer.trailerLocation"
-                  id="trailerLocation"
+                  v-model="carrier"
+                  id="Carrier dropdownMenuOffset"
+                  required
                 >
-                  <option v-for="dockNumber in dockDoors" :key="dockNumber">{{ dockNumber }}</option>
+                  <option>Brockman</option>
+                  <option>Dart</option>
+                  <option>Filmore</option>
+                  <option>Ryder</option>
+                  <option>Taylor</option>
+                  <option>Transport</option>
+                  <option>Waletich</option>
+                </select>
+              </div>
+              <div class="inline">
+                <label for="Carrier">Special</label>
+                <select
+                  class="form-control"
+                  v-model="special"
+                  id="Carrier dropdownMenuOffset"
+                  required
+                >
+                  <option>E-Track</option>
+                  <option>Reinforced</option>
+                  <option>Not Reinforced</option>
+                  <option>Green</option>
+                  <option>Black</option>
+                  <option>TPOD</option>
                 </select>
               </div>
             </div>
@@ -49,21 +72,15 @@
 <script>
 export default {
   name: "modal",
-  props: ["clickedTrailer"],
+  props: {
+    clickedDock: String
+  },
   data: function() {
     return {
-      shipDate: "",
+      carrier: "",
       inRequest: false,
       urgent: false,
-      inTrailer: {
-        trailerNumber: this.clickedTrailer.trailerNumber,
-        carrier: this.clickedTrailer.carrier,
-        trailerLocation: "",
-        category: this.clickedTrailer.category,
-        shipDates: [],
-        status: this.clickedTrailer.status,
-        _id: this.clickedTrailer._id
-      }
+      special: ""
     };
   },
   computed: {
@@ -81,8 +98,10 @@ export default {
     },
     async submitRequest() {
       const data = {
-        inTrailer: this.inTrailer,
+        carrier: this.carrier,
         urgent: this.urgent,
+        dock: this.clickedDock,
+        special: this.special,
         inRequest: true
       };
       let res = await this.$socket.emit("inRequest", data);
@@ -105,7 +124,7 @@ export default {
 div.inline {
   display: inline-block;
   margin-right: 10px;
-  width: calc(30% - 5px);
+  width: calc(45% - 5px);
 }
 
 h4.inline {

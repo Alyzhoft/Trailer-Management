@@ -58,8 +58,9 @@ export default {
       // this.clicked = true;
     },
     async handleEntryLocation(dock) {
+      console.log(dock);
       this.clickedDock = dock.toString();
-      this.$emit("entry", this.clickedDock);
+      this.$emit("inTrailer", this.clickedDock);
     },
     async handleModalClose() {
       this.clickedTrailer = {};
@@ -89,12 +90,12 @@ export default {
 
 .trailers {
   width: 1.54%;
-  height: 5em;
+  height: 6em;
   background: #d8d8d8;
   display: inline-block;
   position: relative;
   margin-right: 1.2%;
-  margin-top: 1.9%;
+  margin-top: 1%;
   left: 1%;
   text-align: center;
   color: white;
@@ -102,15 +103,15 @@ export default {
 
 .inner-seat {
   width: 1.3em;
-  height: 4.4em;
+  height: 5em;
   border-radius: 4px;
-  margin: -98px 0px 0px 0px;
+  margin: -109px 0px 0px 0px;
   background: #d8d8d8;
   position: relative;
 }
 
 h6 {
-  margin-top: 70px;
+  margin-top: 80px;
   color: black;
   background: white;
 }

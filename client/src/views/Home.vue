@@ -1,30 +1,31 @@
 <template>
   <div class="home">
     <div v-if="windowWidth > 1230">
+      <TempModal
+        :clickedDock="this.clickedDock"
+        v-if="empty"
+        @close="handleTempModalClose();"
+        @addTrailer="handleAddTrailer"
+        @inTrailer="handleInTrailer"
+      />
       <EntryModal :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose();"/>
+      <InModal v-if="inTrailer" :clickedDock="this.clickedDock" @close="handleInClose"></InModal>
       <InfoModal
-        :clickedTrailer="this.trailer"
         :windowWidth="this.windowWidth"
+        :clickedTrailer="this.trailer"
         v-if="clicked"
         @close="handleModalClose();"
       />
       <div class="dock">
-        <HomeDockLayout @entry="handleEmptyClicked" @trailer="handleTrailerClicked"/>
+        <HomeDockLayout @inTrailer="handleEmptyClicked" @trailer="handleTrailerClicked"/>
       </div>
-      <div class="container">
+      <div>
         <div class="row">
           <div class="lotA col-sm">
             <div>
-              <h1 class="center">Lot A</h1>
-              <span v-on:click.stop="handleEntryLotALocation" class="addBtn">+</span>
-              <HomeLotLayout lot="Lot A" @trailer="handleTrailerClicked"/>
-            </div>
-          </div>
-          <div class="lotB col-sm">
-            <div>
-              <h1 class="center">Lot B</h1>
-              <span v-on:click.stop="handleEntryLotBLocation" class="addBtn">+</span>
-              <HomeLotLayout lot="Lot B" @trailer="handleTrailerClicked"/>
+              <h1 class="center">Primary Lot</h1>
+              <span v-on:click.stop="handleEntryPrimaryLocation" class="addBtn">+</span>
+              <HomeLotLayout lot="Primary Lot" @trailer="handleTrailerClicked"/>
             </div>
           </div>
         </div>
@@ -46,17 +47,8 @@
       <div class="lotASS row">
         <div>
           <span v-on:click.stop="handleEntryLotALocation" class="addBtn">+</span>
-          <h1 class="boarder">Lot A</h1>
-          <HomeLotLayoutSS lot="Lot A" @trailer="handleTrailerClicked"/>
-        </div>
-      </div>
-      <div>
-        <div class="lotBSS row">
-          <div>
-            <span v-on:click.stop="handleEntryLotBLocation" class="addBtn">+</span>
-            <h1 class="boarder">Lot B</h1>
-            <HomeLotLayoutSS lot="Lot B" @trailer="handleTrailerClicked"/>
-          </div>
+          <h1 class="boarder">Primary Lot</h1>
+          <HomeLotLayoutSS lot="Primary Lot" @trailer="handleTrailerClicked"/>
         </div>
       </div>
     </div>
@@ -72,6 +64,8 @@ import EntryModal from "@/components/EntryModal.vue";
 import EntryModalSS from "@/components/EntryModalSS.vue";
 import InfoModal from "@/components/InfoModal.vue";
 import InfoModalSS from "@/components/InfoModalSS.vue";
+import InModal from "@/components/InModal.vue";
+import TempModal from "@/components/TempModal.vue";
 
 export default {
   name: "home",
@@ -83,13 +77,17 @@ export default {
     InfoModal,
     InfoModalSS,
     EntryModal,
-    EntryModalSS
+    EntryModalSS,
+    TempModal,
+    InModal
   },
   data: () => ({
     windowWidth: "",
     entry: false,
     clicked: false,
+    inTrailer: false,
     clickedDock: "",
+    empty: false,
     trailer: {
       trailerNumber: "",
       carrier: "",
@@ -148,17 +146,31 @@ export default {
     handleResize() {
       this.windowWidth = window.innerWidth;
     },
-    async handleEntryLotALocation() {
-      this.clickedDock = "Lot A";
-      this.entry = true;
-    },
-    async handleEntryLotBLocation() {
-      this.clickedDock = "Lot B";
+    async handleEntryPrimaryLocation() {
+      this.clickedDock = "Primary Lot";
+      console.log(this.clickedDock);
       this.entry = true;
     },
     async handleEntryModalClose() {
       this.entry = false;
       this.clickedDock = "";
+    },
+    async handleTempModalClose() {
+      this.empty = false;
+      this.clickedDock = "";
+    },
+    async handleAddTrailer(value) {
+      console.log(value);
+      this.clickedDock = value;
+      this.entry = true;
+    },
+    async handleInTrailer(value) {
+      console.log(value);
+      this.clickedDock = value;
+      this.inTrailer = true;
+    },
+    async handleInClose() {
+      this.inTrailer = false;
     },
     async handleTrailerClicked(value) {
       console.log(value);
@@ -189,7 +201,7 @@ export default {
     },
     async handleEmptyClicked(value) {
       this.clickedDock = value;
-      this.entry = true;
+      this.empty = true;
     },
     async handleModalClose() {
       this.trailer = {};
@@ -209,14 +221,8 @@ export default {
 }
 
 .lotA {
-  border-right: 3px solid black;
-  height: 350px;
-  margin-top: 10px;
-}
-
-.lotB {
-  height: 350px;
-  margin-top: 10px;
+  height: 20em;
+  margin-top: 1em;
 }
 
 .center {

@@ -7,11 +7,7 @@
         <h2>Add Trailer</h2>
       </div>
       <div class="modal-body-custom">
-        <div class="trailerManagement container mt-3">
-          <!--
-            <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
-          -->
-        </div>
+        <div class="trailerManagement container mt-3"></div>
         <form v-on:submit.prevent="checkForm">
           <fieldset>
             <div class="inline">
@@ -43,8 +39,7 @@
                 <option>Ryder</option>
                 <option>Taylor</option>
                 <option>Transport</option>
-                <option>Wale</option>
-                <option>Wali</option>
+                <option>Waletich</option>
               </select>
             </div>
             <div class="inline">
@@ -52,7 +47,7 @@
               <input
                 type="text"
                 minlength="4"
-                maxlength="5"
+                maxlength="6"
                 v-model="trailer.trailerNumber"
                 class="form-control"
                 id="trailerNumber"
@@ -63,7 +58,7 @@
             <div class="inline">
               <label for="trailerLocation">Trailer Location</label>
               <input
-                type="number"
+                type="text"
                 v-model="trailer.trailerLocation"
                 class="form-control"
                 id="trailerNumber"
@@ -132,8 +127,7 @@ export default {
       this.create = true;
 
       if (
-        this.trailer.trailerLocation != "Lot A" &&
-        this.trailer.trailerLocation != "Lot B" &&
+        this.trailer.trailerLocation != "Primary Lot" &&
         this.trailer.trailerLocation != "Off-Site Lot"
       ) {
         const trailers = this.$store.state.trailers;

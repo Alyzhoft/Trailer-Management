@@ -3,7 +3,7 @@ const conn = require("./connection");
 const getTrailers = async () => {
   const client = await conn.pool.connect();
   const results = await client.query(
-    "SELECT _id, trailernumber, carrier, trailerlocation, category, status, inserted, updated, string_to_array(trim(shipdates), ' ') shipdates FROM trailers WHERE departed = 'n'"
+    "SELECT _id, trailernumber, carrier, trailerlocation, category, status, inserted, updated, string_to_array(trim(shipdates), ' ') shipdates FROM trailers WHERE departed = 'n' order by carrier, trailernumber"
   );
   client.release();
   return results.rows;
@@ -21,7 +21,7 @@ const getDeparted = async () => {
 const getRequests = async () => {
   const client = await conn.pool.connect();
   const results = await client.query(
-    "SELECT _id, out, outtrailernumber, outcarrier, incarrier, intrailernumber, to_char(inserted, 'MM-DD-YYYY HH24:MI') inserted, urgent, trailer_id, dock FROM requests where completed = 'n' order by CASE WHEN urgent = 'true' THEN urgent END, inserted"
+    "SELECT _id, out, outtrailernumber, outcarrier, incarrier, intrailernumber, to_char(inserted, 'MM-DD-YYYY HH24:MI') inserted, urgent, trailer_id, dock, special FROM requests where completed = 'n' order by CASE WHEN urgent = 'true' THEN urgent END, inserted"
   );
   client.release();
   return results.rows;
@@ -158,14 +158,13 @@ const request = async data => {
   const client = await conn.pool.connect();
   if (data.inRequest) {
     const response = await client.query(
-      `INSERT INTO requests(dock, outtrailernumber, outcarrier, incarrier, intrailernumber, urgent, trailer_id) VALUES(\'${
+      `INSERT INTO requests(dock, outtrailernumber, outcarrier, incarrier, urgent, trailer_id, special) VALUES(\'${
         data.outTrailer.trailerLocation
       }\',\'${data.outTrailer.trailerNumber}\',\'${
         data.outTrailer.carrier
-      }\',\'${data.inTrailer.carrier}\', \'${
-        data.inTrailer.trailerNumber
-      }\',\'${data.inTrailer.urgent}\',
-      \'${data.outTrailer._id}\')`
+      }\',\'${data.inTrailer.carrier}\',\'${data.inTrailer.urgent}\',
+      \'${data.outTrailer._id}\',
+      \'${data.inTrailer.special}\')`
     );
   } else {
     const response = await client.query(
@@ -185,10 +184,9 @@ const request = async data => {
 const inRequest = async data => {
   const client = await conn.pool.connect();
   const response = await client.query(
-    `INSERT INTO requests(incarrier, intrailernumber, urgent, trailer_id, dock) VALUES(\'${
-      data.inTrailer.carrier
-    }\', \'${data.inTrailer.trailerNumber}\',\'${data.urgent}\',
-      \'${data.inTrailer._id}\', \'${data.inTrailer.trailerLocation}\')`
+    `INSERT INTO requests(incarrier, urgent, dock, special) VALUES(\'${
+      data.carrier
+    }\',\'${data.urgent}\', \'${data.dock}\', \'${data.special}\')`
   );
   const requests = await getRequests();
   client.release();
@@ -203,18 +201,21 @@ const completed = async data => {
     }\'`
   );
 
-  const outResponse = await client.query(
-    `UPDATE trailers set trailerlocation = \'${
-      data.outPlacement
-    }\', updated = now() where _id = \'${data.trailer_id}\'`
-  );
-  if (data.intrailernumber) {
+  if (data.outcarrier) {
+    const outResponse = await client.query(
+      `UPDATE trailers set trailerlocation = \'${
+        data.outPlacement
+      }\', updated = now() where _id = \'${data.trailer_id}\'`
+    );
+  }
+
+  if (data.inTrailerNumber) {
     const requestResponse = await client.query(
       `UPDATE trailers set trailerlocation = \'${
         data.dock
       }\', updated = now() where carrier = \'${
-        data.incarrier
-      }\' and trailernumber = \'${data.intrailernumber}\'`
+        data.inCarrier
+      }\' and trailernumber = \'${data.inTrailerNumber}\'`
     );
   }
   const requests = await getRequests();
@@ -229,7 +230,7 @@ const getTrailerNumbers = async body => {
   const client = await conn.pool.connect();
 
   const requestResponse = await client.query(
-    `SELECT trailernumber FROM trailers WHERE trailerlocation in ('Lot A', 'Lot B', 'Off-Site Lot') AND carrier = \'${carrier}\'`
+    `SELECT trailernumber, _id FROM trailers WHERE trailerlocation in ('Primary Lot','Off-Site Lot') AND carrier = \'${carrier}\'`
   );
 
   return requestResponse;

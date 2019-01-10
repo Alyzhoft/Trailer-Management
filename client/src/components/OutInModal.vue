@@ -4,7 +4,8 @@
     <div class="modal-content-custom">
       <div class="modal-header-custom">
         <span class="closeBtn" @click="$emit('cancle');">&times;</span>
-        <h2>In Out Request</h2>
+        <h2 v-if="inRequest">In/Out Request</h2>
+        <h2 v-else>Out Request</h2>
       </div>
       <div class="modal-body-custom">
         <div class="trailerManagement container mt-3"></div>
@@ -22,7 +23,6 @@
                   class="form-control"
                   id="Carrier dropdownMenuOffset"
                   v-model="inTrailer.carrier"
-                  @change="getTrailerNumbers()"
                 >
                   <option></option>
                   <option>Brockman</option>
@@ -31,19 +31,23 @@
                   <option>Ryder</option>
                   <option>Taylor</option>
                   <option>Transport</option>
-                  <option>Wale</option>
-                  <option>Wali</option>
+                  <option>Waletich</option>
                 </select>
               </div>
               <div class="inline">
-                <label for="TrailerNumber">Trailer Number</label>
+                <label for="Carrier">Special</label>
                 <select
                   class="form-control"
-                  id="TrailerNumber dropdownMenuOffset"
-                  v-model="inTrailer.trailerNumber"
+                  v-model="inTrailer.special"
+                  id="Carrier dropdownMenuOffset"
+                  required
                 >
-                  <option></option>
-                  <option v-for="tn in trailerNumbers" :key="tn.trailernumber">{{tn.trailernumber}}</option>
+                  <option>E-Track</option>
+                  <option>Reinforced</option>
+                  <option>Not Reinforced</option>
+                  <option>Green</option>
+                  <option>Black</option>
+                  <option>TPOD</option>
                 </select>
               </div>
             </div>
@@ -100,8 +104,8 @@ export default {
         _id: this.clickedTrailer._id
       },
       inTrailer: {
-        trailerNumber: "",
         carrier: "",
+        special: "",
         urgent: false
       }
     };
@@ -122,24 +126,6 @@ export default {
       };
       let res = await this.$socket.emit("request", data);
       this.$emit("close", this.trailer);
-    },
-
-    async getTrailerNumbers() {
-      console.log(this.inTrailer.carrier);
-      fetch("http://localhost:3000/trailerNumbers", {
-        method: "POST",
-        body: JSON.stringify({
-          carrier: this.inTrailer.carrier
-        }),
-        headers: {
-          "content-type": "application/json"
-        }
-      })
-        .then(res => res.json())
-        .then(trailerNumbers => {
-          console.log(trailerNumbers);
-          this.trailerNumbers = trailerNumbers;
-        });
     }
   }
 };
