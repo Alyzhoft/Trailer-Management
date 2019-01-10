@@ -113,10 +113,10 @@ export default {
   },
   computed: {
     carriers() {
-      return this.$store.state.carriers;
+      return this.$store.state.carriers.sort();
     },
     categories() {
-      return this.$store.state.categories;
+      return this.$store.state.categories.sort();
     }
   },
   mounted() {

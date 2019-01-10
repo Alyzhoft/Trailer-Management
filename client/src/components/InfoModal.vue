@@ -66,7 +66,6 @@
               class="btn btn-primary mr-1 mb-1"
               @click="handleOutClicked();"
             >Out</button>
-            <button v-else class="btn btn-primary mr-1 mb-1" @click="handleInClicked();">In</button>
             <button @click="deleteTrailer();" class="btn btn-danger mb-1">Delete</button>
           </div>
         </div>

@@ -117,7 +117,7 @@ export default {
   },
   computed: {
     carriers() {
-      return this.$store.state.carriers;
+      return this.$store.state.carriers.sort();
     }
   },
   methods: {

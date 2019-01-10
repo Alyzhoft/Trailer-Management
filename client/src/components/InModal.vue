@@ -94,7 +94,7 @@ export default {
       return this.$store.state.dockDoors;
     },
     carriers() {
-      return this.$store.state.carriers;
+      return this.$store.state.carriers.sort();
     }
   },
   mounted() {},

@@ -102,7 +102,7 @@ export default {
       return this.$store.state.departedTrailers;
     },
     carriers() {
-      return this.$store.state.carriers;
+      return this.$store.state.carriers.sort();
     },
     categories() {
       return this.$store.state.categories;
