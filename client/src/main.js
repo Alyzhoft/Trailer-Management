@@ -3,11 +3,9 @@ import App from "./App.vue";
 import router from "./router";
 import { store } from "./store/store";
 import socketIO from "vue-socket.io";
-import VTooltip from "v-tooltip";
 
 Vue.config.productionTip = false;
-Vue.use(socketIO, "http://localhost:3000", store);
-Vue.use(VTooltip);
+Vue.use(socketIO, "https://trailermanagementbe.azurewebsites.net", store);
 
 new Vue({
   router,

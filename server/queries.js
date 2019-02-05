@@ -213,7 +213,7 @@ const completed = async data => {
     const requestResponse = await client.query(
       `UPDATE trailers set trailerlocation = \'${
         data.dock
-      }\', updated = now() where carrier = \'${
+      }\', updated = now(), category = 'In Process' where carrier = \'${
         data.inCarrier
       }\' and trailernumber = \'${data.inTrailerNumber}\'`
     );
@@ -230,7 +230,7 @@ const getTrailerNumbers = async body => {
   const client = await conn.pool.connect();
 
   const requestResponse = await client.query(
-    `SELECT trailernumber, _id FROM trailers WHERE trailerlocation in ('Primary Lot','Off-Site Lot') AND carrier = \'${carrier}\'`
+    `SELECT trailernumber, _id FROM trailers WHERE trailerlocation in ('Primary Lot','Off-Site Lot') AND departed != 'y' AND carrier = \'${carrier}\'`
   );
 
   return requestResponse;

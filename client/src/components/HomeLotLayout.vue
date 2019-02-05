@@ -11,9 +11,7 @@
       id="lot"
       :class="{
         listLot: trailer.trailerlocation == lot,
-        populated: trailer.trailerlocation == lot,
-        dart: trailer.carrier == 'Dart',
-        ryder: trailer.carrier == 'Ryder'
+        populated: trailer.trailerlocation == lot
       }"
       data-toggle="tooltip"
       data-placement="top"
@@ -86,14 +84,6 @@ h4 {
   background-color: green;
   color: white;
   text-align: center;
-}
-
-.dart {
-  background-color: blue;
-}
-
-.ryder {
-  background-color: black;
 }
 
 p {

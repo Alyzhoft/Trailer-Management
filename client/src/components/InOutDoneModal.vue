@@ -67,7 +67,7 @@ export default {
   },
   mounted() {
     console.log(this.request);
-    fetch("http://localhost:3000/trailerNumbers", {
+    fetch("https://trailermanagementbe.azurewebsites.net/trailerNumbers", {
       method: "POST",
       body: JSON.stringify({
         carrier: this.request.incarrier

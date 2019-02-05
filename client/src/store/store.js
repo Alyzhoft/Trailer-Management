@@ -10,9 +10,11 @@ export const store = new Vuex.Store({
     departedTrailers: [],
     requests: [],
     categories: [
+      "Completed",
       "Dunnage",
       "Empties for Shipping",
       "Patio Trailers",
+      "In Process",
       "Storage/Misc. Shipping Trailers",
       "Supermarket/Legacy/Eng"
     ],
@@ -28,7 +30,11 @@ export const store = new Vuex.Store({
       "J&R",
       "Kuehl",
       "American Fast Freight",
-      "Ryder"
+      "Ryder",
+      "Keene’s",
+      "XPO Logistics",
+      "Universal",
+      "XTRA Lease"
     ],
     dockDoors: [
       37,
@@ -112,7 +118,7 @@ export const store = new Vuex.Store({
 
   actions: {
     getTrailers(state) {
-      fetch("http://localhost:3000/trailers")
+      fetch("https://trailermanagementbe.azurewebsites.net/trailers")
         .then(res => res.json())
         .then(trailers => {
           state.commit("getTrailers", trailers);
@@ -120,7 +126,7 @@ export const store = new Vuex.Store({
     },
 
     getDepartedTrailers(state) {
-      fetch("http://localhost:3000/departedtrailers")
+      fetch("https://trailermanagementbe.azurewebsites.net/departedtrailers")
         .then(res => res.json())
         .then(departedTrailers => {
           state.commit("getDepartedTrailers", departedTrailers);
@@ -128,7 +134,7 @@ export const store = new Vuex.Store({
     },
 
     getRequests(state) {
-      fetch("http://localhost:3000/requests")
+      fetch("https://trailermanagementbe.azurewebsites.net/requests")
         .then(res => res.json())
         .then(requests => {
           state.commit("getRequests", requests);

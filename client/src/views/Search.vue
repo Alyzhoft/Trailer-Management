@@ -110,7 +110,7 @@ export default {
   },
   methods: {
     search() {
-      fetch("http://localhost:3000/departedtrailers", {
+      fetch("https://trailermanagementbe.azurewebsites.net/departedtrailers", {
         method: "POST",
         body: JSON.stringify({
           startDateTime: this.startDateTime,

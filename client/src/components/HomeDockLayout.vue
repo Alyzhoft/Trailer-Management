@@ -102,10 +102,10 @@ export default {
 }
 
 .inner-seat {
-  width: 1.3em;
-  height: 6em;
+  width: 100%;
+  height: 6.1em;
   border-radius: 4px;
-  margin: -125px 0px 0px 0px;
+  margin: -127px 0px 0px 0px;
   background: #d8d8d8;
   position: relative;
 }

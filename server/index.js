@@ -1,13 +1,11 @@
 const express = require("express");
 const cors = require("cors");
-const morgan = require("morgan");
 const bodyParser = require("body-parser");
-const queries = require("./db/queries");
+const queries = require("./queries");
 const socket = require("socket.io");
 
 const app = express();
 
-app.use(morgan("tiny"));
 app.use(cors());
 app.use(bodyParser.json());
 
