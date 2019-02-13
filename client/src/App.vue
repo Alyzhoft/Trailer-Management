@@ -61,12 +61,16 @@ export default {
       this.$store.dispatch("UPDATE_TRAILER", trailers);
     },
 
-    delete: function(trailers) {
+    deleteTrailer: function(trailers) {
       this.$store.dispatch("DELETE_TRAILER", trailers);
     },
 
     request: function(requests) {
       this.$store.dispatch("REQUEST", requests);
+    },
+
+    deleteRequest: function(requests) {
+      this.$store.dispatch("DELETE_REQUEST", requests);
     },
 
     completed: function(res) {

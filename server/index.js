@@ -30,9 +30,14 @@ io.on("connection", socket => {
     io.emit("move", response);
   });
 
-  socket.on("delete", async trailer => {
+  socket.on("deleteTrailer", async trailer => {
     const response = await queries.deleteTrailer(trailer);
-    io.emit("delete", response);
+    io.emit("deleteTrailer", response);
+  });
+
+  socket.on("deleteRequest", async request => {
+    const response = await queries.deleteRequest(request);
+    io.emit("deleteRequest", response);
   });
 
   socket.on("departed", async trailer => {

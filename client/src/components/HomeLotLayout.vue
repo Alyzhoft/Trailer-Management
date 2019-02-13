@@ -11,7 +11,10 @@
       id="lot"
       :class="{
         listLot: trailer.trailerlocation == lot,
-        populated: trailer.trailerlocation == lot
+        populated: trailer.trailerlocation == lot,
+        inProcess: trailer.category == 'In Process',
+        completed: trailer.category == 'Completed',
+        receiving: trailer.category == 'Receiving'
       }"
       data-toggle="tooltip"
       data-placement="top"
@@ -81,18 +84,35 @@ h4 {
 }
 
 .populated {
-  background-color: green;
-  color: white;
+  background-color: blue;
   text-align: center;
 }
 
 p {
   color: white;
+  font-weight: bold;
   font-size: 10px;
   position: relative;
   right: 7px;
   writing-mode: vertical-lr;
   text-orientation: upright;
+}
+
+.inProcess {
+  background-color: gold;
+}
+
+.inProcess p {
+  color: black;
+  font-weight: bold;
+}
+
+.completed {
+  background-color: green;
+}
+
+.receiving {
+  background-color: red;
 }
 
 #lot {

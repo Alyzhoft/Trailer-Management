@@ -16,7 +16,9 @@
           v-on:click.stop="handleOnTrialerClick(trailer);"
           :class="{
             'inner-seat': trailer.trailerlocation == dock,
-            populated: trailer.trailerlocation == dock
+            populated: trailer.trailerlocation == dock,
+            inProcess: trailer.category == 'In Process',
+            completed: trailer.category == 'Completed'
           }"
         >
           <p>{{ trailer.trailernumber }}</p>
@@ -82,6 +84,7 @@ export default {
 .populated p {
   font-size: 10px;
   color: white;
+  font-weight: bold;
   position: relative;
   right: 7px;
   writing-mode: vertical-lr;
@@ -117,11 +120,23 @@ h6 {
 }
 
 .populated {
-  background-color: green;
+  background-color: blue;
   color: white;
   text-align: center;
 }
 
+.inProcess {
+  background-color: gold;
+}
+
+.inProcess p {
+  color: black;
+  font-weight: bold;
+}
+
+.completed {
+  background-color: green;
+}
 .populated:hover,
 .populated:focus {
   color: #000;

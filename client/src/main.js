@@ -5,7 +5,7 @@ import { store } from "./store/store";
 import socketIO from "vue-socket.io";
 
 Vue.config.productionTip = false;
-Vue.use(socketIO, "https://trailermanagementbe.azurewebsites.net", store);
+Vue.use(socketIO, "https://trailermanagementbe.azurewebsites.net/", store);
 
 new Vue({
   router,

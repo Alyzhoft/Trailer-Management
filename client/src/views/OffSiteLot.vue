@@ -18,7 +18,10 @@
       id="lot"
       :class="{
         listLot: trailer.trailerlocation == lot,
-        populated: trailer.trailerlocation == lot
+        populated: trailer.trailerlocation == lot,
+        inProcess: trailer.category == 'In Process',
+        completed: trailer.category == 'Completed',
+        receiving: trailer.category == 'Receiving'
       }"
     >
       <p>{{ trailer.trailernumber }}</p>
@@ -153,9 +156,27 @@ h4 {
 }
 
 .populated {
-  background-color: green;
+  background: blue;
   color: white;
+  font-weight: bold;
   text-align: center;
+}
+
+.inProcess {
+  background-color: gold;
+}
+
+.inProcess p {
+  color: black;
+  font-weight: bold;
+}
+
+.completed {
+  background-color: green;
+}
+
+.receiving {
+  background-color: red;
 }
 
 p {

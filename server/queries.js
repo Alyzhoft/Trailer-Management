@@ -21,7 +21,7 @@ const getDeparted = async () => {
 const getRequests = async () => {
   const client = await conn.pool.connect();
   const results = await client.query(
-    "SELECT _id, out, outtrailernumber, outcarrier, incarrier, intrailernumber, to_char(inserted, 'MM-DD-YYYY HH24:MI') inserted, urgent, trailer_id, dock, special FROM requests where completed = 'n' order by CASE WHEN urgent = 'true' THEN urgent END, inserted"
+    "SELECT _id, out, outtrailernumber, outcarrier, outcompleted,incarrier, intrailernumber, to_char(inserted, 'MM-DD-YYYY HH24:MI') inserted, urgent, trailer_id, dock, special FROM requests where completed = 'n' order by CASE WHEN urgent = 'true' THEN urgent END, inserted"
   );
   client.release();
   return results.rows;
@@ -141,6 +141,16 @@ const deleteTrailer = async trailer => {
   return trailers;
 };
 
+const deleteRequest = async request => {
+  const client = await conn.pool.connect();
+  const results = await client.query(
+    `DELETE FROM requests WHERE _id = ${request._id}`
+  );
+  const requests = await getRequests();
+  client.release();
+  return requests;
+};
+
 const insertDeparted = async trailer => {
   const client = await conn.pool.connect();
   const results = await client.query(
@@ -157,24 +167,47 @@ const insertDeparted = async trailer => {
 const request = async data => {
   const client = await conn.pool.connect();
   if (data.inRequest) {
-    const response = await client.query(
-      `INSERT INTO requests(dock, outtrailernumber, outcarrier, incarrier, urgent, trailer_id, special) VALUES(\'${
-        data.outTrailer.trailerLocation
-      }\',\'${data.outTrailer.trailerNumber}\',\'${
-        data.outTrailer.carrier
-      }\',\'${data.inTrailer.carrier}\',\'${data.inTrailer.urgent}\',
-      \'${data.outTrailer._id}\',
-      \'${data.inTrailer.special}\')`
-    );
+    if (data.outTrailer.completed) {
+      const response = await client.query(
+        `INSERT INTO requests(dock, outtrailernumber, outcarrier, incarrier, urgent, trailer_id, special, outcompleted) VALUES(\'${
+          data.outTrailer.trailerLocation
+        }\',\'${data.outTrailer.trailerNumber}\',\'${
+          data.outTrailer.carrier
+        }\',\'${data.inTrailer.carrier}\',\'${data.inTrailer.urgent}\',
+        \'${data.outTrailer._id}\',
+        \'${data.inTrailer.special}\', 'true')`
+      );
+    } else {
+      const response = await client.query(
+        `INSERT INTO requests(dock, outtrailernumber, outcarrier, incarrier, urgent, trailer_id, special, outcompleted) VALUES(\'${
+          data.outTrailer.trailerLocation
+        }\',\'${data.outTrailer.trailerNumber}\',\'${
+          data.outTrailer.carrier
+        }\',\'${data.inTrailer.carrier}\',\'${data.inTrailer.urgent}\',
+        \'${data.outTrailer._id}\',
+        \'${data.inTrailer.special}\', 'false')`
+      );
+    }
   } else {
-    const response = await client.query(
-      `INSERT INTO requests(dock, outtrailernumber, outcarrier, urgent, trailer_id) VALUES(\'${
-        data.outTrailer.trailerLocation
-      }\',\'${data.outTrailer.trailerNumber}\',\'${
-        data.outTrailer.carrier
-      }\',\'${data.inTrailer.urgent}\',
-      \'${data.outTrailer._id}\')`
-    );
+    if (data.outTrailer.completed) {
+      const response = await client.query(
+        `INSERT INTO requests(dock, outtrailernumber, outcarrier, urgent, trailer_id, outcompleted) VALUES(\'${
+          data.outTrailer.trailerLocation
+        }\',\'${data.outTrailer.trailerNumber}\',\'${
+          data.outTrailer.carrier
+        }\',\'${data.inTrailer.urgent}\',
+        \'${data.outTrailer._id}\', 'true')`
+      );
+    } else {
+      const response = await client.query(
+        `INSERT INTO requests(dock, outtrailernumber, outcarrier, urgent, trailer_id, outcompleted) VALUES(\'${
+          data.outTrailer.trailerLocation
+        }\',\'${data.outTrailer.trailerNumber}\',\'${
+          data.outTrailer.carrier
+        }\',\'${data.inTrailer.urgent}\',
+        \'${data.outTrailer._id}\', 'false')`
+      );
+    }
   }
   const requests = getRequests();
   client.release();
@@ -202,11 +235,21 @@ const completed = async data => {
   );
 
   if (data.outcarrier) {
-    const outResponse = await client.query(
-      `UPDATE trailers set trailerlocation = \'${
-        data.outPlacement
-      }\', updated = now() where _id = \'${data.trailer_id}\'`
-    );
+    if (data.outcompleted) {
+      const outResponse = await client.query(
+        `UPDATE trailers set trailerlocation = \'${
+          data.outPlacement
+        }\', category = 'Completed', updated = now() where _id = \'${
+          data.trailer_id
+        }\'`
+      );
+    } else {
+      const outResponse = await client.query(
+        `UPDATE trailers set trailerlocation = \'${
+          data.outPlacement
+        }\', updated = now() where _id = \'${data.trailer_id}\'`
+      );
+    }
   }
 
   if (data.inTrailerNumber) {
@@ -338,6 +381,7 @@ module.exports = {
   trailerSearch,
   getRequests,
   request,
+  deleteRequest,
   inRequest,
   completed,
   getTrailerNumbers

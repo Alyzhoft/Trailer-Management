@@ -20,6 +20,12 @@
     <div v-else-if="inTrailer">
       <InModal :clickedTrailer="this.trailer" @close="handleInClose" @cancle="handleInClose"></InModal>
     </div>
+    <DeleteModal
+      v-else-if="deleteTrailer"
+      :deleteRequest="'Trailer'"
+      :request="this.trailer"
+      @close="handleClose"
+    ></DeleteModal>
     <div v-else>
       <div id="myModal" class="modal-custom">
         <!-- Modal content -->
@@ -66,7 +72,7 @@
               class="btn btn-primary mr-1 mb-1"
               @click="handleOutClicked();"
             >Out</button>
-            <button @click="deleteTrailer();" class="btn btn-danger mb-1">Delete</button>
+            <button @click="handleDeleteTrailer();" class="btn btn-danger mb-1">Delete</button>
           </div>
         </div>
       </div>
@@ -79,6 +85,7 @@ import EditModal from "@/components/EditModal.vue";
 import MoveModal from "@/components/MoveModal.vue";
 import OutInModal from "@/components/OutInModal.vue";
 import InModal from "@/components/InModal.vue";
+import DeleteModal from "@/components/DeleteModal.vue";
 
 export default {
   name: "infoModal",
@@ -89,7 +96,8 @@ export default {
     EditModal,
     MoveModal,
     OutInModal,
-    InModal
+    InModal,
+    DeleteModal
   },
   data: function() {
     return {
@@ -97,6 +105,7 @@ export default {
       move: false,
       out: false,
       inTrailer: false,
+      deleteTrailer: false,
       trailer: {
         trailerNumber: this.clickedTrailer.trailerNumber,
         carrier: this.clickedTrailer.carrier,
@@ -109,10 +118,8 @@ export default {
     };
   },
   methods: {
-    async deleteTrailer() {
-      let res = await this.$socket.emit("delete", this.clickedTrailer);
-
-      this.$emit("close");
+    async handleDeleteTrailer() {
+      this.deleteTrailer = true;
     },
     async handleDepartedClicked(trailer) {
       let res = await this.$socket.emit("departed", trailer);
@@ -156,6 +163,11 @@ export default {
     async handleMoveModalClose(value) {
       this.move = false;
       this.trailer.trailerlocation = value;
+      this.$emit("close");
+    },
+
+    async handleClose() {
+      this.deleteTrailer = false;
       this.$emit("close");
     }
   }

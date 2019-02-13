@@ -3,6 +3,12 @@
     <OutPlacementModal v-if="outPlacement" :request="this.request" @close="handleClose"></OutPlacementModal>
     <InDoneModal v-if="inDone" :request="this.request" @close="handleClose"></InDoneModal>
     <InOutDoneModal v-if="inOutDone" :request="this.request" @close="handleClose"></InOutDoneModal>
+    <DeleteModal
+      v-if="deleteRequest"
+      :deleteRequest="'Request'"
+      :request="this.request"
+      @close="handleClose"
+    ></DeleteModal>
 
     <div class="container">
       <table class="table table-hover">
@@ -32,6 +38,9 @@
             <td>
               <button @click="completed(request);" class="btn btn-primary">Done</button>
             </td>
+            <td>
+              <span v-on:click.stop="handleDeleteRequest(request)" class="remove">❌</span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -43,18 +52,21 @@
 import OutPlacementModal from "@/components/OutPlacementModal.vue";
 import InDoneModal from "@/components/InDoneModal.vue";
 import InOutDoneModal from "@/components/InOutDoneModal.vue";
+import DeleteModal from "@/components/DeleteModal.vue";
 
 export default {
   name: "requests",
   components: {
     OutPlacementModal,
     InDoneModal,
-    InOutDoneModal
+    InOutDoneModal,
+    DeleteModal
   },
   data: () => ({
     outPlacement: false,
     inDone: false,
     inOutDone: false,
+    deleteRequest: false,
     request: {}
   }),
   computed: {
@@ -82,7 +94,21 @@ export default {
       this.outPlacement = false;
       this.inDone = false;
       this.inOutDone = false;
+      this.deleteRequest = false;
+    },
+
+    async handleDeleteRequest(request) {
+      this.request = request;
+      this.deleteRequest = true;
     }
   }
 };
 </script>
+<style>
+.remove:hover,
+.remove:focus {
+  text-decoration: none;
+  cursor: pointer;
+}
+</style>
+

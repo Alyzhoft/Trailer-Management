@@ -16,7 +16,9 @@
           :key="trailer._id"
           :class="{
             'inner-seat': trailer.trailerlocation == dock,
-            populated: trailer.trailerlocation == dock
+            populated: trailer.trailerlocation == dock,
+            inProcess: trailer.category == 'In Process',
+            completed: trailer.category == 'Completed'
           }"
         >
           <p>{{ trailer.trailernumber }}</p>
@@ -72,7 +74,7 @@ export default {
 }
 .trailers {
   width: 20px;
-  height: 85px;
+  height: 7em;
   background: #d8d8d8;
   position: relative;
   left: 15px;
@@ -92,12 +94,12 @@ export default {
 }
 
 .inner-seat {
-  width: 20px;
-  height: 68px;
+  width: 100%;
+  height: 5.9em;
   border-radius: 4px;
   top: 50%;
   left: 50%;
-  margin: -25px 0px 0px -10px;
+  margin: -38px 0px 0px -10px;
   background: #d8d8d8;
   position: absolute;
 }
@@ -108,9 +110,22 @@ h6 {
 }
 
 .populated {
-  background-color: green;
+  background-color: blue;
   color: white;
   text-align: center;
+}
+
+.inProcess {
+  background-color: gold;
+}
+
+.inProcess p {
+  color: black;
+  font-weight: bold;
+}
+
+.completed {
+  background-color: green;
 }
 
 .populated:hover,

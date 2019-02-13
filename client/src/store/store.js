@@ -13,8 +13,9 @@ export const store = new Vuex.Store({
       "Completed",
       "Dunnage",
       "Empties for Shipping",
-      "Patio Trailers",
       "In Process",
+      "Patio Trailers",
+      "Receiving",
       "Storage/Misc. Shipping Trailers",
       "Supermarket/Legacy/Eng"
     ],
@@ -105,6 +106,10 @@ export const store = new Vuex.Store({
       state.requests = payload;
     },
 
+    DELETE_REQUEST: (state, payload) => {
+      state.requests = payload;
+    },
+
     COMPLETED: (state, payload) => {
       state.trailers = payload.trailers;
       state.requests = payload.requests;
@@ -155,6 +160,10 @@ export const store = new Vuex.Store({
 
     REQUEST: (state, payload) => {
       state.commit("REQUEST", payload);
+    },
+
+    DELETE_REQUEST: (state, payload) => {
+      state.commit("DELETE_REQUEST", payload);
     },
 
     COMPLETED: (state, payload) => {

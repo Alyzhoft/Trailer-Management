@@ -1,5 +1,7 @@
 <template>
   <div id="myModal" class="modal-custom">
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+
     <!-- Modal content -->
     <div class="modal-content-custom">
       <div class="modal-header-custom">
@@ -94,14 +96,24 @@
 </template>
 
 <script>
+import AlertModal from "@/components/AlertModal.vue";
+
 export default {
   name: "modal",
   props: {
     clickedDock: String
   },
+  components: {
+    AlertModal
+  },
   data: function() {
     return {
       shipDate: "",
+      modal: {
+        visible: false,
+        text: "",
+        header: ""
+      },
       trailer: {
         trailerNumber: "",
         carrier: "",
@@ -122,21 +134,19 @@ export default {
   },
   methods: {
     async checkForm() {
-      this.create = true;
-
-      if (
-        this.trailer.trailerLocation != "Primary Lot" &&
-        this.trailer.trailerLocation != "Off-Site Lot"
-      ) {
-        const trailers = this.$store.state.trailers;
-        for (let i = 0; i < trailers.length; i++) {
-          if (trailers[i].trailerLocation === this.trailer.trailerLocation) {
-            this.create = false;
-          }
+      let create = true;
+      const trailers = this.$store.state.trailers;
+      console.log(trailers);
+      for (let i = 0; i < trailers.length; i++) {
+        if (
+          trailers[i].trailernumber == this.trailer.trailerNumber &&
+          trailers[i].carrier == this.trailer.carrier
+        ) {
+          create = false;
         }
       }
 
-      if (this.create) {
+      if (create) {
         let res = await this.$socket.emit("create", this.trailer);
 
         this.trailer.trailerNumber = "";
@@ -146,7 +156,11 @@ export default {
         this.trailer.status = "";
         this.$emit("close");
       } else {
-        this.create = true;
+        this.modal.visible = true;
+        this.modal.header = "Alert";
+        this.modal.text = `Trailer #: ${
+          this.trailer.trailerNumber
+        } for Carrier: ${this.trailer.carrier} is already in a lot`;
       }
     },
     addDate() {

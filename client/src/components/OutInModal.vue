@@ -52,7 +52,7 @@
               class="btn btn-primary mt-1 mr-1 mb-1"
             >Submit</button>
             <button type="button" @click="$emit('cancle');" class="btn btn-secondary mr-2">Cancel</button>
-            <div class="inline custom-control custom-checkbox">
+            <div class="checkInline custom-control custom-checkbox">
               <input
                 type="checkbox"
                 v-model="inRequest"
@@ -63,7 +63,7 @@
               >
               <label class="custom-control-label" for="inRequest">In Request</label>
             </div>
-            <div class="inline custom-control custom-checkbox">
+            <div class="checkInline custom-control custom-checkbox">
               <input
                 type="checkbox"
                 v-model="inTrailer.urgent"
@@ -72,6 +72,16 @@
                 checked
               >
               <label class="custom-control-label" for="urgent">Urgent</label>
+            </div>
+            <div class="checkInline custom-control custom-checkbox">
+              <input
+                type="checkbox"
+                v-model="outTrailer.completed"
+                class="custom-control-input"
+                id="completed"
+                checked
+              >
+              <label class="custom-control-label" for="completed">Completed</label>
             </div>
           </fieldset>
         </form>
@@ -99,6 +109,7 @@ export default {
         carrier: this.clickedTrailer.carrier,
         trailerLocation: this.clickedTrailer.trailerLocation,
         category: this.clickedTrailer.category,
+        completed: false,
         shipDates: [],
         status: this.clickedTrailer.status,
         _id: this.clickedTrailer._id
@@ -169,6 +180,12 @@ div.inline {
   display: inline-block;
   margin-right: 10px;
   width: calc(30% - 5px);
+}
+
+.checkInline {
+  display: inline-block;
+  margin-right: 10px;
+  /* width: calc(30% - 5px); */
 }
 
 h4.inline {
