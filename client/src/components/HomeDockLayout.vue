@@ -55,12 +55,10 @@ export default {
   methods: {
     async handleOnTrialerClick(trailer) {
       this.clickedTrailer = trailer;
-      console.log(trailer);
       this.$emit("trailer", this.clickedTrailer);
       // this.clicked = true;
     },
     async handleEntryLocation(dock) {
-      console.log(dock);
       this.clickedDock = dock.toString();
       this.$emit("inTrailer", this.clickedDock);
     },

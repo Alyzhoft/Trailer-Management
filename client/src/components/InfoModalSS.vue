@@ -23,10 +23,12 @@
             <h2>{{ this.trailer.trailerNumber }}</h2>
           </div>
           <div class="modal-body-custom">
-            <h5>Carrier:
+            <h5>
+              Carrier:
               <span>{{ this.trailer.carrier }}</span>
             </h5>
-            <h5>Category:
+            <h5>
+              Category:
               <span>{{ this.trailer.category }}</span>
             </h5>
             <h5
@@ -101,7 +103,6 @@ export default {
     },
     async handleEditModalClose(value) {
       this.edit = false;
-      console.log(value);
       this.trailer.trailerNumber = value.trailerNumber;
       this.trailer.carrier = value.carrier;
       this.trailer.category = value.category;

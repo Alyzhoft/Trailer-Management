@@ -37,7 +37,6 @@ export default {
           res = await this.$socket.emit("deleteTrailer", this.request);
           break;
       }
-      console.log(this.deleteRequest);
       this.$emit("close");
     },
     async cancel() {

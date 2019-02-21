@@ -139,12 +139,10 @@ export default {
       this.inTrailer = true;
     },
     async handleCancle() {
-      console.log("Cancle");
       this.edit = false;
     },
     async handleEditModalClose(value) {
       this.edit = false;
-      console.log(value);
       this.trailer.trailerNumber = value.trailernumber;
       this.trailer.carrier = value.carrier;
       this.trailer.category = value.category;

@@ -38,8 +38,16 @@ export default {
     this.getTrailers();
     this.getDepartedTrailers();
     this.getRequests();
+    this.getUserData();
   },
-  methods: mapActions(["getTrailers", "getDepartedTrailers", "getRequests"]),
+  methods: {
+    ...mapActions([
+      "getTrailers",
+      "getDepartedTrailers",
+      "getRequests",
+      "getUserData"
+    ])
+  },
   sockets: {
     connect: function() {},
 
@@ -84,3 +92,11 @@ export default {
   }
 };
 </script>
+
+<style>
+.logout:hover,
+.logout:focus {
+  cursor: pointer;
+}
+</style>
+

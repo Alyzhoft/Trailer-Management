@@ -3,9 +3,11 @@ import Vuex from "vuex";
 import { stat } from "fs";
 
 Vue.use(Vuex);
+Vue.config.devtools = true;
 
 export const store = new Vuex.Store({
   state: {
+    user: {},
     trailers: [],
     departedTrailers: [],
     requests: [],
@@ -90,6 +92,10 @@ export const store = new Vuex.Store({
       state.requests = requests;
     },
 
+    getUserData(state, user) {
+      state.user = user;
+    },
+
     ADD_TRAILER: (state, payload) => {
       state.trailers = payload;
     },
@@ -146,6 +152,14 @@ export const store = new Vuex.Store({
         });
     },
 
+    getUserData(state) {
+      fetch("https://trailermanagement.azurewebsites.net/.auth/me")
+        .then(res => res.json())
+        .then(user => {
+          state.commit("getUserData", user);
+        });
+    },
+
     ADD_TRAILER: (state, payload) => {
       state.commit("ADD_TRAILER", payload);
     },
@@ -172,7 +186,6 @@ export const store = new Vuex.Store({
 
     DEPARTED_TRAILER: (state, payload) => {
       state.commit("DEPARTED_TRAILER", payload);
-      console.log(payload);
     }
   },
   getters: {

@@ -136,7 +136,6 @@ export default {
     async checkForm() {
       let create = true;
       const trailers = this.$store.state.trailers;
-      console.log(trailers);
       for (let i = 0; i < trailers.length; i++) {
         if (
           trailers[i].trailernumber == this.trailer.trailerNumber &&

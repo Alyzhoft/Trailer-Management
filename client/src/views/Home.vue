@@ -148,7 +148,6 @@ export default {
     },
     async handleEntryPrimaryLocation() {
       this.clickedDock = "Primary Lot";
-      console.log(this.clickedDock);
       this.entry = true;
     },
     async handleEntryModalClose() {
@@ -160,12 +159,10 @@ export default {
       this.clickedDock = "";
     },
     async handleAddTrailer(value) {
-      console.log(value);
       this.clickedDock = value;
       this.entry = true;
     },
     async handleInTrailer(value) {
-      console.log(value);
       this.clickedDock = value;
       this.inTrailer = true;
     },
@@ -173,7 +170,6 @@ export default {
       this.inTrailer = false;
     },
     async handleTrailerClicked(value) {
-      console.log(value);
       this.trailer.carrier = value.carrier;
       this.trailer.category = value.category;
       this.trailer.status = value.status;
