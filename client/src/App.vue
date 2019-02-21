@@ -16,10 +16,13 @@
       <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
+            <a class="nav-link" href="/#/requests">Requests</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="/#/offsitelot">Off-Site Lot</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/#/departed">Departed</a>
+            <a class="nav-link" href="/#/search">Search</a>
           </li>
         </ul>
       </div>
@@ -34,8 +37,17 @@ export default {
   mounted() {
     this.getTrailers();
     this.getDepartedTrailers();
+    this.getRequests();
+    this.getUserData();
   },
-  methods: mapActions(["getTrailers", "getDepartedTrailers"]),
+  methods: {
+    ...mapActions([
+      "getTrailers",
+      "getDepartedTrailers",
+      "getRequests",
+      "getUserData"
+    ])
+  },
   sockets: {
     connect: function() {},
 
@@ -57,8 +69,20 @@ export default {
       this.$store.dispatch("UPDATE_TRAILER", trailers);
     },
 
-    delete: function(trailers) {
+    deleteTrailer: function(trailers) {
       this.$store.dispatch("DELETE_TRAILER", trailers);
+    },
+
+    request: function(requests) {
+      this.$store.dispatch("REQUEST", requests);
+    },
+
+    deleteRequest: function(requests) {
+      this.$store.dispatch("DELETE_REQUEST", requests);
+    },
+
+    completed: function(res) {
+      this.$store.dispatch("COMPLETED", res);
     },
 
     departed: function(res) {
@@ -68,4 +92,11 @@ export default {
   }
 };
 </script>
+
+<style>
+.logout:hover,
+.logout:focus {
+  cursor: pointer;
+}
+</style>
 

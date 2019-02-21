@@ -8,9 +8,11 @@
       </div>
       <div class="modal-body-custom">
         <div class="trailerManagement container mt-3">
-          <!-- <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/> -->
+          <!--
+            <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+          -->
         </div>
-        <form>
+        <form v-on:submit.prevent="checkForm">
           <fieldset>
             <div>
               <label for="Category">Category</label>
@@ -20,11 +22,7 @@
                 id="Category dropdownMenuOffset"
                 required
               >
-                <option>Dunnage</option>
-                <option>Empties for Shipping</option>
-                <option>Patio Trailers</option>
-                <option>Storage/Misc. Shipping Trailers</option>
-                <option>Supermarket/Legacy/Eng</option>
+                <option v-for="c in categories" :key="c">{{c}}</option>
               </select>
             </div>
             <div>
@@ -35,22 +33,15 @@
                 id="Carrier dropdownMenuOffset"
                 required
               >
-                <option>Brockman</option>
-                <option>Dart</option>
-                <option>Filmore</option>
-                <option>Ryder</option>
-                <option>Taylor</option>
-                <option>Transport</option>
-                <option>Wale</option>
-                <option>Wali</option>
+                <option v-for="c in carriers" :key="c">{{c}}</option>
               </select>
             </div>
             <div>
               <label for="trailerNumber">Trailer Number</label>
               <input
-                type="text"
-                minlength="4"
-                maxlength="5"
+                type="number"
+                minlength="3"
+                maxlength="7"
                 v-model="trailer.trailerNumber"
                 class="form-control"
                 id="trailerNumber"
@@ -68,15 +59,36 @@
                 readonly
               >
             </div>
+            <div
+              class="form-group mb-2"
+              v-if="
+                trailer.category == 'Patio Trailers' ||
+                  trailer.category == 'Storage/Misc. Shipping Trailers'
+              "
+            >
+              <label for="shipDate">Ship Date</label>
+              <div class="input-group mb-3">
+                <input type="date" v-model="shipDate" class="form-control">
+                <div class="input-group-append">
+                  <button @click="addDate();" class="btn btn-outline-primary" type="button">+</button>
+                </div>
+                <div class="input-group" v-if="trailer.shipDates.length > 0">
+                  <span
+                    v-for="sd in trailer.shipDates"
+                    :key="sd"
+                    class="mt-1 mr-1 badge badge-pill badge-primary"
+                  >
+                    {{ sd }}
+                    <span v-on:click.stop="removeDate(sd);" class="addBtn">x</span>
+                  </span>
+                </div>
+              </div>
+            </div>
             <div class="form-froup mb-2">
               <label for="trailerStatus">Status</label>
               <textarea class="form-control" v-model="trailer.status" form="trailerStatus" required></textarea>
             </div>
-            <button
-              type="button"
-              @click="addTrailer();"
-              class="btn btn-primary mt-1 mr-1 mb-1"
-            >Add Trailer</button>
+            <input class="btn btn-primary mt-1 mr-1 mb-1" type="submit" value="Add Trailer">
             <button type="button" @click="$emit('close');" class="btn btn-secondary">Cancel</button>
           </fieldset>
         </form>
@@ -93,58 +105,27 @@ export default {
   },
   data: function() {
     return {
+      shipDate: "",
       trailer: {
         trailerNumber: "",
         carrier: "",
         trailerLocation: this.clickedDock,
         category: "",
-        status: ""
-      },
-      docks: [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-        25,
-        26,
-        27,
-        28,
-        29,
-        30,
-        31,
-        32,
-        33,
-        34,
-        35,
-        36,
-        "Lot A",
-        "Lot B",
-        "Off-Site Lot"
-      ]
+        status: "",
+        shipDates: []
+      }
     };
   },
+  computed: {
+    carriers() {
+      return this.$store.state.carriers.sort();
+    },
+    categories() {
+      return this.$store.state.categories.sort();
+    }
+  },
   methods: {
-    async addTrailer() {
+    async checkForm() {
       this.create = true;
 
       if (
@@ -162,11 +143,7 @@ export default {
 
       if (this.create) {
         let res = await this.$socket.emit("create", this.trailer);
-        // this.modal.visible = true;
-        // this.modal.header = "Created";
-        // this.modal.text = `Trailer ${
-        //   this.trailer.trailerNumber
-        // } was Created at Dock: ${this.trailer.trailerLocation}`;
+
         this.trailer.trailerNumber = "";
         this.trailer.carrier = "";
         this.trailer.trailerLocation = "";
@@ -174,11 +151,19 @@ export default {
         this.trailer.status = "";
         this.$emit("close");
       } else {
-        // this.modal.visible = true;
-        // this.modal.header = "Error";
-        // this.modal.text =
-        //   "Trailer Already at Location. Please Select a different Location";
         this.create = true;
+      }
+    },
+    addDate() {
+      if (this.shipDate != "") {
+        this.trailer.shipDates.push(this.shipDate);
+        this.shipDate = "";
+      }
+    },
+    removeDate(sd) {
+      const index = this.trailer.shipDates.indexOf(sd);
+      if (index > -1) {
+        this.trailer.shipDates.splice(index, 1);
       }
     }
   }

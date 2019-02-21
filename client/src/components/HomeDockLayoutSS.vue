@@ -3,7 +3,7 @@
     <div>
       <div
         v-for="dock in dockDoors"
-        v-on:click="handleEntryLocation(dock)"
+        v-on:click="handleEntryLocation(dock);"
         :key="dock"
         class="trailers"
         id="left"
@@ -11,15 +11,17 @@
         <h6>{{ dock }}</h6>
         <div
           v-for="trailer in trailers"
-          v-if="trailer.trailerLocation == dock"
+          v-if="trailer.trailerlocation == dock"
           v-on:click.stop="handleOnTrialerClick(trailer);"
           :key="trailer._id"
           :class="{
-            'inner-seat': trailer.trailerLocation == dock,
-            populated: trailer.trailerLocation == dock
+            'inner-seat': trailer.trailerlocation == dock,
+            populated: trailer.trailerlocation == dock,
+            inProcess: trailer.category == 'In Process',
+            completed: trailer.category == 'Completed'
           }"
         >
-          <p>{{ trailer.trailerNumber }}</p>
+          <p>{{ trailer.trailernumber }}</p>
         </div>
       </div>
     </div>
@@ -36,49 +38,15 @@ export default {
   },
   data: () => ({
     clicked: false,
-    clickedTrailer: {},
-    dockDoors: [
-      36,
-      35,
-      34,
-      33,
-      32,
-      31,
-      30,
-      29,
-      28,
-      27,
-      26,
-      25,
-      24,
-      23,
-      22,
-      21,
-      20,
-      19,
-      18,
-      17,
-      16,
-      15,
-      14,
-      13,
-      12,
-      11,
-      10,
-      9,
-      8,
-      7,
-      6,
-      5,
-      4,
-      3,
-      2,
-      1
-    ]
+    clickedTrailer: {}
   }),
   computed: {
     trailers() {
       return this.$store.state.trailers;
+    },
+
+    dockDoors() {
+      return this.$store.state.dockDoors;
     }
   },
   methods: {
@@ -106,7 +74,7 @@ export default {
 }
 .trailers {
   width: 20px;
-  height: 85px;
+  height: 7em;
   background: #d8d8d8;
   position: relative;
   left: 15px;
@@ -126,12 +94,12 @@ export default {
 }
 
 .inner-seat {
-  width: 20px;
-  height: 68px;
+  width: 100%;
+  height: 5.9em;
   border-radius: 4px;
   top: 50%;
   left: 50%;
-  margin: -25px 0px 0px -10px;
+  margin: -38px 0px 0px -10px;
   background: #d8d8d8;
   position: absolute;
 }
@@ -142,9 +110,22 @@ h6 {
 }
 
 .populated {
-  background-color: green;
+  background-color: blue;
   color: white;
   text-align: center;
+}
+
+.inProcess {
+  background-color: gold;
+}
+
+.inProcess p {
+  color: black;
+  font-weight: bold;
+}
+
+.completed {
+  background-color: green;
 }
 
 .populated:hover,

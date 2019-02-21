@@ -4,11 +4,12 @@
     <div class="modal-content-custom">
       <div class="modal-header-custom">
         <span class="closeBtn" @click="$emit('close');">&times;</span>
-        <h2>{{ modalInfo.header }}</h2>
+        <h2>Delete</h2>
       </div>
       <div class="modal-body-custom">
-        <p>{{ modalInfo.text }}</p>
-        <button @click="$emit('close');" class="btn btn-primary">Ok</button>
+        <p>Are you sure you want to delete?</p>
+        <button class="btn btn-danger mr-2 inline" @click="remove();">Yes</button>
+        <button class="btn btn-primary inline" @click="cancel();">No</button>
       </div>
     </div>
   </div>
@@ -18,21 +19,49 @@
 export default {
   name: "modal",
   props: {
-    modalInfo: Object
+    deleteRequest: String,
+    request: Object
+  },
+  data: function() {
+    return {};
+  },
+  methods: {
+    async remove() {
+      let res;
+      switch (this.deleteRequest) {
+        case "Request":
+          res = await this.$socket.emit("deleteRequest", this.request);
+          break;
+
+        case "Trailer":
+          res = await this.$socket.emit("deleteTrailer", this.request);
+          break;
+      }
+      this.$emit("close");
+    },
+    async cancel() {
+      this.$emit("close");
+    }
   }
 };
 </script>
 
 <style scoped>
+.inline {
+  display: inline-block;
+  margin-right: 10px;
+  width: calc(50% - 10px);
+}
+
 /* Modal Header */
 .modal-header-custom {
-  padding: 2px 16px;
+  padding: 0px 16px;
   color: white;
 }
 
 /* Modal Body */
 .modal-body-custom {
-  padding: 2px 16px;
+  padding: 0px 16px;
 }
 
 /* The Modal (background) */
@@ -57,7 +86,7 @@ export default {
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 50%;
+  width: 30%;
   border-radius: 20px;
 }
 

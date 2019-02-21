@@ -13,7 +13,7 @@
         <form>
           <fieldset>
             <div class="inline">
-              <label for="trailerLocation">Current Trailer Location</label>
+              <label for="trailerlocation">Current Trailer Location</label>
               <input
                 type="text"
                 v-model="trailer.currentTrailerLocation"
@@ -25,11 +25,7 @@
             <div class="inline">
               <label for="trailerLocation">New Trailer Location</label>
               <select class="form-control" v-model="trailer.trailerLocation" id="trailerLocation">
-                <option v-for="dockNumber in docks" :key="dockNumber">
-                  {{
-                  dockNumber
-                  }}
-                </option>
+                <option v-for="dockNumber in dockDoors" :key="dockNumber">{{ dockNumber }}</option>
               </select>
             </div>
             <button
@@ -66,46 +62,45 @@ export default {
         text: "",
         header: ""
       },
-      docks: [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-        25,
-        26,
-        27,
-        28,
-        29,
-        30,
-        31,
-        32,
-        33,
-        34,
-        35,
+      dockDoors: [
+        "Primary Lot",
+        "Off-Site Lot",
+        37,
         36,
-        "Lot A",
-        "Lot B",
-        "Off-Site Lot"
+        35,
+        34,
+        33,
+        32,
+        31,
+        30,
+        29,
+        28,
+        25,
+        24,
+        23,
+        22,
+        21,
+        20,
+        19,
+        "18a",
+        18,
+        17,
+        16,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
       ]
     };
   },
@@ -115,12 +110,11 @@ export default {
       const trailers = this.$store.state.trailers;
 
       if (
-        this.trailer.trailerLocation != "Lot A" &&
-        this.trailer.trailerLocation != "Lot B" &&
+        this.trailer.trailerLocation != "Primary Lot" &&
         this.trailer.trailerLocation != "Off-Site Lot"
       ) {
         for (let i = 0; i < trailers.length; i++) {
-          if (trailers[i].trailerLocation === this.trailer.trailerLocation) {
+          if (trailers[i].trailerlocation === this.trailer.trailerLocation) {
             this.update = false;
           }
         }
@@ -131,7 +125,7 @@ export default {
 
         this.trailer.currentTrailerLocation = this.trailer.trailerLocation;
         this.$emit("close", this.trailer.trailerLocation);
-        // this.trailer.trailerLocation = "";
+        // this.trailer.trailerlocation = "";
         // this.modal.header = "Moved";
         // this.modal.text = "Trailer Moved";
       } else {

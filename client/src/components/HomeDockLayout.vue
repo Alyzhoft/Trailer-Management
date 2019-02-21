@@ -1,12 +1,9 @@
 <template>
   <div>
-    <!-- <InfoModal :clickedTrailer="this.clickedTrailer" v-if="clicked" @close="handleModalClose()"/> -->
-    <!-- <EntryModal :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose()"/> -->
-
     <div class="noWrap">
       <div
         v-for="dock in dockDoors"
-        v-on:click="handleEntryLocation(dock)"
+        v-on:click="handleEntryLocation(dock);"
         :key="dock"
         class="trailers"
         id="left"
@@ -14,15 +11,17 @@
         <h6>{{ dock }}</h6>
         <div
           v-for="trailer in trailers"
-          v-if="trailer.trailerLocation == dock"
+          v-if="trailer.trailerlocation == dock"
           :key="trailer._id"
-          v-on:click.stop="handleOnTrialerClick(trailer)"
+          v-on:click.stop="handleOnTrialerClick(trailer);"
           :class="{
-            'inner-seat': trailer.trailerLocation == dock,
-            populated: trailer.trailerLocation == dock
+            'inner-seat': trailer.trailerlocation == dock,
+            populated: trailer.trailerlocation == dock,
+            inProcess: trailer.category == 'In Process',
+            completed: trailer.category == 'Completed'
           }"
         >
-          <p>{{ trailer.trailerNumber }}</p>
+          <p>{{ trailer.trailernumber }}</p>
         </div>
       </div>
     </div>
@@ -43,49 +42,14 @@ export default {
     clicked: false,
     entry: false,
     clickedTrailer: {},
-    clickedDock: "",
-    dockDoors: [
-      36,
-      35,
-      34,
-      33,
-      32,
-      31,
-      30,
-      29,
-      28,
-      27,
-      26,
-      25,
-      24,
-      23,
-      22,
-      21,
-      20,
-      19,
-      18,
-      17,
-      16,
-      15,
-      14,
-      13,
-      12,
-      11,
-      10,
-      9,
-      8,
-      7,
-      6,
-      5,
-      4,
-      3,
-      2,
-      1
-    ]
+    clickedDock: ""
   }),
   computed: {
     trailers() {
       return this.$store.state.trailers;
+    },
+    dockDoors() {
+      return this.$store.state.dockDoors;
     }
   },
   methods: {
@@ -96,8 +60,7 @@ export default {
     },
     async handleEntryLocation(dock) {
       this.clickedDock = dock.toString();
-      this.$emit("entry", this.clickedDock);
-      // this.entry = true;
+      this.$emit("inTrailer", this.clickedDock);
     },
     async handleModalClose() {
       this.clickedTrailer = {};
@@ -116,17 +79,10 @@ export default {
   white-space: nowrap;
 }
 
-.modalTest {
-  width: 20px;
-  height: 68px;
-  border-radius: 4px;
-  margin: -98px 0px 0px 0px;
-  /* position: relative; */
-}
-
 .populated p {
   font-size: 10px;
   color: white;
+  font-weight: bold;
   position: relative;
   right: 7px;
   writing-mode: vertical-lr;
@@ -135,38 +91,50 @@ export default {
 
 .trailers {
   width: 1.54%;
-  height: 85px;
+  height: 7em;
   background: #d8d8d8;
   display: inline-block;
   position: relative;
-  margin-right: 15px;
-  margin-top: 1.9%;
-  left: 10px;
+  margin-right: 1.2%;
+  margin-top: -0.5%;
+  left: 1%;
   text-align: center;
   color: white;
 }
 
 .inner-seat {
-  width: 20px;
-  height: 68px;
+  width: 100%;
+  height: 6.1em;
   border-radius: 4px;
-  margin: -98px 0px 0px 0px;
+  margin: -127px 0px 0px 0px;
   background: #d8d8d8;
-  /* position: relative; */
+  position: relative;
 }
 
 h6 {
-  margin-top: 70px;
+  margin-top: 100px;
   color: black;
   background: white;
 }
 
 .populated {
-  background-color: green;
+  background-color: blue;
   color: white;
   text-align: center;
 }
 
+.inProcess {
+  background-color: gold;
+}
+
+.inProcess p {
+  color: black;
+  font-weight: bold;
+}
+
+.completed {
+  background-color: green;
+}
 .populated:hover,
 .populated:focus {
   color: #000;

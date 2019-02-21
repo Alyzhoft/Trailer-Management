@@ -8,7 +8,9 @@
       </div>
       <div class="modal-body-custom">
         <div class="trailerManagement container mt-3">
-          <!-- <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/> -->
+          <!--
+            <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+          -->
         </div>
         <form>
           <fieldset>
@@ -19,11 +21,7 @@
                 v-model="trailer.category"
                 id="Category dropdownMenuOffset"
               >
-                <option>Dunnage</option>
-                <option>Empties for Shipping</option>
-                <option>Patio Trailers</option>
-                <option>Storage/Misc. Shipping Trailers</option>
-                <option>Supermarket/Legacy/Eng</option>
+                <option v-for="c in categories" :key="c">{{ c }}</option>
               </select>
             </div>
             <div class="inline">
@@ -33,27 +31,50 @@
                 v-model="trailer.carrier"
                 id="Carrier dropdownMenuOffset"
               >
-                <option>Brockman</option>
-                <option>Dart</option>
-                <option>Filmore</option>
-                <option>Ryder</option>
-                <option>Taylor</option>
-                <option>Transport</option>
-                <option>Wale</option>
-                <option>Wali</option>
+                <option v-for="c in carriers" :key="c">{{c}}</option>
               </select>
             </div>
             <div class="inline">
-              <label for="trailerNumber">Trailer Number</label>
+              <label for="trailernumber">Trailer Number</label>
               <input
                 type="text"
-                minlength="4"
-                maxlength="6"
+                minlength="3"
+                maxlength="7"
                 v-model="trailer.trailerNumber"
                 class="form-control"
-                id="trailerNumber"
+                id="trailernumber"
                 placeholder="Enter Trailer Number"
               >
+            </div>
+            <div
+              class="form-group mb-2"
+              v-if="
+                trailer.category == 'Patio Trailers' ||
+                  trailer.category == 'Storage/Misc. Shipping Trailers'
+              "
+            >
+              <label for="shipDate">Ship Date</label>
+              <div class="input-group mb-3">
+                <input type="date" v-model="shipDate" class="form-control">
+                <div class="input-group-append">
+                  <button @click="addDate();" class="btn btn-outline-primary" type="button">+</button>
+                </div>
+                <div
+                  class="input-group"
+                  v-if="
+                    trailer.shipDates != null && trailer.shipDates.length > 0
+                  "
+                >
+                  <span
+                    v-for="sd in trailer.shipDates"
+                    :key="sd"
+                    class="mt-1 mr-1 badge badge-pill badge-primary"
+                  >
+                    {{ sd }}
+                    <span v-on:click.stop="removeDate(sd);" class="addBtn">x</span>
+                  </span>
+                </div>
+              </div>
             </div>
             <div class="form-froup mb-2">
               <label for="trailerStatus">Status</label>
@@ -78,56 +99,37 @@ export default {
   props: ["clickedTrailer"],
   data: function() {
     return {
+      shipDate: "",
       trailer: {
         trailerNumber: this.clickedTrailer.trailerNumber,
         carrier: this.clickedTrailer.carrier,
         trailerLocation: this.clickedTrailer.trailerLocation,
         category: this.clickedTrailer.category,
+        shipDates: [],
         status: this.clickedTrailer.status,
         _id: this.clickedTrailer._id
-      },
-      docks: [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-        25,
-        26,
-        27,
-        28,
-        29,
-        30,
-        31,
-        32,
-        33,
-        34,
-        35,
-        36,
-        "Lot A",
-        "Lot B",
-        "Off-Site Lot"
-      ]
+      }
     };
+  },
+  computed: {
+    carriers() {
+      return this.$store.state.carriers.sort();
+    },
+    categories() {
+      return this.$store.state.categories.sort();
+    }
+  },
+  mounted() {
+    let shipDates = "";
+    if (this.clickedTrailer.shipDates != null) {
+      if (this.clickedTrailer.shipDates.length > 1) {
+        for (let i = 0; i < this.clickedTrailer.shipDates.length; i++) {
+          this.trailer.shipDates.push(this.clickedTrailer.shipDates[i]);
+        }
+      } else {
+        this.trailer.shipDates.push(this.clickedTrailer.shipDates[0]);
+      }
+    }
   },
   methods: {
     async updateTrailer() {
@@ -136,6 +138,18 @@ export default {
       // this.modal.visible = true;
       // this.modal.header = "Updated";
       // this.modal.text = "Trailer Updated";
+    },
+    addDate() {
+      if (this.shipDate != "") {
+        this.trailer.shipDates.push(this.shipDate);
+        this.shipDate = "";
+      }
+    },
+    removeDate(sd) {
+      const index = this.trailer.shipDates.indexOf(sd);
+      if (index > -1) {
+        this.trailer.shipDates.splice(index, 1);
+      }
     }
   }
 };
@@ -168,7 +182,7 @@ export default {
   display: block; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  padding-top: 50px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */

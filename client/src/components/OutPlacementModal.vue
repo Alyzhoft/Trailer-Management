@@ -4,11 +4,11 @@
     <div class="modal-content-custom">
       <div class="modal-header-custom">
         <span class="closeBtn" @click="$emit('close');">&times;</span>
-        <h2>{{ modalInfo.header }}</h2>
+        <h2>Out Placement</h2>
       </div>
       <div class="modal-body-custom">
-        <p>{{ modalInfo.text }}</p>
-        <button @click="$emit('close');" class="btn btn-primary">Ok</button>
+        <button class="btn btn-primary mr-2" @click="primaryLot();">Primary Lot</button>
+        <button class="btn btn-primary" @click="offSiteLot();">Off-Site Lot</button>
       </div>
     </div>
   </div>
@@ -18,21 +18,51 @@
 export default {
   name: "modal",
   props: {
-    modalInfo: Object
+    request: Object
+  },
+  data: function() {
+    return {};
+  },
+  methods: {
+    async primaryLot() {
+      this.request.outPlacement = "Primary Lot";
+      let res = await this.$socket.emit("completed", this.request);
+      this.$emit("close");
+    },
+    async lotB() {
+      this.request.outPlacement = "Lot B";
+      let res = await this.$socket.emit("completed", this.request);
+      this.$emit("close");
+    },
+    async offSiteLot() {
+      this.request.outPlacement = "Off-Site Lot";
+      let res = await this.$socket.emit("completed", this.request);
+      this.$emit("close");
+    }
   }
 };
 </script>
 
 <style scoped>
+/* .right {
+  float: right;
+} */
+
+.inline {
+  display: inline-block;
+  margin-right: 10px;
+  width: calc(50% - 10px);
+}
+
 /* Modal Header */
 .modal-header-custom {
-  padding: 2px 16px;
+  padding: 0px 16px;
   color: white;
 }
 
 /* Modal Body */
 .modal-body-custom {
-  padding: 2px 16px;
+  padding: 0px 16px;
 }
 
 /* The Modal (background) */
@@ -57,7 +87,7 @@ export default {
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 50%;
+  width: 30%;
   border-radius: 20px;
 }
 

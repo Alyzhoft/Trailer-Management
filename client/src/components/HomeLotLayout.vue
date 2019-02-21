@@ -1,19 +1,27 @@
 <template>
   <div class="container">
-    <!-- <InfoModal :clickedTrailer="this.clickedTrailer" v-if="clicked" @close="handleModalClose()"/> -->
-
+    <!--
+      <InfoModal :clickedTrailer="this.clickedTrailer" v-if="clicked" @close="handleModalClose()"/>
+    -->
     <div
       v-for="trailer in trailers"
-      v-if="trailer.trailerLocation == lot"
+      v-if="trailer.trailerlocation == lot"
       v-on:click="handleOnTrialerClick(trailer);"
       :key="trailer._id"
       id="lot"
       :class="{
-      'listLot': trailer.trailerLocation == lot,
-      populated: trailer.trailerLocation == lot
+        listLot: trailer.trailerlocation == lot,
+        populated: trailer.trailerlocation == lot,
+        inProcess: trailer.category == 'In Process',
+        completed: trailer.category == 'Completed',
+        receiving: trailer.category == 'Receiving'
       }"
+      data-toggle="tooltip"
+      data-placement="top"
+      title
+      :data-original-title="trailer.carrier"
     >
-      <p>{{ trailer.trailerNumber }}</p>
+      <p>{{ trailer.trailernumber }}</p>
     </div>
   </div>
 </template>
@@ -38,6 +46,11 @@ export default {
       return this.$store.state.trailers;
     }
   },
+  mounted() {
+    $(function() {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+  },
   methods: {
     async handleOnTrialerClick(trailer) {
       this.clickedTrailer = trailer;
@@ -60,7 +73,7 @@ h4 {
 
 .listLot {
   width: 20px;
-  height: 68px;
+  height: 95px;
   background: #d8d8d8;
   margin: 4px;
   margin-top: 2%;
@@ -71,18 +84,35 @@ h4 {
 }
 
 .populated {
-  background-color: green;
-  color: white;
+  background-color: blue;
   text-align: center;
 }
 
 p {
   color: white;
+  font-weight: bold;
   font-size: 10px;
   position: relative;
   right: 7px;
   writing-mode: vertical-lr;
   text-orientation: upright;
+}
+
+.inProcess {
+  background-color: gold;
+}
+
+.inProcess p {
+  color: black;
+  font-weight: bold;
+}
+
+.completed {
+  background-color: green;
+}
+
+.receiving {
+  background-color: red;
 }
 
 #lot {

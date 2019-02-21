@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <InfoModal :clickedTrailer="this.clickedTrailer" v-if="clicked" @close="handleModalClose()"/>
+    <InfoModal :clickedTrailer="this.clickedTrailer" v-if="clicked" @close="handleModalClose();"/>
     <div>
       <div v-for="dock in sectionArray" :key="dock" class="outer-seat" id="div-inline">
         <h4>{{ dock }}</h4>

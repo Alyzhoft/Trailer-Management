@@ -20,15 +20,35 @@
         <div class="modal-content-custom">
           <div class="modal-header-custom">
             <span class="closeBtn" @click="$emit('close');">&times;</span>
-            <h2>{{this.trailer.trailerNumber}}</h2>
+            <h2>{{ this.trailer.trailerNumber }}</h2>
           </div>
           <div class="modal-body-custom">
-            <h5>{{this.trailer.carrier}}</h5>
-            <h5>{{this.trailer.category}}</h5>
-            <p>{{this.trailer.status}}</p>
-            <button @click="handleEditClicked()" class="btn btn-primary mr-1 mb-1">Edit</button>
-            <button @click="handleMoveClicked()" class="btn btn-primary mr-1 mb-1">Move</button>
-            <button @click="deleteTrailer()" class="btn btn-danger mb-1">Delete</button>
+            <h5>
+              Carrier:
+              <span>{{ this.trailer.carrier }}</span>
+            </h5>
+            <h5>
+              Category:
+              <span>{{ this.trailer.category }}</span>
+            </h5>
+            <h5
+              v-if="
+                trailer.shipDates != null &&
+                  trailer.shipDates.length > 0 &&
+                  trailer.shipDates != 'undefined'
+              "
+            >
+              Ship Dates:
+              <span
+                v-for="sd in this.trailer.shipDates"
+                :key="sd"
+                class="inline"
+              >{{ sd }}</span>
+            </h5>
+            <p>{{ this.trailer.status }}</p>
+            <button @click="handleEditClicked();" class="btn btn-primary mr-1 mb-1">Edit</button>
+            <button @click="handleMoveClicked();" class="btn btn-primary mr-1 mb-1">Move</button>
+            <button @click="deleteTrailer();" class="btn btn-danger mb-1">Delete</button>
           </div>
         </div>
       </div>
@@ -42,10 +62,7 @@ import MoveModalSS from "@/components/MoveModalSS.vue";
 
 export default {
   name: "infoModal",
-  props: {
-    clickedTrailer: Object,
-    windowWidth: Number
-  },
+  props: ["clickedTrailer", "windowWidth"],
   components: {
     EditModalSS,
     MoveModalSS
@@ -59,6 +76,7 @@ export default {
         carrier: this.clickedTrailer.carrier,
         trailerLocation: this.clickedTrailer.trailerLocation,
         category: this.clickedTrailer.category,
+        shipDates: this.clickedTrailer.shipDates,
         status: this.clickedTrailer.status,
         _id: this.clickedTrailer._id
       }
@@ -85,7 +103,6 @@ export default {
     },
     async handleEditModalClose(value) {
       this.edit = false;
-      console.log(value);
       this.trailer.trailerNumber = value.trailerNumber;
       this.trailer.carrier = value.carrier;
       this.trailer.category = value.category;
@@ -119,7 +136,7 @@ export default {
   display: block; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 5; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  padding-top: 20px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -148,6 +165,20 @@ export default {
   color: #aaaaaa;
   font-size: 28px;
   font-weight: bold;
+}
+
+.inline {
+  display: inline-block;
+  margin-right: 10px;
+  /* width: calc(50% - 10px); */
+}
+
+h5 {
+  font-weight: bold;
+}
+
+h5 span {
+  font-weight: normal;
 }
 
 .closeBtn:hover,

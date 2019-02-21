@@ -1,27 +1,30 @@
 <template>
   <div class="container">
     <div v-if="windowWidth > 1230">
-      <EntryModal :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose()"/>
-      <InfoModal :clickedTrailer="this.trailer" v-if="clicked" @close="handleModalClose()"/>
+      <EntryModal :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose();"/>
+      <InfoModal :clickedTrailer="this.trailer" v-if="clicked" @close="handleModalClose();"/>
     </div>
     <div v-else>
-      <EntryModalSS :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose()"/>
-      <InfoModalSS :clickedTrailer="this.trailer" v-if="clicked" @close="handleModalClose()"/>
+      <EntryModalSS :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose();"/>
+      <InfoModalSS :clickedTrailer="this.trailer" v-if="clicked" @close="handleModalClose();"/>
     </div>
     <h1>Off-Site Lot</h1>
     <span v-on:click.stop="handleEntryOffSiteLocation" class="addBtn">+</span>
     <div
       v-for="trailer in trailers"
-      v-if="trailer.trailerLocation == lot"
+      v-if="trailer.trailerlocation == lot"
       v-on:click="handleOnTrialerClick(trailer);"
       :key="trailer._id"
       id="lot"
       :class="{
-      'listLot': trailer.trailerLocation == lot,
-      populated: trailer.trailerLocation == lot
+        listLot: trailer.trailerlocation == lot,
+        populated: trailer.trailerlocation == lot,
+        inProcess: trailer.category == 'In Process',
+        completed: trailer.category == 'Completed',
+        receiving: trailer.category == 'Receiving'
       }"
     >
-      <p>{{ trailer.trailerNumber }}</p>
+      <p>{{ trailer.trailernumber }}</p>
     </div>
   </div>
 </template>
@@ -82,8 +85,8 @@ export default {
       this.trailer.carrier = trailer.carrier;
       this.trailer.category = trailer.category;
       this.trailer.status = trailer.status;
-      this.trailer.trailerLocation = trailer.trailerLocation;
-      this.trailer.trailerNumber = trailer.trailerNumber;
+      this.trailer.trailerLocation = trailer.trailerlocation;
+      this.trailer.trailerNumber = trailer.trailernumber;
       this.trailer.status = trailer.status;
       this.trailer._id = trailer._id;
       this.clicked = true;
@@ -142,7 +145,7 @@ h4 {
 
 .listLot {
   width: 20px;
-  height: 68px;
+  height: 95px;
   background: #d8d8d8;
   margin: 4px;
   margin-top: 2%;
@@ -153,9 +156,27 @@ h4 {
 }
 
 .populated {
-  background-color: green;
+  background: blue;
   color: white;
+  font-weight: bold;
   text-align: center;
+}
+
+.inProcess {
+  background-color: gold;
+}
+
+.inProcess p {
+  color: black;
+  font-weight: bold;
+}
+
+.completed {
+  background-color: green;
+}
+
+.receiving {
+  background-color: red;
 }
 
 p {

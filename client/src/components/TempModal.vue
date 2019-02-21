@@ -2,13 +2,10 @@
   <div id="myModal" class="modal-custom">
     <!-- Modal content -->
     <div class="modal-content-custom">
-      <div class="modal-header-custom">
-        <span class="closeBtn" @click="$emit('close');">&times;</span>
-        <h2>{{ modalInfo.header }}</h2>
-      </div>
       <div class="modal-body-custom">
-        <p>{{ modalInfo.text }}</p>
-        <button @click="$emit('close');" class="btn btn-primary">Ok</button>
+        <span class="closeBtn" @click="$emit('close');">&times;</span>
+        <button class="btn btn-primary mr-2" @click="addTrailer();">Add</button>
+        <button class="btn btn-primary" @click="inTrailer();">In</button>
       </div>
     </div>
   </div>
@@ -18,21 +15,44 @@
 export default {
   name: "modal",
   props: {
-    modalInfo: Object
+    clickedDock: String
+  },
+  data: function() {
+    return {};
+  },
+  methods: {
+    async addTrailer() {
+      this.$emit("close");
+      this.$emit("addTrailer", this.clickedDock);
+    },
+    async inTrailer() {
+      this.$emit("close");
+      this.$emit("inTrailer", this.clickedDock);
+    }
   }
 };
 </script>
 
 <style scoped>
+/* .right {
+  float: right;
+} */
+
+.inline {
+  display: inline-block;
+  margin-right: 10px;
+  width: calc(50% - 10px);
+}
+
 /* Modal Header */
 .modal-header-custom {
-  padding: 2px 16px;
+  padding: 0px 16px;
   color: white;
 }
 
 /* Modal Body */
 .modal-body-custom {
-  padding: 2px 16px;
+  padding: 0px 16px;
 }
 
 /* The Modal (background) */
@@ -57,8 +77,13 @@ export default {
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 50%;
+  width: 30%;
   border-radius: 20px;
+}
+
+.btn {
+  display: inline-block;
+  width: calc(50% - 10px);
 }
 
 /* The Close Button */
