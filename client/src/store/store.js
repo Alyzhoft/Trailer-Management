@@ -18,6 +18,7 @@ export const store = new Vuex.Store({
       "In Process",
       "Patio Trailers",
       "Receiving",
+      "Receiving - Rush",
       "Storage/Misc. Shipping Trailers",
       "Supermarket/Legacy/Eng"
     ],
@@ -37,7 +38,11 @@ export const store = new Vuex.Store({
       "Keene’s",
       "XPO Logistics",
       "Universal",
-      "XTRA Lease"
+      "XTRA Lease",
+      "Brockman",
+      "Fillmore",
+      "Renewal Green",
+      "Renewal Black"
     ],
     dockDoors: [
       37,

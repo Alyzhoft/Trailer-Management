@@ -1,21 +1,19 @@
 const { Pool, Client } = require("pg");
 
 const client = new Client({
-  host: "trailermanagementdb.postgres.database.azure.com",
-  user: "Alyzhoft@trailermanagementdb",
-  password: "A!87654321",
+  host: "localhost",
+  user: "postgres",
+  password: "Al475500",
   database: "Trailer Management",
-  port: 5432,
-  ssl: true
+  port: 5432
 });
 
 const pool = new Pool({
-  host: "trailermanagementdb.postgres.database.azure.com",
-  user: "Alyzhoft@trailermanagementdb",
-  password: "A!87654321",
+  host: "localhost",
+  user: "postgres",
+  password: "Al475500",
   database: "Trailer Management",
-  port: 5432,
-  ssl: true
+  port: 5432
 });
 
 module.exports = {

@@ -21,7 +21,9 @@
         populated: trailer.trailerlocation == lot,
         inProcess: trailer.category == 'In Process',
         completed: trailer.category == 'Completed',
-        receiving: trailer.category == 'Receiving'
+        receiving: trailer.category == 'Receiving',
+        receivingRush: trailer.category == 'Receiving - Rush',
+        patioDoors: trailer.category == 'Patio Trailers'
       }"
     >
       <p>{{ trailer.trailernumber }}</p>
@@ -176,7 +178,15 @@ h4 {
 }
 
 .receiving {
+  background-color: purple;
+}
+
+.receivingRush {
   background-color: red;
+}
+
+.patioDoors {
+  background-color: rgb(255, 153, 0);
 }
 
 p {

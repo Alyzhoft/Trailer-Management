@@ -40,8 +40,6 @@
                   <option>E-Track</option>
                   <option>Reinforced</option>
                   <option>Not Reinforced</option>
-                  <option>Green</option>
-                  <option>Black</option>
                   <option>TPOD</option>
                 </select>
               </div>

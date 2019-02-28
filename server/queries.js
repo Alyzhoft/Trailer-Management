@@ -31,7 +31,8 @@ const insertTrailer = async trailer => {
   let shipDates = "";
   if (
     trailer.category == "Patio Trailers" ||
-    trailer.category == "Storage/Misc. Shipping Trailers"
+    trailer.category == "Storage/Misc. Shipping Trailers" ||
+    trailer.category == "In Process"
   ) {
     if (trailer.shipDates.length > 1) {
       for (let i = 0; i < trailer.shipDates.length; i++) {
@@ -73,7 +74,8 @@ const updateTrailer = async trailer => {
   let shipDates = "";
   if (
     trailer.category == "Patio Trailers" ||
-    trailer.category == "Storage/Misc. Shipping Trailers"
+    trailer.category == "Storage/Misc. Shipping Trailers" ||
+    trailer.category == "In Process"
   ) {
     if (trailer.shipDates.length > 1) {
       for (let i = 0; i < trailer.shipDates.length; i++) {
