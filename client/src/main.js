@@ -7,6 +7,9 @@ import socketIO from "vue-socket.io";
 Vue.config.productionTip = false;
 Vue.use(socketIO, "https://trailermanagementbe.azurewebsites.net/", store);
 Vue.config.devtools = true;
+Vue.config.errorHandler = function(err, vm, info) {
+  alert(err);
+};
 
 new Vue({
   router,

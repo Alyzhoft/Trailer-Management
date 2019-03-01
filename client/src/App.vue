@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <a class="navbar-brand" href="/#/">Trailer Management</a>
       <button
@@ -33,12 +35,26 @@
 
 <script>
 import { mapActions } from "vuex";
+import AlertModal from "@/components/AlertModal.vue";
+
 export default {
-  mounted() {
-    this.getTrailers();
-    this.getDepartedTrailers();
-    this.getRequests();
-    this.getUserData();
+  data: function() {
+    return {
+      modal: {
+        visible: false,
+        text: "",
+        header: ""
+      }
+    };
+  },
+  async mounted() {
+    const trailer = await this.getTrailers();
+    const departedTrailers = await this.getDepartedTrailers();
+    const requests = await this.getRequests();
+    // const userData = await this.getUserData();
+  },
+  components: {
+    AlertModal
   },
   methods: {
     ...mapActions([
@@ -52,42 +68,110 @@ export default {
     connect: function() {},
 
     create: function(trailer) {
-      console.log(trailer);
-      if (trailer.isJoi) {
-        console.log("Error");
+      if (trailer.name) {
+        this.modal.visible = true;
+        this.modal.header = "Error";
+        this.modal.text = `Cannot add trailer - ${trailer.routine}`;
       } else {
-        console.log("No Error");
         this.$store.dispatch("ADD_TRAILER", trailer);
       }
     },
 
     update: function(trailers) {
-      this.$store.dispatch("UPDATE_TRAILER", trailers);
+      if (trailers.name) {
+        this.modal.visible = true;
+        this.modal.header = "Error";
+        this.modal.text = `Cannot update trailer - ${trailers.routine}`;
+      } else {
+        this.$store.dispatch("UPDATE_TRAILER", trailers);
+      }
     },
 
     move: function(trailers) {
-      this.$store.dispatch("UPDATE_TRAILER", trailers);
+      if (trailers.name) {
+        this.modal.visible = true;
+        this.modal.header = "Error";
+        this.modal.text = `Cannot move trailer - ${trailers.routine}`;
+      } else {
+        this.$store.dispatch("UPDATE_TRAILER", trailers);
+      }
     },
 
     deleteTrailer: function(trailers) {
-      this.$store.dispatch("DELETE_TRAILER", trailers);
+      if (trailers.name) {
+        this.modal.visible = true;
+        this.modal.header = "Error";
+        this.modal.text = `Cannot delete trailer - ${trailers.routine}`;
+      } else {
+        this.$store.dispatch("DELETE_TRAILER", trailers);
+      }
     },
 
     request: function(requests) {
-      this.$store.dispatch("REQUEST", requests);
+      if (requests.name) {
+        this.modal.visible = true;
+        this.modal.header = "Error";
+        this.modal.text = `Cannot create request - ${requests.routine}`;
+      } else {
+        this.$store.dispatch("REQUEST", requests);
+      }
     },
 
     deleteRequest: function(requests) {
-      this.$store.dispatch("DELETE_REQUEST", requests);
+      if (requests.name) {
+        this.modal.visible = true;
+        this.modal.header = "Error";
+        this.modal.text = `Cannot delete request - ${requests.routine}`;
+      } else {
+        this.$store.dispatch("DELETE_REQUEST", requests);
+      }
     },
-
     completed: function(res) {
-      this.$store.dispatch("COMPLETED", res);
+      if (res.trailers && res.requests) {
+        if (res.trailers.name) {
+          this.modal.visible = true;
+          this.modal.header = "Error";
+          this.modal.text = `Cannot get trailers - ${res.trailers.routine}`;
+        } else if (res.requests.name) {
+          this.modal.visible = true;
+          this.modal.header = "Error";
+          this.modal.text = `Cannot get departed trailers - ${
+            res.requests.routine
+          }`;
+        } else {
+          this.$store.dispatch("COMPLETED", res);
+        }
+      } else {
+        if (res.name) {
+          this.modal.visible = true;
+          this.modal.header = "Error";
+          this.modal.text = `Cannot complete request - ${res.routine}`;
+        }
+      }
     },
 
     departed: function(res) {
-      console.log(res);
-      this.$store.dispatch("DEPARTED_TRAILER", res);
+      if (res.trailers && res.departed) {
+        if (res.trailers.name) {
+          this.modal.visible = true;
+          this.modal.header = "Error";
+          this.modal.text = `Cannot get trailers - ${res.trailers.routine}`;
+        } else if (res.departed.name) {
+          this.modal.visible = true;
+          this.modal.header = "Error";
+          this.modal.text = `Cannot get departed trailers - ${
+            res.departed.routine
+          }`;
+        } else {
+          this.$store.dispatch("DEPARTED_TRAILER", res);
+        }
+      } else {
+        if (res.name) {
+          this.modal.visible = true;
+          this.modal.header = "Error";
+          this.modal.text = `Cannot depart trailer - ${res.routine}`;
+        }
+      }
     }
   }
 };

@@ -1,5 +1,7 @@
 <template>
   <div @keyup.enter="search">
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+
     <div class="container">
       <div class="mt-2 mb-2 form-inline">
         <input
@@ -86,6 +88,8 @@
 </template>
 
 <script>
+import AlertModal from "@/components/AlertModal.vue";
+
 export default {
   data: () => ({
     departedSearch: false,
@@ -95,8 +99,16 @@ export default {
     carrier: "",
     searchResults: [],
     startDateTime: "",
-    endDateTime: ""
+    endDateTime: "",
+    modal: {
+      visible: false,
+      text: "",
+      header: ""
+    }
   }),
+  components: {
+    AlertModal
+  },
   computed: {
     departedTrailers() {
       return this.$store.state.departedTrailers;
@@ -110,7 +122,7 @@ export default {
   },
   methods: {
     search() {
-      fetch("https://trailermanagementbe.azurewebsites.net/departedtrailers", {
+      fetch("https://trailermanagementbe.azurewebsites.net/search", {
         method: "POST",
         body: JSON.stringify({
           startDateTime: this.startDateTime,
@@ -126,12 +138,18 @@ export default {
       })
         .then(res => res.json())
         .then(trailers => {
-          if (this.departed) {
-            this.departedSearch = true;
+          if (trailers.name) {
+            this.modal.visible = true;
+            this.modal.header = "Error";
+            this.modal.text = `Cannot complete search - ${trailers.routine}`;
           } else {
-            this.departedSearch = false;
+            if (this.departed) {
+              this.departedSearch = true;
+            } else {
+              this.departedSearch = false;
+            }
+            this.searchResults = trailers;
           }
-          this.searchResults = trailers;
         });
     },
     clear() {

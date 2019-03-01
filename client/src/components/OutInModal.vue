@@ -25,8 +25,20 @@
                   class="form-control"
                   id="Carrier dropdownMenuOffset"
                   v-model="inTrailer.carrier"
+                  @change="getTrailerNumbers"
                 >
                   <option v-for="c in carriers" :key="c">{{c}}</option>
+                </select>
+              </div>
+              <div class="inline">
+                <label for="Carrier">Trailer Number</label>
+                <select
+                  class="form-control"
+                  v-model="inTrailer.trailerNumber"
+                  id="trailerNumber dropdownMenuOffset"
+                  required
+                >
+                  <option v-for="tn in trailerNumbers" :key="tn._id">{{tn.trailernumber}}</option>
                 </select>
               </div>
               <div class="inline">
@@ -115,6 +127,7 @@ export default {
       inTrailer: {
         carrier: "",
         special: "",
+        trailerNumber: "",
         urgent: false
       },
       modal: {
@@ -159,6 +172,23 @@ export default {
         this.modal.header = "Alert";
         this.modal.text = "Request has already been submitted for this dock";
       }
+    },
+
+    async getTrailerNumbers() {
+      const carrier = this.inTrailer.carrier;
+      fetch("https://trailermanagementbe.azurewebsites.net/trailerNumbers", {
+        method: "POST",
+        body: JSON.stringify({
+          carrier: carrier
+        }),
+        headers: {
+          "content-type": "application/json"
+        }
+      })
+        .then(res => res.json())
+        .then(trailerNumbers => {
+          this.trailerNumbers = trailerNumbers;
+        });
     }
   }
 };

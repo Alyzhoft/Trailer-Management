@@ -12,9 +12,13 @@
         </div>
         <div>
           <h3 class="headerInline">Carrier:</h3>
-          <h4 class="inline">{{ this.request.incarrier }}</h4>
+          <h4 v-if="!tnPopulated" class="inline">{{ this.request.incarrier }}</h4>
+          <h4
+            v-if="tnPopulated"
+            class="inline"
+          >{{ this.request.incarrier }} - {{ this.request.intrailernumber }}</h4>
         </div>
-        <div>
+        <div v-if="!tnPopulated">
           <h3 class="headerInline">Trailer Number:</h3>
           <div class="inline">
             <select
@@ -46,6 +50,7 @@ export default {
   data: function() {
     return {
       results: [],
+      tnPopulated: false,
       data: {
         _id: this.request._id,
         inTrailerNumber: "",
@@ -55,19 +60,24 @@ export default {
     };
   },
   mounted() {
-    fetch("https://trailermanagementbe.azurewebsites.net/trailerNumbers", {
-      method: "POST",
-      body: JSON.stringify({
-        carrier: this.request.incarrier
-      }),
-      headers: {
-        "content-type": "application/json"
-      }
-    })
-      .then(res => res.json())
-      .then(results => {
-        this.results = results;
-      });
+    if (this.request.intrailernumber) {
+      this.data.inTrailerNumber = this.request.intrailernumber;
+      this.tnPopulated = true;
+    } else {
+      fetch("https://trailermanagementbe.azurewebsites.net/trailerNumbers", {
+        method: "POST",
+        body: JSON.stringify({
+          carrier: this.request.incarrier
+        }),
+        headers: {
+          "content-type": "application/json"
+        }
+      })
+        .then(res => res.json())
+        .then(results => {
+          this.results = results;
+        });
+    }
   },
   methods: {
     async completeRequest() {
@@ -96,7 +106,7 @@ div.inline {
 
 h4.inline {
   display: inline-block;
-  width: calc(50% - 15px);
+  /* width: calc(50% - 15px); */
 }
 
 /* Modal Header */

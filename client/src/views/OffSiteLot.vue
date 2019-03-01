@@ -59,6 +59,7 @@ export default {
       category: "",
       trailerLocation: "",
       status: "",
+      shipDates: [],
       _id: ""
     }
   }),
@@ -90,8 +91,10 @@ export default {
       this.trailer.trailerLocation = trailer.trailerlocation;
       this.trailer.trailerNumber = trailer.trailernumber;
       this.trailer.status = trailer.status;
+      this.trailer.shipDates = trailer.shipdates;
       this.trailer._id = trailer._id;
       this.clicked = true;
+      console.log(trailer);
     },
     async handleModalClose() {
       this.clickedTrailer = {};
