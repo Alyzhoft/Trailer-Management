@@ -61,7 +61,7 @@
               class="form-group mb-2"
               v-if="
                 trailer.category == 'Patio Trailers' ||
-                  trailer.category == 'Storage/Misc. Shipping Trailers'
+                  trailer.category == 'Storage/Misc. Shipping Trailers' || trailer.category == 'In Process'
               "
             >
               <label for="shipDate">Ship Date</label>
@@ -83,7 +83,7 @@
               </div>
             </div>
             <div class="form-group mb-2">
-              <label for="trailerStatus">Status</label>
+              <label for="trailerStatus">Comments</label>
               <textarea class="form-control" v-model="trailer.status" form="trailerStatus" required></textarea>
             </div>
             <input class="btn btn-primary mt-1 mr-1 mb-1" type="submit" value="Add Trailer">

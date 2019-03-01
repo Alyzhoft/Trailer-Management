@@ -50,7 +50,7 @@
               class="form-group mb-2"
               v-if="
                 trailer.category == 'Patio Trailers' ||
-                  trailer.category == 'Storage/Misc. Shipping Trailers'
+                  trailer.category == 'Storage/Misc. Shipping Trailers' || trailer.category == 'In Process'
               "
             >
               <label for="shipDate">Ship Date</label>
@@ -77,7 +77,7 @@
               </div>
             </div>
             <div class="form-froup mb-2">
-              <label for="trailerStatus">Status</label>
+              <label for="trailerStatus">Comments</label>
               <textarea class="form-control" v-model="trailer.status" form="trailerStatus"></textarea>
             </div>
             <button

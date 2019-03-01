@@ -23,8 +23,12 @@
           </div>
         </div>
         <div class="mt-1">
-          <h4 class="headerInline">In: {{ this.request.incarrier }} -</h4>
-          <div class="inline">
+          <h4 v-if="!tnPopulated" class="headerInline">In: {{ this.request.incarrier }} -</h4>
+          <h4
+            v-else-if="tnPopulated"
+            class="headerInline"
+          >In: {{ this.request.incarrier }} - {{ this.request.intrailernumber }}</h4>
+          <div class="inline" v-if="!tnPopulated">
             <select
               class="form-control"
               v-model="data.inTrailerNumber"
@@ -54,6 +58,7 @@ export default {
   data: function() {
     return {
       results: [],
+      tnPopulated: false,
       data: {
         _id: this.request._id,
         trailer_id: this.request.trailer_id,
@@ -66,19 +71,24 @@ export default {
     };
   },
   mounted() {
-    fetch("https://trailermanagementbe.azurewebsites.net/trailerNumbers", {
-      method: "POST",
-      body: JSON.stringify({
-        carrier: this.request.incarrier
-      }),
-      headers: {
-        "content-type": "application/json"
-      }
-    })
-      .then(res => res.json())
-      .then(results => {
-        this.results = results;
-      });
+    if (this.request.intrailernumber) {
+      this.data.inTrailerNumber = this.request.intrailernumber;
+      this.tnPopulated = true;
+    } else {
+      fetch("https://trailermanagementbe.azurewebsites.net/trailerNumbers", {
+        method: "POST",
+        body: JSON.stringify({
+          carrier: this.request.incarrier
+        }),
+        headers: {
+          "content-type": "application/json"
+        }
+      })
+        .then(res => res.json())
+        .then(results => {
+          this.results = results;
+        });
+    }
   },
   methods: {
     async completeRequest() {

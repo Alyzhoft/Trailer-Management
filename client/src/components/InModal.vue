@@ -13,30 +13,34 @@
         <form>
           <fieldset>
             <div>
-              <div class="inline">
+              <div>
                 <label for="Carrier">Carrier</label>
                 <select
                   class="form-control"
                   v-model="carrier"
                   id="Carrier dropdownMenuOffset"
+                  @change="getTrailerNumbers"
                   required
                 >
                   <option v-for="c in carriers" :key="c">{{c}}</option>
                 </select>
               </div>
-              <div class="inline">
-                <label for="Carrier">Special</label>
+              <div v-if="bolTrailerNumber">
+                <label for="trailerNumber">Trailer Number</label>
                 <select
                   class="form-control"
-                  v-model="special"
-                  id="Carrier dropdownMenuOffset"
-                  required
+                  v-model="trailerNumber"
+                  id="trailerNumber dropdownMenuOffset"
                 >
+                  <option v-for="tn in trailerNumbers" :key="tn._id">{{tn.trailernumber}}</option>
+                </select>
+              </div>
+              <div v-if="bolSpecial">
+                <label for="Carrier">Special</label>
+                <select class="form-control" v-model="special" id="Carrier dropdownMenuOffset">
                   <option>E-Track</option>
                   <option>Reinforced</option>
                   <option>Not Reinforced</option>
-                  <option>Green</option>
-                  <option>Black</option>
                   <option>TPOD</option>
                 </select>
               </div>
@@ -48,7 +52,7 @@
               class="btn btn-primary mt-1 mr-1 mb-1"
             >Submit</button>
             <button type="button" @click="$emit('close');" class="btn btn-secondary mr-2">Cancel</button>
-            <div class="inline custom-control custom-checkbox">
+            <div class="checkInline custom-control custom-checkbox">
               <input
                 type="checkbox"
                 v-model="urgent"
@@ -57,6 +61,26 @@
                 checked
               >
               <label class="custom-control-label" for="urgent">Urgent</label>
+            </div>
+            <div class="checkInline custom-control custom-checkbox">
+              <input
+                type="checkbox"
+                v-model="bolTrailerNumber"
+                class="custom-control-input"
+                id="trailerNumberCheck"
+                checked
+              >
+              <label class="custom-control-label" for="trailerNumberCheck">Trailer Number</label>
+            </div>
+            <div class="checkInline custom-control custom-checkbox">
+              <input
+                type="checkbox"
+                v-model="bolSpecial"
+                class="custom-control-input"
+                id="special"
+                checked
+              >
+              <label class="custom-control-label" for="special">Special</label>
             </div>
           </fieldset>
         </form>
@@ -81,6 +105,10 @@ export default {
       carrier: "",
       inRequest: false,
       urgent: false,
+      bolSpecial: false,
+      bolTrailerNumber: false,
+      trailerNumber: "",
+      trailerNumbers: [],
       special: "",
       modal: {
         visible: false,
@@ -111,6 +139,7 @@ export default {
         urgent: this.urgent,
         dock: this.clickedDock,
         special: this.special,
+        trailerNumber: this.trailerNumber,
         inRequest: true
       };
       this.submit = true;
@@ -122,13 +151,37 @@ export default {
       }
 
       if (this.submit) {
-        let res = await this.$socket.emit("inRequest", data);
-        this.$emit("close", this.trailer);
+        if (!data.carrier) {
+          this.modal.visible = true;
+          this.modal.header = "Alert";
+          this.modal.text = "A Carrier must be selected";
+        } else {
+          let res = await this.$socket.emit("inRequest", data);
+          this.$emit("close", this.trailer);
+        }
       } else {
         this.modal.visible = true;
         this.modal.header = "Alert";
         this.modal.text = "Request has already been submitted for this dock";
       }
+    },
+
+    async getTrailerNumbers() {
+      const carrier = this.carrier;
+      fetch("https://trailermanagementbe.azurewebsites.net/trailerNumbers", {
+        method: "POST",
+        body: JSON.stringify({
+          carrier: carrier
+        }),
+        headers: {
+          "content-type": "application/json"
+        }
+      })
+        .then(res => res.json())
+        .then(trailerNumbers => {
+          this.trailerNumbers = [];
+          this.trailerNumbers = trailerNumbers;
+        });
     }
   }
 };
@@ -142,6 +195,12 @@ export default {
 .headerInline {
   display: inline-block;
   margin-right: 10px;
+}
+
+.checkInline {
+  display: inline-block;
+  margin-right: 10px;
+  /* width: calc(30% - 5px); */
 }
 
 div.inline {

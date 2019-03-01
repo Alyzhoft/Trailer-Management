@@ -7,6 +7,7 @@ Vue.config.devtools = true;
 
 export const store = new Vuex.Store({
   state: {
+    error: {},
     user: {},
     trailers: [],
     departedTrailers: [],
@@ -18,6 +19,7 @@ export const store = new Vuex.Store({
       "In Process",
       "Patio Trailers",
       "Receiving",
+      "Receiving - Rush",
       "Storage/Misc. Shipping Trailers",
       "Supermarket/Legacy/Eng"
     ],
@@ -37,7 +39,11 @@ export const store = new Vuex.Store({
       "Keene’s",
       "XPO Logistics",
       "Universal",
-      "XTRA Lease"
+      "XTRA Lease",
+      "Brockman",
+      "Fillmore",
+      "Renewal Green",
+      "Renewal Black"
     ],
     dockDoors: [
       37,
@@ -80,8 +86,11 @@ export const store = new Vuex.Store({
   },
 
   mutations: {
-    getTrailers(state, trailers) {
-      state.trailers = trailers;
+    error(state, response) {
+      state.error = response;
+    },
+    getTrailers(state, response) {
+      state.trailers = response;
     },
 
     getDepartedTrailers(state, departedTrailers) {
@@ -131,24 +140,39 @@ export const store = new Vuex.Store({
     getTrailers(state) {
       fetch("https://trailermanagementbe.azurewebsites.net/trailers")
         .then(res => res.json())
-        .then(trailers => {
-          state.commit("getTrailers", trailers);
+        .then(response => {
+          if (response.name) {
+            response.function = "getTrailers";
+            state.commit("error", response);
+          } else {
+            state.commit("getTrailers", response);
+          }
         });
     },
 
     getDepartedTrailers(state) {
       fetch("https://trailermanagementbe.azurewebsites.net/departedtrailers")
         .then(res => res.json())
-        .then(departedTrailers => {
-          state.commit("getDepartedTrailers", departedTrailers);
+        .then(response => {
+          if (response.name) {
+            response.function = "getDepartedTrailers";
+            state.commit("error", response);
+          } else {
+            state.commit("getDepartedTrailers", response);
+          }
         });
     },
 
     getRequests(state) {
       fetch("https://trailermanagementbe.azurewebsites.net/requests")
         .then(res => res.json())
-        .then(requests => {
-          state.commit("getRequests", requests);
+        .then(response => {
+          if (response.name) {
+            response.function = "getRequests";
+            state.commit("error", response);
+          } else {
+            state.commit("getRequests", response);
+          }
         });
     },
 
@@ -161,11 +185,21 @@ export const store = new Vuex.Store({
     },
 
     ADD_TRAILER: (state, payload) => {
-      state.commit("ADD_TRAILER", payload);
+      if (payload.name) {
+        payload.function = "addTrailer";
+        state.commit("error", payload);
+      } else {
+        state.commit("ADD_TRAILER", payload);
+      }
     },
 
     UPDATE_TRAILER: (state, payload) => {
-      state.commit("UPDATE_TRAILER", payload);
+      if (payload.name) {
+        payload.function = "updateTrailer";
+        state.commit("error", payload);
+      } else {
+        state.commit("UPDATE_TRAILER", payload);
+      }
     },
 
     DELETE_TRAILER: (state, payload) => {

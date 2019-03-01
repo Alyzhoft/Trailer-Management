@@ -21,7 +21,9 @@
         populated: trailer.trailerlocation == lot,
         inProcess: trailer.category == 'In Process',
         completed: trailer.category == 'Completed',
-        receiving: trailer.category == 'Receiving'
+        receiving: trailer.category == 'Receiving',
+        receivingRush: trailer.category == 'Receiving - Rush',
+        patioDoors: trailer.category == 'Patio Trailers'
       }"
     >
       <p>{{ trailer.trailernumber }}</p>
@@ -57,6 +59,7 @@ export default {
       category: "",
       trailerLocation: "",
       status: "",
+      shipDates: [],
       _id: ""
     }
   }),
@@ -88,8 +91,10 @@ export default {
       this.trailer.trailerLocation = trailer.trailerlocation;
       this.trailer.trailerNumber = trailer.trailernumber;
       this.trailer.status = trailer.status;
+      this.trailer.shipDates = trailer.shipdates;
       this.trailer._id = trailer._id;
       this.clicked = true;
+      console.log(trailer);
     },
     async handleModalClose() {
       this.clickedTrailer = {};
@@ -176,7 +181,15 @@ h4 {
 }
 
 .receiving {
+  background-color: purple;
+}
+
+.receivingRush {
   background-color: red;
+}
+
+.patioDoors {
+  background-color: rgb(255, 153, 0);
 }
 
 p {

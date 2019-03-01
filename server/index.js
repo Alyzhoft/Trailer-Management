@@ -87,7 +87,7 @@ app.post("/trailerNumbers", async (req, res) => {
   res.json(results.rows);
 });
 
-app.post("/departedtrailers", async (req, res) => {
+app.post("/search", async (req, res) => {
   const results = await queries.trailerSearch(req.body);
   res.json(results.rows);
 });
