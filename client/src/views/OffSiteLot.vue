@@ -8,8 +8,8 @@
       <EntryModalSS :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose();"/>
       <InfoModalSS :clickedTrailer="this.trailer" v-if="clicked" @close="handleModalClose();"/>
     </div>
-    <h1>Off-Site Lot</h1>
     <span v-on:click.stop="handleEntryOffSiteLocation" class="addBtn">+</span>
+    <h1>Off-Site Lot</h1>
     <div
       v-for="trailer in trailers"
       v-if="trailer.trailerlocation == lot"
@@ -25,6 +25,10 @@
         receivingRush: trailer.category == 'Receiving - Rush',
         patioDoors: trailer.category == 'Patio Trailers'
       }"
+      data-toggle="tooltip"
+      data-placement="top"
+      title
+      :data-original-title="trailer.carrier"
     >
       <p>{{ trailer.trailernumber }}</p>
     </div>
@@ -67,6 +71,11 @@ export default {
     trailers() {
       return this.$store.state.trailers;
     }
+  },
+  mounted() {
+    $(function() {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
   },
   created() {
     window.addEventListener("resize", this.handleResize);

@@ -13,6 +13,7 @@ export const store = new Vuex.Store({
     departedTrailers: [],
     requests: [],
     categories: [
+      "Bays",
       "Completed",
       "Dunnage",
       "Empties for Shipping",
