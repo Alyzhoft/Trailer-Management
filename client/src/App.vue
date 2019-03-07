@@ -36,7 +36,6 @@
 <script>
 import { mapActions } from "vuex";
 import AlertModal from "@/components/AlertModal.vue";
-//Test
 export default {
   data: function() {
     return {
