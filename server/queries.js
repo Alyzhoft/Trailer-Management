@@ -115,7 +115,9 @@ const updateTrailer = async trailer => {
         trailer.category
       }\', status = \'${
         trailer.status
-      }\', shipdates = null,updated = now() WHERE _id = ${trailer._id}`;
+      }\', shipdates = null,updated = (now() at time zone 'CST') WHERE _id = ${
+        trailer._id
+      }`;
     } else {
       sqlQuery = `UPDATE trailers SET trailernumber = \'${
         trailer.trailerNumber
@@ -123,7 +125,7 @@ const updateTrailer = async trailer => {
         trailer.category
       }\', status = \'${
         trailer.status
-      }\', shipdates = \'${shipDates}\', updated = now() WHERE _id = ${
+      }\', shipdates = \'${shipDates}\', updated = (now() at time zone 'CST') WHERE _id = ${
         trailer._id
       }`;
     }
@@ -132,9 +134,9 @@ const updateTrailer = async trailer => {
       trailer.trailerNumber
     }\', carrier = \'${trailer.carrier}\', category = \'${
       trailer.category
-    }\', status = \'${trailer.status}\', updated = now() WHERE _id = ${
-      trailer._id
-    }`;
+    }\', status = \'${
+      trailer.status
+    }\', updated = (now() at time zone 'CST') WHERE _id = ${trailer._id}`;
   }
 
   const client = await conn.pool.connect();
@@ -155,7 +157,7 @@ const moveTrailer = async trailer => {
     const results = await client.query(
       `UPDATE trailers SET trailerlocation = \'${
         trailer.trailerLocation
-      }\', updated = now() WHERE _id = ${trailer._id}`
+      }\', updated = (now() at time zone 'CST') WHERE _id = ${trailer._id}`
     );
     const trailers = await getTrailers();
     client.release();
@@ -200,7 +202,7 @@ const insertDeparted = async trailer => {
   const client = await conn.pool.connect();
   try {
     const results = await client.query(
-      `UPDATE trailers set departed = 'y', departedtime = now() WHERE _id = ${
+      `UPDATE trailers set departed = 'y', departedtime = (now() at time zone 'CST') WHERE _id = ${
         trailer._id
       }`
     );
@@ -294,17 +296,17 @@ const completed = async data => {
   const client = await conn.pool.connect();
   try {
     const requestResponse = await client.query(
-      `UPDATE requests set completed = 'y', completedtime = now() where _id = \'${
+      `UPDATE requests set completed = 'y', completedtime = (now() at time zone 'CST') where _id = \'${
         data._id
       }\'`
     );
 
     if (data.outcarrier) {
-      if (data.outcompleted) {
+      if (data.outcompleted == "true") {
         const outResponse = await client.query(
           `UPDATE trailers set trailerlocation = \'${
             data.outPlacement
-          }\', category = 'Completed', updated = now() where _id = \'${
+          }\', category = 'Completed', updated = (now() at time zone 'CST') where _id = \'${
             data.trailer_id
           }\'`
         );
@@ -312,7 +314,9 @@ const completed = async data => {
         const outResponse = await client.query(
           `UPDATE trailers set trailerlocation = \'${
             data.outPlacement
-          }\', updated = now() where _id = \'${data.trailer_id}\'`
+          }\', updated = (now() at time zone 'CST') where _id = \'${
+            data.trailer_id
+          }\'`
         );
       }
     }
@@ -321,7 +325,7 @@ const completed = async data => {
       const requestResponse = await client.query(
         `UPDATE trailers set trailerlocation = \'${
           data.dock
-        }\', updated = now(), category = 'In Process' where carrier = \'${
+        }\', updated = (now() at time zone 'CST'), category = 'In Process' where carrier = \'${
           data.inCarrier
         }\' and trailernumber = \'${data.inTrailerNumber}\'`
       );

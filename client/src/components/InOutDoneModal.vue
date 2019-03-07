@@ -9,42 +9,41 @@
         <div>
           <h3 class="headerInline">In/Out: Dock {{ this.request.dock }}</h3>
         </div>
-        <div>
-          <h4 class="headerInline">Out Placement:</h4>
-          <div class="inline">
-            <select
-              class="form-control"
-              v-model="data.outPlacement"
-              id="Carrier dropdownMenuOffset"
-            >
-              <option>Primary Lot</option>
-              <option>Off-Site Lot</option>
-            </select>
+        <form v-on:submit.prevent="completeRequest">
+          <div>
+            <h4 class="headerInline">Out Placement:</h4>
+            <div class="inline">
+              <select
+                class="form-control"
+                v-model="data.outPlacement"
+                id="outPlacement dropdownMenuOffset"
+                required
+              >
+                <option>Primary Lot</option>
+                <option>Off-Site Lot</option>
+              </select>
+            </div>
           </div>
-        </div>
-        <div class="mt-1">
-          <h4 v-if="!tnPopulated" class="headerInline">In: {{ this.request.incarrier }} -</h4>
-          <h4
-            v-else-if="tnPopulated"
-            class="headerInline"
-          >In: {{ this.request.incarrier }} - {{ this.request.intrailernumber }}</h4>
-          <div class="inline" v-if="!tnPopulated">
-            <select
-              class="form-control"
-              v-model="data.inTrailerNumber"
-              id="Carrier dropdownMenuOffset"
-            >
-              <option></option>
-              <option v-for="r in results" :key="r._id">{{ r.trailernumber }}</option>
-            </select>
+          <div class="mt-1">
+            <h4 v-if="!tnPopulated" class="headerInline">In: {{ this.request.incarrier }} -</h4>
+            <h4
+              v-else-if="tnPopulated"
+              class="headerInline"
+            >In: {{ this.request.incarrier }} - {{ this.request.intrailernumber }}</h4>
+            <div class="inline" v-if="!tnPopulated">
+              <select
+                class="form-control"
+                v-model="data.inTrailerNumber"
+                id="inTrailerNumber dropdownMenuOffset"
+                required
+              >
+                <option v-for="r in results" :key="r._id">{{ r.trailernumber }}</option>
+              </select>
+            </div>
           </div>
-        </div>
+          <button type="submit" class="btn btn-primary mt-1 mr-1 mb-1">Complete</button>
+        </form>
       </div>
-      <button
-        type="button"
-        @click="completeRequest();"
-        class="btn btn-primary mt-1 mr-1 mb-1"
-      >Complete</button>
     </div>
   </div>
 </template>

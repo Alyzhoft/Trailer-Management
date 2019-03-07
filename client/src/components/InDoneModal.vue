@@ -5,38 +5,36 @@
       <div class="modal-header-custom">
         <span class="closeBtn" @click="$emit('close');">&times;</span>
       </div>
-      <div class="modal-body-custom">
-        <div>
-          <h3 class="headerInline">In:</h3>
-          <h4 class="inline">Dock {{ this.request.dock }}</h4>
-        </div>
-        <div>
-          <h3 class="headerInline">Carrier:</h3>
-          <h4 v-if="!tnPopulated" class="inline">{{ this.request.incarrier }}</h4>
-          <h4
-            v-if="tnPopulated"
-            class="inline"
-          >{{ this.request.incarrier }} - {{ this.request.intrailernumber }}</h4>
-        </div>
-        <div v-if="!tnPopulated">
-          <h3 class="headerInline">Trailer Number:</h3>
-          <div class="inline">
-            <select
-              class="form-control"
-              v-model="data.inTrailerNumber"
-              id="Carrier dropdownMenuOffset"
-            >
-              <option></option>
-              <option v-for="r in results" :key="r._id">{{ r.trailernumber }}</option>
-            </select>
+      <form v-on:submit.prevent="completeRequest">
+        <div class="modal-body-custom">
+          <div>
+            <h3 class="headerInline">In:</h3>
+            <h4 class="inline">Dock {{ this.request.dock }}</h4>
           </div>
+          <div>
+            <h3 class="headerInline">Carrier:</h3>
+            <h4 v-if="!tnPopulated" class="inline">{{ this.request.incarrier }}</h4>
+            <h4
+              v-if="tnPopulated"
+              class="inline"
+            >{{ this.request.incarrier }} - {{ this.request.intrailernumber }}</h4>
+          </div>
+          <div v-if="!tnPopulated">
+            <h3 class="headerInline">Trailer Number:</h3>
+            <div class="inline">
+              <select
+                class="form-control"
+                v-model="data.inTrailerNumber"
+                id="trailerNumber dropdownMenuOffset"
+                required
+              >
+                <option v-for="r in results" :key="r._id">{{ r.trailernumber }}</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary mt-1 mr-1 mb-1">Complete</button>
         </div>
-      </div>
-      <button
-        type="button"
-        @click="completeRequest();"
-        class="btn btn-primary mt-1 mr-1 mb-1"
-      >Complete</button>
+      </form>
     </div>
   </div>
 </template>

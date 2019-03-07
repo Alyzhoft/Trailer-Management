@@ -138,7 +138,8 @@ export default {
       const trailers = this.$store.state.trailers;
       for (let i = 0; i < trailers.length; i++) {
         if (
-          trailers[i].trailernumber == this.trailer.trailerNumber &&
+          trailers[i].trailernumber.toUpperCase() ==
+            this.trailer.trailerNumber.toUpperCase() &&
           trailers[i].carrier == this.trailer.carrier
         ) {
           create = false;
