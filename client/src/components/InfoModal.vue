@@ -58,18 +58,18 @@
               >{{ sd }}</span>
             </h5>
             <p>{{ this.trailer.status }}</p>
-            <button @click="handleEditClicked();" class="btn btn-primary mr-1 mb-1">Edit</button>
-            <button @click="handleMoveClicked();" class="btn btn-primary mr-1 mb-1">Move</button>
+            <button @click="handleEditClicked();" class="btn btn-primary mr-1 mb-1 inline">Edit</button>
+            <button @click="handleMoveClicked();" class="btn btn-primary mr-1 mb-1 inline">Move</button>
             <button
               @click="handleDepartedClicked(trailer);"
-              class="btn btn-primary mr-1 mb-1"
+              class="btn btn-primary mr-1 mb-1 inline"
             >Departed</button>
             <button
               v-if="
                 trailer.trailerLocation != 'Primary Lot' &&
                   trailer.trailerLocation != 'Off-Site Lot'
               "
-              class="btn btn-primary mr-1 mb-1"
+              class="btn btn-primary mr-1 mb-1 inline"
               @click="handleOutClicked();"
             >Out</button>
             <button @click="handleDeleteTrailer();" class="btn btn-danger mb-1">Delete</button>
@@ -173,6 +173,133 @@ export default {
 </script>
 
 <style scoped>
+@media only screen and (max-width: 925px) {
+  /* The Modal (background) */
+  .modal-custom {
+    display: block; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 5; /* Sit on top */
+    padding-top: 20px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  }
+
+  /* Modal Content */
+  .modal-content-custom {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 20px;
+  }
+  .inline {
+    display: inline-block;
+    margin-right: 10px;
+    width: calc(50% - 5px);
+  }
+  .btn-danger {
+    width: calc(100% - 10px);
+  }
+}
+
+@media only screen and (min-width: 926px) and (max-width: 1199px) {
+  /* The Modal (background) */
+  .modal-custom {
+    display: block; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 5; /* Sit on top */
+    padding-top: 20px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  }
+
+  /* Modal Content */
+  .modal-content-custom {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    border-radius: 20px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  /* Modal Header */
+  .modal-header-custom {
+    padding: 2px 16px;
+    color: white;
+  }
+
+  /* Modal Body */
+  .modal-body-custom {
+    padding: 2px 16px;
+  }
+
+  /* The Modal (background) */
+  .modal-custom {
+    display: block; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 5; /* Sit on top */
+    padding-top: 50px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  }
+
+  /* Modal Content */
+  .modal-content-custom {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    border-radius: 20px;
+  }
+
+  /* The Close Button */
+  .closeBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #aaaaaa;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .inline {
+    display: inline-block;
+    margin-right: 10px;
+    /* width: calc(50% - 10px); */
+  }
+
+  h5 {
+    font-weight: bold;
+  }
+
+  h5 span {
+    font-weight: normal;
+  }
+}
+
 /* Modal Header */
 .modal-header-custom {
   padding: 2px 16px;
@@ -182,32 +309,6 @@ export default {
 /* Modal Body */
 .modal-body-custom {
   padding: 2px 16px;
-}
-
-/* The Modal (background) */
-.modal-custom {
-  display: block; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 5; /* Sit on top */
-  padding-top: 50px; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-}
-
-/* Modal Content */
-.modal-content-custom {
-  position: relative;
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 50%;
-  border-radius: 20px;
 }
 
 /* The Close Button */

@@ -1,18 +1,13 @@
 <template>
-  <div class="container">
-    <div v-if="windowWidth > 1230">
+  <div class="container-fluid">
+    <div>
       <EntryModal :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose();"/>
       <InfoModal :clickedTrailer="this.trailer" v-if="clicked" @close="handleModalClose();"/>
-    </div>
-    <div v-else>
-      <EntryModalSS :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose();"/>
-      <InfoModalSS :clickedTrailer="this.trailer" v-if="clicked" @close="handleModalClose();"/>
     </div>
     <span v-on:click.stop="handleEntryOffSiteLocation" class="addBtn">+</span>
     <h1>Off-Site Lot</h1>
     <div
       v-for="trailer in trailers"
-      v-if="trailer.trailerlocation == lot"
       v-on:click="handleOnTrialerClick(trailer);"
       :key="trailer._id"
       id="lot"
@@ -38,18 +33,14 @@
 <script>
 import AlertModal from "@/components/AlertModal.vue";
 import EntryModal from "@/components/EntryModal.vue";
-import EntryModalSS from "@/components/EntryModalSS.vue";
 import InfoModal from "@/components/InfoModal.vue";
-import InfoModalSS from "@/components/InfoModalSS.vue";
 
 export default {
   name: "offsitelot",
   components: {
     AlertModal,
     InfoModal,
-    InfoModalSS,
-    EntryModal,
-    EntryModalSS
+    EntryModal
   },
   data: () => ({
     lot: "Off-Site Lot",
@@ -69,7 +60,9 @@ export default {
   }),
   computed: {
     trailers() {
-      return this.$store.state.trailers;
+      return this.$store.state.trailers.filter(
+        trailer => trailer.trailerlocation == this.lot
+      );
     }
   },
   mounted() {
@@ -103,11 +96,6 @@ export default {
       this.trailer.shipDates = trailer.shipdates;
       this.trailer._id = trailer._id;
       this.clicked = true;
-      console.log(trailer);
-    },
-    async handleModalClose() {
-      this.clickedTrailer = {};
-      this.clicked = false;
     },
     async handleTrailerClicked(value) {
       this.trailer.carrier = value.carrier;

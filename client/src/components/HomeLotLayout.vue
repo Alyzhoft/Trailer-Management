@@ -1,11 +1,10 @@
 <template>
-  <div class="container">
+  <div>
     <!--
       <InfoModal :clickedTrailer="this.clickedTrailer" v-if="clicked" @close="handleModalClose()"/>
     -->
     <div
       v-for="trailer in trailers"
-      v-if="trailer.trailerlocation == lot"
       v-on:click="handleOnTrialerClick(trailer);"
       :key="trailer._id"
       id="lot"
@@ -45,7 +44,9 @@ export default {
   }),
   computed: {
     trailers() {
-      return this.$store.state.trailers;
+      return this.$store.state.trailers.filter(
+        trailer => trailer.trailerlocation == this.lot
+      );
     }
   },
   mounted() {

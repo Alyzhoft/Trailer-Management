@@ -10,7 +10,7 @@
       @close="handleClose"
     ></DeleteModal>
 
-    <div class="container">
+    <div class="container table-responsive">
       <table class="table table-hover">
         <thead>
           <tr>
