@@ -4,12 +4,17 @@
 
     <div class="container">
       <div class="mt-2 mb-2 form-inline">
-        <input
-          type="text"
-          v-model="trailerNumber"
-          placeholder="Trailer Number"
-          class="form-control mr-sm-2"
-        >
+        <div class="input-group mr-2">
+          <input
+            type="text"
+            v-model="trailerNumber"
+            placeholder="Trailer Number"
+            class="form-control"
+          >
+          <div class="input-group-append">
+            <button class="btn btn-outline-primary" type="button" @click="search">🔍</button>
+          </div>
+        </div>
         <div class="inline mr-sm-2">
           <select class="form-control" v-model="category" id="Category dropdownMenuOffset">
             <option value selected disabled>Category</option>
@@ -32,15 +37,11 @@
           >
           <label class="custom-control-label" for="customCheck1">Departed</label>
         </div>
-        <!--
-        <input type="datetime-local" v-model="startDateTime" name="test" id>
-        <input type="datetime-local" class="ml-2" v-model="endDateTime" name="test" id>
-        -->
-        <button type="button" @click="search" class="btn btn-secondary ml-2">Search</button>
+        <!-- <button type="button" @click="search" class="btn btn-secondary ml-2">Search</button> -->
         <button type="button" @click="clear" class="btn btn-secondary ml-2">Clear</button>
       </div>
       <div v-if="departedSearch">
-        <table class="table table-hover">
+        <table class="table table-hover table-responsive">
           <thead>
             <tr>
               <th scope="col">Trailer Number</th>
@@ -60,7 +61,7 @@
         </table>
       </div>
       <div v-else>
-        <table class="table table-hover">
+        <table class="table table-hover table-responsive">
           <thead>
             <tr>
               <th scope="col">Trailer Number</th>
@@ -153,16 +154,16 @@ export default {
         });
     },
     clear() {
-      // this.departedSearch = false;
-      // this.searchResults = [];
       this.startDateTime = "";
       this.endDateTime = "";
       this.trailerNumber = "";
       this.carrier = "";
       this.category = "";
+      this.searchResults = [];
     }
   }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>
