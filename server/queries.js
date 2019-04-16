@@ -228,29 +228,49 @@ const request = async data => {
 
   if (data.inRequest) {
     if (data.categoryChange) {
-      sqlQuery = `INSERT INTO requests(dock, outtrailernumber, outcarrier, incarrier, intrailernumber, intrailerlocation, urgent, trailer_id, special, outcategory) VALUES(\'${
-        data.outTrailer.trailerLocation
-      }\',\'${data.outTrailer.trailerNumber}\',\'${
-        data.outTrailer.carrier
-      }\',\'${data.inTrailer.carrier}\', \'${
-        data.inTrailer.trailerInfo.trailerNumber
-      }\', \'${data.inTrailer.trailerInfo.trailerLocation}\', \'${
-        data.inTrailer.urgent
-      }\',
-        \'${data.outTrailer._id}\',
-        \'${data.inTrailer.special}\', \'${data.outTrailer.category}\')`;
+      if (Object.keys(data.inTrailer.trailerInfo).length === 0) {
+        sqlQuery = `INSERT INTO requests(dock, outtrailernumber, outcarrier, incarrier, urgent, trailer_id, special, outcategory) VALUES(\'${
+          data.outTrailer.trailerLocation
+        }\',\'${data.outTrailer.trailerNumber}\',\'${
+          data.outTrailer.carrier
+        }\',\'${data.inTrailer.carrier}\', \'${data.inTrailer.urgent}\',
+          \'${data.outTrailer._id}\',
+          \'${data.inTrailer.special}\', \'${data.outTrailer.category}\')`;
+      } else {
+        sqlQuery = `INSERT INTO requests(dock, outtrailernumber, outcarrier, incarrier, intrailernumber, intrailerlocation, urgent, trailer_id, special, outcategory) VALUES(\'${
+          data.outTrailer.trailerLocation
+        }\',\'${data.outTrailer.trailerNumber}\',\'${
+          data.outTrailer.carrier
+        }\',\'${data.inTrailer.carrier}\', \'${
+          data.inTrailer.trailerInfo.trailerNumber
+        }\', \'${data.inTrailer.trailerInfo.trailerLocation}\', \'${
+          data.inTrailer.urgent
+        }\',
+          \'${data.outTrailer._id}\',
+          \'${data.inTrailer.special}\', \'${data.outTrailer.category}\')`;
+      }
     } else {
-      sqlQuery = `INSERT INTO requests(dock, outtrailernumber, outcarrier, incarrier, intrailernumber, intrailerlocation, urgent, trailer_id, special) VALUES(\'${
-        data.outTrailer.trailerLocation
-      }\',\'${data.outTrailer.trailerNumber}\',\'${
-        data.outTrailer.carrier
-      }\',\'${data.inTrailer.carrier}\', \'${
-        data.inTrailer.trailerInfo.trailerNumber
-      }\', \'${data.inTrailer.trailerInfo.trailerLocation}\',\'${
-        data.inTrailer.urgent
-      }\',
-        \'${data.outTrailer._id}\',
-        \'${data.inTrailer.special}\')`;
+      if (Object.keys(data.inTrailer.trailerInfo).length === 0) {
+        sqlQuery = `INSERT INTO requests(dock, outtrailernumber, outcarrier, incarrier, urgent, trailer_id, special, outcategory) VALUES(\'${
+          data.outTrailer.trailerLocation
+        }\',\'${data.outTrailer.trailerNumber}\',\'${
+          data.outTrailer.carrier
+        }\',\'${data.inTrailer.carrier}\', \'${data.inTrailer.urgent}\',
+          \'${data.outTrailer._id}\',
+          \'${data.inTrailer.special}\', \'${data.outTrailer.category}\')`;
+      } else {
+        sqlQuery = `INSERT INTO requests(dock, outtrailernumber, outcarrier, incarrier, intrailernumber, intrailerlocation, urgent, trailer_id, special) VALUES(\'${
+          data.outTrailer.trailerLocation
+        }\',\'${data.outTrailer.trailerNumber}\',\'${
+          data.outTrailer.carrier
+        }\',\'${data.inTrailer.carrier}\', \'${
+          data.inTrailer.trailerInfo.trailerNumber
+        }\', \'${data.inTrailer.trailerInfo.trailerLocation}\',\'${
+          data.inTrailer.urgent
+        }\',
+          \'${data.outTrailer._id}\',
+          \'${data.inTrailer.special}\')`;
+      }
     }
   } else {
     if (data.categoryChange) {
