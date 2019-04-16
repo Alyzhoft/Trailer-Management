@@ -34,11 +34,15 @@
                 <label for="Carrier">Trailer Number</label>
                 <select
                   class="form-control"
-                  v-model="inTrailer.trailerNumber"
+                  v-model="inTrailer.trailerInfo"
                   id="trailerNumber dropdownMenuOffset"
                   required
                 >
-                  <option v-for="tn in trailerNumbers" :key="tn._id">{{tn.trailernumber}}</option>
+                  <option
+                    v-for="tn in trailerNumbers"
+                    :value="{trailerLocation: tn.trailerlocation, trailerNumber: tn.trailernumber}"
+                    :key="tn._id"
+                  >{{tn.trailernumber}}</option>
                 </select>
               </div>
               <div class="inline">
@@ -56,6 +60,22 @@
                 </select>
               </div>
             </div>
+
+            <div v-if="categoryChange">
+              <h4 class="headerInline">Category:</h4>
+              <div class="inline">
+                <select
+                  class="form-control mt-1 mb-2"
+                  v-model="outTrailer.category"
+                  id="Category dropdownMenuOffset"
+                  required
+                >
+                  <option value selected disabled>Category</option>
+                  <option v-for="c in categories" :key="c">{{c}}</option>
+                </select>
+              </div>
+            </div>
+
             <button
               type="button"
               @click="submitRequest();"
@@ -86,12 +106,12 @@
             <div class="checkInline custom-control custom-checkbox">
               <input
                 type="checkbox"
-                v-model="outTrailer.completed"
+                v-model="categoryChange"
                 class="custom-control-input"
-                id="completed"
+                id="categoryChange"
                 checked
               >
-              <label class="custom-control-label" for="completed">Completed</label>
+              <label class="custom-control-label" for="categoryChange">Category Change</label>
             </div>
           </fieldset>
         </form>
@@ -104,7 +124,7 @@
 import AlertModal from "@/components/AlertModal.vue";
 
 export default {
-  name: "modal",
+  name: "OutInModal",
   props: ["clickedTrailer"],
   components: {
     AlertModal
@@ -113,6 +133,7 @@ export default {
     return {
       shipDate: "",
       inRequest: false,
+      categoryChange: false,
       trailerNumbers: [],
       outTrailer: {
         trailerNumber: this.clickedTrailer.trailerNumber,
@@ -127,7 +148,7 @@ export default {
       inTrailer: {
         carrier: "",
         special: "",
-        trailerNumber: "",
+        trailerInfo: {},
         urgent: false
       },
       modal: {
@@ -140,20 +161,24 @@ export default {
   computed: {
     carriers() {
       return this.$store.state.carriers.sort();
+    },
+    categories() {
+      return this.$store.state.categories.sort();
     }
   },
   methods: {
     handleCheckBox() {
       if (this.inRequest == false) {
         this.inTrailer.carrier = "";
-        this.inTrailer.trailerNumber = "";
+        this.inTrailer.trailerInfo = {};
       }
     },
     async submitRequest() {
       const data = {
         outTrailer: this.outTrailer,
         inTrailer: this.inTrailer,
-        inRequest: this.inRequest
+        inRequest: this.inRequest,
+        categoryChange: this.categoryChange
       };
 
       this.submit = true;

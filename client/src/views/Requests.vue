@@ -28,14 +28,14 @@
             <td v-if="request.outcarrier">{{ request.outcarrier }} - {{ request.outtrailernumber }}</td>
             <td v-else></td>
             <td
-              v-if="request.incarrier && request.special && request.intrailernumber"
-            >{{ request.incarrier }} - {{ request.intrailernumber }} - {{ request.special }}</td>
+              v-if="request.incarrier && request.special && request.intrailernumber && request.intrailerlocation"
+            >{{ request.incarrier }} - {{ request.intrailernumber }} - {{ request.special }} - {{ request.intrailerlocation }}</td>
             <td
               v-else-if="request.incarrier && request.special"
             >{{ request.incarrier }} - {{ request.special }}</td>
             <td
-              v-else-if="request.incarrier && request.intrailernumber"
-            >{{ request.incarrier }} - {{ request.intrailernumber }}</td>
+              v-else-if="request.incarrier && request.intrailernumber && request.intrailerlocation"
+            >{{ request.incarrier }} - {{ request.intrailernumber }} - {{ request.intrailerlocation }}</td>
             <td v-else-if="request.incarrier">{{ request.incarrier }}</td>
             <td v-else></td>
             <td>{{ request.dock }}</td>

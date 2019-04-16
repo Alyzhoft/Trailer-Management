@@ -1,5 +1,7 @@
 <template>
   <div id="myModal" class="modal-custom">
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+
     <!-- Modal content -->
     <div class="modal-content-custom">
       <div class="modal-header-custom">
@@ -19,6 +21,7 @@
               <select
                 class="form-control"
                 v-model="trailer.category"
+                @change="emptyCheck"
                 id="Category dropdownMenuOffset"
               >
                 <option v-for="c in categories" :key="c">{{ c }}</option>
@@ -76,7 +79,7 @@
                 </div>
               </div>
             </div>
-            <div class="form-froup mb-2">
+            <div class="form-group mb-2">
               <label for="trailerStatus">Comments</label>
               <textarea class="form-control" v-model="trailer.status" form="trailerStatus"></textarea>
             </div>
@@ -94,12 +97,15 @@
 </template>
 
 <script>
+import AlertModal from "@/components/AlertModal.vue";
+
 export default {
-  name: "modal",
+  name: "EditModal",
   props: ["clickedTrailer"],
   data: function() {
     return {
       shipDate: "",
+      prevCategory: this.clickedTrailer.category,
       trailer: {
         trailerNumber: this.clickedTrailer.trailerNumber,
         carrier: this.clickedTrailer.carrier,
@@ -108,8 +114,16 @@ export default {
         shipDates: [],
         status: this.clickedTrailer.status,
         _id: this.clickedTrailer._id
+      },
+      modal: {
+        visible: false,
+        text: "",
+        header: ""
       }
     };
+  },
+  components: {
+    AlertModal
   },
   computed: {
     carriers() {
@@ -133,11 +147,17 @@ export default {
   },
   methods: {
     async updateTrailer() {
+      if (
+        this.trailer.category == "Empties for Shipping" &&
+        this.prevCategory != "Empties for Shipping"
+      ) {
+        this.trailer.status = "";
+        this.trailer.shipDates = [];
+      }
+      console.log(this.trailer);
+
       let res = await this.$socket.emit("update", this.trailer);
       this.$emit("close", this.trailer);
-      // this.modal.visible = true;
-      // this.modal.header = "Updated";
-      // this.modal.text = "Trailer Updated";
     },
     addDate() {
       if (this.shipDate != "") {
@@ -149,6 +169,17 @@ export default {
       const index = this.trailer.shipDates.indexOf(sd);
       if (index > -1) {
         this.trailer.shipDates.splice(index, 1);
+      }
+    },
+    emptyCheck() {
+      if (
+        this.trailer.category == "Empties for Shipping" &&
+        this.prevCategory != "Empties for Shipping"
+      ) {
+        this.modal.visible = true;
+        this.modal.header = "Alert";
+        this.modal.text =
+          'Changing the category to "Empties for Shipping" will remove shipdates and/or comments for this trailer';
       }
     }
   }

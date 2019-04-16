@@ -1,5 +1,7 @@
 <template>
   <div id="myModal" class="modal-custom">
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+
     <!-- Modal content -->
     <div class="modal-content-custom">
       <div class="modal-header-custom">
@@ -7,37 +9,69 @@
         <h2>Out Placement</h2>
       </div>
       <div class="modal-body-custom">
-        <button class="btn btn-primary mr-2" @click="primaryLot();">Primary Lot</button>
-        <button class="btn btn-primary" @click="offSiteLot();">Off-Site Lot</button>
+        <div>
+          <select class="form-control" v-model="outPlacement" id="Carrier dropdownMenuOffset">
+            <option>Off-Site Lot</option>
+            <option v-for="pls in primaryLotSpots" :key="pls">PL-{{pls}}</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary mt-2" @click="submit();">Submit</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import AlertModal from "@/components/AlertModal.vue";
+
 export default {
   name: "modal",
   props: {
     request: Object
   },
+  components: {
+    AlertModal
+  },
   data: function() {
-    return {};
+    return {
+      modal: {
+        visible: false,
+        text: "",
+        header: ""
+      },
+      outPlacement: ""
+    };
+  },
+  computed: {
+    primaryLotSpots() {
+      return this.$store.state.primaryLotSpots;
+    }
   },
   methods: {
-    async primaryLot() {
-      this.request.outPlacement = "Primary Lot";
-      let res = await this.$socket.emit("completed", this.request);
-      this.$emit("close");
-    },
-    async lotB() {
-      this.request.outPlacement = "Lot B";
-      let res = await this.$socket.emit("completed", this.request);
-      this.$emit("close");
-    },
-    async offSiteLot() {
-      this.request.outPlacement = "Off-Site Lot";
-      let res = await this.$socket.emit("completed", this.request);
-      this.$emit("close");
+    async submit() {
+      this.request.outPlacement = this.outPlacement;
+      let create = true;
+      const trailers = this.$store.state.trailers;
+      for (let i = 0; i < trailers.length; i++) {
+        if (
+          trailers[i].trailerlocation.toUpperCase() ==
+            this.request.outPlacement.toUpperCase() &&
+          this.request.outPlacement != "Off-Site Lot"
+        ) {
+          create = false;
+        }
+      }
+      if (create) {
+        let res = await this.$socket.emit("completed", this.request);
+        this.$emit("close");
+      } else {
+        this.modal.visible = true;
+        this.modal.header = "Alert";
+        this.modal.text = `A Trailer is already in location ${
+          this.request.outPlacement
+        }`;
+      }
     }
   }
 };
@@ -105,7 +139,7 @@ export default {
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 50%;
+    width: 30%;
     border-radius: 20px;
   }
 }

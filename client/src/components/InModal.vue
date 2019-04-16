@@ -29,10 +29,14 @@
                 <label for="trailerNumber">Trailer Number</label>
                 <select
                   class="form-control"
-                  v-model="trailerNumber"
+                  v-model="inTrailer"
                   id="trailerNumber dropdownMenuOffset"
                 >
-                  <option v-for="tn in trailerNumbers" :key="tn._id">{{tn.trailernumber}}</option>
+                  <option
+                    v-for="tn in trailerNumbers"
+                    :value="{trailerLocation: tn.trailerlocation, trailerNumber: tn.trailernumber}"
+                    :key="tn._id"
+                  >{{tn.trailernumber}}</option>
                 </select>
               </div>
               <div v-if="bolSpecial">
@@ -93,7 +97,7 @@
 import AlertModal from "@/components/AlertModal.vue";
 
 export default {
-  name: "modal",
+  name: "InRequestModal",
   props: {
     clickedDock: String
   },
@@ -107,7 +111,7 @@ export default {
       urgent: false,
       bolSpecial: false,
       bolTrailerNumber: false,
-      trailerNumber: "",
+      inTrailer: {},
       trailerNumbers: [],
       special: "",
       modal: {
@@ -127,19 +131,13 @@ export default {
   },
   mounted() {},
   methods: {
-    handleCheckBox() {
-      if (this.inRequest == false) {
-        this.inTrailer.carrier = "";
-        this.inTrailer.trailerNumber = "";
-      }
-    },
     async submitRequest() {
       const data = {
         carrier: this.carrier,
         urgent: this.urgent,
         dock: this.clickedDock,
         special: this.special,
-        trailerNumber: this.trailerNumber,
+        inTrailer: this.inTrailer,
         inRequest: true
       };
       this.submit = true;

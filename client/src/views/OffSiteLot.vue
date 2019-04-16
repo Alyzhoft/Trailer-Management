@@ -18,12 +18,16 @@
         completed: trailer.category == 'Completed',
         receiving: trailer.category == 'Receiving',
         receivingRush: trailer.category == 'Receiving - Rush',
-        patioDoors: trailer.category == 'Patio Trailers'
+        patioDoors: trailer.category == 'Patio Trailers',
+        shippingStorageTrailers: trailer.category == 'Storage/Misc. Shipping Trailers',
+        empties: trailer.category == 'Empties for Shipping',
+        receivingStorage: trailer.category == 'Receiving - Storage'
       }"
-      data-toggle="tooltip"
+      :title="trailer.carrier"
+      data-toggle="popover"
+      data-trigger="hover"
       data-placement="top"
-      title
-      :data-original-title="trailer.carrier"
+      :data-content="trailer.status"
     >
       <p>{{ trailer.trailernumber }}</p>
     </div>
@@ -65,9 +69,14 @@ export default {
       );
     }
   },
+  updated() {
+    $(document).ready(function() {
+      $('[data-toggle="popover"]').popover();
+    });
+  },
   mounted() {
-    $(function() {
-      $('[data-toggle="tooltip"]').tooltip();
+    $(document).ready(function() {
+      $('[data-toggle="popover"]').popover();
     });
   },
   created() {
@@ -185,8 +194,20 @@ h4 {
   background-color: red;
 }
 
+.receivingStorage {
+  background-color: navy;
+}
+
 .patioDoors {
   background-color: rgb(255, 153, 0);
+}
+
+.shippingStorageTrailers {
+  background-color: steelblue;
+}
+
+.empties {
+  background-color: grey;
 }
 
 p {
