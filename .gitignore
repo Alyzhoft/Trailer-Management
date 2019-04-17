@@ -3,6 +3,7 @@ node_modules
 client/dist
 todo.txt
 dist.zip
+*.todo
 
 # local env files
 .env.local

@@ -163,6 +163,7 @@ export default {
 
 h4.inline {
   display: inline-block;
+  /* width: 90%; */
   /* width: calc(50% - 15px); */
 }
 

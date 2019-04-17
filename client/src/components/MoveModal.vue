@@ -25,7 +25,9 @@
             <div class="inline">
               <label for="trailerLocation">New Trailer Location</label>
               <select class="form-control" v-model="trailer.trailerLocation" id="trailerLocation">
+                <option>Off-Site Lot</option>
                 <option v-for="dockNumber in dockDoors" :key="dockNumber">{{ dockNumber }}</option>
+                <option v-for="pls in primaryLotSpots" :key="`PL-${pls}`">PL-{{ pls }}</option>
               </select>
             </div>
             <button
@@ -45,7 +47,7 @@
 import AlertModal from "@/components/AlertModal.vue";
 
 export default {
-  name: "modal",
+  name: "MoveModal",
   props: ["clickedTrailer"],
   components: {
     AlertModal
@@ -61,48 +63,16 @@ export default {
         visible: false,
         text: "",
         header: ""
-      },
-      dockDoors: [
-        "Primary Lot",
-        "Off-Site Lot",
-        37,
-        36,
-        35,
-        34,
-        33,
-        32,
-        31,
-        30,
-        29,
-        28,
-        25,
-        24,
-        23,
-        22,
-        21,
-        20,
-        19,
-        "18a",
-        18,
-        17,
-        16,
-        15,
-        14,
-        13,
-        12,
-        11,
-        10,
-        9,
-        8,
-        7,
-        6,
-        5,
-        4,
-        3,
-        2,
-        1
-      ]
+      }
     };
+  },
+  computed: {
+    dockDoors() {
+      return this.$store.state.dockDoors;
+    },
+    primaryLotSpots() {
+      return this.$store.state.primaryLotSpots;
+    }
   },
   methods: {
     async moveTrailer() {

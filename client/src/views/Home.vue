@@ -24,9 +24,13 @@
         <div class="row">
           <div class="primaryLot col-sm">
             <div>
-              <span v-on:click.stop="handleEntryPrimaryLocation" class="addBtn">+</span>
+              <!-- <span v-on:click.stop="handleEntryPrimaryLocation" class="addBtn">+</span> -->
               <h1 class="center boarder">Primary Lot</h1>
-              <HomeLotLayout lot="Primary Lot" @trailer="handleTrailerClicked"/>
+              <HomeLotLayout
+                lot="Primary Lot"
+                @inTrailer="handleEntryPrimaryLocation"
+                @trailer="handleTrailerClicked"
+              />
             </div>
           </div>
         </div>
@@ -82,8 +86,8 @@ export default {
     handleResize() {
       this.windowWidth = window.innerWidth;
     },
-    async handleEntryPrimaryLocation() {
-      this.clickedDock = "Primary Lot";
+    async handleEntryPrimaryLocation(value) {
+      this.clickedDock = `PL-${value}`;
       this.entry = true;
     },
     async handleEntryModalClose() {
