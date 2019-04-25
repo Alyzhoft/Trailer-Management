@@ -12,6 +12,7 @@
         <div>
           <select class="form-control" v-model="outPlacement" id="Carrier dropdownMenuOffset">
             <option>Off-Site Lot</option>
+            <option>New Lot</option>
             <option v-for="pls in primaryLotSpots" :key="pls">PL-{{pls}}</option>
           </select>
         </div>
@@ -57,7 +58,8 @@ export default {
         if (
           trailers[i].trailerlocation.toUpperCase() ==
             this.request.outPlacement.toUpperCase() &&
-          this.request.outPlacement != "Off-Site Lot"
+          (this.request.outPlacement != "Off-Site Lot" &&
+            this.request.outPlacement != "New Lot")
         ) {
           create = false;
         }

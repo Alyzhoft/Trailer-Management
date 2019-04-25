@@ -42,6 +42,40 @@ const getRequests = async () => {
   }
 };
 
+const getTrailerNumbers = async body => {
+  const carrier = body.carrier;
+
+  const client = await conn.pool.connect();
+
+  try {
+    const requestResponse = await client.query(
+      `SELECT trailernumber, _id, trailerlocation FROM trailers WHERE (trailerlocation like ('PL-%') or trailerlocation like 'Off-Site Lot' or trailerlocation like 'New Lot') AND departed != 'y' AND carrier = \'${carrier}\'`
+    );
+    client.release();
+    return requestResponse;
+  } catch (error) {
+    client.release();
+    return error;
+  }
+};
+
+const getEmptyTrailers = async body => {
+  const carrier = body.carrier;
+
+  const client = await conn.pool.connect();
+
+  try {
+    const requestResponse = await client.query(
+      `SELECT trailernumber, _id, trailerlocation FROM trailers WHERE (trailerlocation like ('PL-%') or trailerlocation like 'Off-Site Lot' or trailerlocation like 'New Lot') AND departed != 'y' AND category = 'Empties for Shipping' AND carrier = \'${carrier}\'`
+    );
+    client.release();
+    return requestResponse;
+  } catch (error) {
+    client.release();
+    return error;
+  }
+};
+
 const insertTrailer = async trailer => {
   let shipDates = "";
   let sqlQuery = "";
@@ -380,23 +414,6 @@ const completed = async data => {
   }
 };
 
-const getTrailerNumbers = async body => {
-  const carrier = body.carrier;
-
-  const client = await conn.pool.connect();
-
-  try {
-    const requestResponse = await client.query(
-      `SELECT trailernumber, _id, trailerlocation FROM trailers WHERE (trailerlocation like ('PL-%') or trailerlocation like 'Off-Site Lot') AND departed != 'y' AND carrier = \'${carrier}\'`
-    );
-    client.release();
-    return requestResponse;
-  } catch (error) {
-    client.release();
-    return error;
-  }
-};
-
 const trailerSearch = async body => {
   const trailerNumber = body.trailerNumber;
   const startDateTime = body.startDateTime;
@@ -495,6 +512,7 @@ const trailerSearch = async body => {
 
 module.exports = {
   getTrailers,
+  getEmptyTrailers,
   insertTrailer,
   updateTrailer,
   moveTrailer,

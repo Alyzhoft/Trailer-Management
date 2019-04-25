@@ -33,6 +33,9 @@
             <a class="nav-link" href="/#/offsitelot">Off-Site Lot</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="/#/newlot">New Lot</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="/#/search">Search</a>
           </li>
         </ul>
@@ -57,7 +60,7 @@ export default {
   },
   async mounted() {
     const trailer = await this.getTrailers();
-    const departedTrailers = await this.getDepartedTrailers();
+    // const departedTrailers = await this.getDepartedTrailers();
     const requests = await this.getRequests();
     // const userData = await this.getUserData();
   },
