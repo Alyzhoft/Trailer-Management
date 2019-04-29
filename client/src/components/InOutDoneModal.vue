@@ -22,6 +22,7 @@
                 required
               >
                 <option>Off-Site Lot</option>
+                <option>New Lot</option>
                 <option v-for="pls in primaryLotSpots" :key="pls">PL-{{pls}}</option>
               </select>
             </div>
@@ -92,7 +93,7 @@ export default {
       this.data.inTrailerNumber = this.request.intrailernumber;
       this.tnPopulated = true;
     } else {
-      fetch("https://trailermanagementbe.azurewebsites.net/trailerNumbers", {
+      fetch("https://trailermanagementbe.azurewebsites.net/emptyTrailers", {
         method: "POST",
         body: JSON.stringify({
           carrier: this.request.incarrier
@@ -115,7 +116,8 @@ export default {
         if (
           trailers[i].trailerlocation.toUpperCase() ==
             this.data.outPlacement.toUpperCase() &&
-          this.data.outPlacement != "Off-Site Lot"
+          (this.data.outPlacement != "Off-Site Lot" &&
+            this.data.outPlacement != "New Lot")
         ) {
           create = false;
         }

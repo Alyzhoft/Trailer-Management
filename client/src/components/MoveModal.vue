@@ -26,6 +26,7 @@
               <label for="trailerLocation">New Trailer Location</label>
               <select class="form-control" v-model="trailer.trailerLocation" id="trailerLocation">
                 <option>Off-Site Lot</option>
+                <option>New Lot</option>
                 <option v-for="dockNumber in dockDoors" :key="dockNumber">{{ dockNumber }}</option>
                 <option v-for="pls in primaryLotSpots" :key="`PL-${pls}`">PL-{{ pls }}</option>
               </select>
@@ -81,7 +82,8 @@ export default {
 
       if (
         this.trailer.trailerLocation != "Primary Lot" &&
-        this.trailer.trailerLocation != "Off-Site Lot"
+        this.trailer.trailerLocation != "Off-Site Lot" &&
+        this.trailer.trailerLocation != "New Lot"
       ) {
         for (let i = 0; i < trailers.length; i++) {
           if (trailers[i].trailerlocation === this.trailer.trailerLocation) {
@@ -95,9 +97,6 @@ export default {
 
         this.trailer.currentTrailerLocation = this.trailer.trailerLocation;
         this.$emit("close", this.trailer.trailerLocation);
-        // this.trailer.trailerlocation = "";
-        // this.modal.header = "Moved";
-        // this.modal.text = "Trailer Moved";
       } else {
         this.modal.visible = true;
         this.modal.header = "Error";
