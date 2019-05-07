@@ -48,6 +48,7 @@
               <th scope="col">Category</th>
               <th scope="col">Carrier</th>
               <th scope="col">Departed</th>
+              <th scope="col">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -56,6 +57,7 @@
               <td>{{ sr.category }}</td>
               <td>{{ sr.carrier }}</td>
               <td>{{ sr.datetime }}</td>
+              <td>{{ sr.status }}</td>
             </tr>
           </tbody>
         </table>
@@ -70,6 +72,7 @@
               <th scope="col">Inserted</th>
               <th scope="col">Trailer Location</th>
               <th scope="col">Ship Dates</th>
+              <th scope="col">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -80,6 +83,7 @@
               <td>{{ sr.datetime }}</td>
               <td>{{ sr.trailerlocation }}</td>
               <td>{{ sr.shipdates }}</td>
+              <td>{{ sr.status }}</td>
             </tr>
           </tbody>
         </table>

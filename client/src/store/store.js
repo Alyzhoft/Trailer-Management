@@ -15,6 +15,7 @@ export const store = new Vuex.Store({
     categories: [
       "Bays",
       "Completed",
+      "Do Not Use",
       "Dunnage",
       "Empties for Shipping",
       "In Process",

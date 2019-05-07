@@ -122,7 +122,7 @@ export default {
       if (requests.name) {
         this.modal.visible = true;
         this.modal.header = "Error";
-        this.modal.text = `Cannot create request - ${requests.routine}`;
+        this.modal.text = `Cannot create request - ${requests.message}`;
       } else {
         this.$store.dispatch("REQUEST", requests);
       }

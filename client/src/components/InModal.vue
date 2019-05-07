@@ -17,7 +17,7 @@
                 <label for="Carrier">Carrier</label>
                 <select
                   class="form-control"
-                  v-model="carrier"
+                  v-model="inTrailer.carrier"
                   id="Carrier dropdownMenuOffset"
                   @change="getTrailerNumbers"
                   required
@@ -29,7 +29,7 @@
                 <label for="trailerNumber">Trailer Number</label>
                 <select
                   class="form-control"
-                  v-model="inTrailer"
+                  v-model="inTrailer.trailerInfo"
                   id="trailerNumber dropdownMenuOffset"
                 >
                   <option
@@ -40,8 +40,12 @@
                 </select>
               </div>
               <div v-if="bolSpecial">
-                <label for="Carrier">Special</label>
-                <select class="form-control" v-model="special" id="Carrier dropdownMenuOffset">
+                <label for="Special">Special</label>
+                <select
+                  class="form-control"
+                  v-model="inTrailer.special"
+                  id="Special dropdownMenuOffset"
+                >
                   <option>E-Track</option>
                   <option>Reinforced</option>
                   <option>Not Reinforced</option>
@@ -106,14 +110,16 @@ export default {
   },
   data: function() {
     return {
-      carrier: "",
-      inRequest: false,
+      inRequest: true,
       urgent: false,
       bolSpecial: false,
       bolTrailerNumber: false,
-      inTrailer: {},
+      inTrailer: {
+        carrier: "",
+        special: "",
+        trailerInfo: {}
+      },
       trailerNumbers: [],
-      special: "",
       modal: {
         visible: false,
         text: "",
@@ -138,7 +144,7 @@ export default {
         dock: this.clickedDock,
         special: this.special,
         inTrailer: this.inTrailer,
-        inRequest: true
+        inRequest: this.inRequest
       };
       this.submit = true;
       const requests = this.$store.state.requests;
@@ -149,12 +155,12 @@ export default {
       }
 
       if (this.submit) {
-        if (!data.carrier) {
+        if (!data.inTrailer.carrier) {
           this.modal.visible = true;
           this.modal.header = "Alert";
           this.modal.text = "A Carrier must be selected";
         } else {
-          let res = await this.$socket.emit("inRequest", data);
+          let res = await this.$socket.emit("request", data);
           this.$emit("close", this.trailer);
         }
       } else {
@@ -165,7 +171,7 @@ export default {
     },
 
     async getTrailerNumbers() {
-      const carrier = this.carrier;
+      const carrier = this.inTrailer.carrier;
       fetch("https://trailermanagementbe.azurewebsites.net/trailerNumbers", {
         method: "POST",
         body: JSON.stringify({

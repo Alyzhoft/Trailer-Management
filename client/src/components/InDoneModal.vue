@@ -1,5 +1,7 @@
 <template>
   <div id="myModal" class="modal-custom">
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+
     <!-- Modal content -->
     <div class="modal-content-custom">
       <div class="modal-header-custom">
@@ -40,15 +42,25 @@
 </template>
 
 <script>
+import AlertModal from "@/components/AlertModal.vue";
+
 export default {
   name: "modal",
   props: {
     request: Object
   },
+  components: {
+    AlertModal
+  },
   data: function() {
     return {
       results: [],
       tnPopulated: false,
+      modal: {
+        visible: false,
+        text: "",
+        header: ""
+      },
       data: {
         _id: this.request._id,
         inTrailerNumber: "",
@@ -79,8 +91,25 @@ export default {
   },
   methods: {
     async completeRequest() {
-      let res = await this.$socket.emit("completed", this.data);
-      this.$emit("close");
+      let create = true;
+      const trailers = this.$store.state.trailers;
+      for (let i = 0; i < trailers.length; i++) {
+        if (
+          trailers[i].trailerlocation.toUpperCase() ==
+            this.data.dock.toUpperCase() &&
+          (this.data.dock != "Off-Site Lot" && this.data.dock != "New Lot")
+        ) {
+          create = false;
+        }
+      }
+      if (create) {
+        let res = await this.$socket.emit("completed", this.data);
+        this.$emit("close");
+      } else {
+        this.modal.visible = true;
+        this.modal.header = "Alert";
+        this.modal.text = `A Trailer is already in location ${this.data.dock}`;
+      }
     }
   }
 };

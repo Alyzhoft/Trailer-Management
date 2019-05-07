@@ -15,7 +15,7 @@
           <fieldset>
             <div>
               <h3 class="headerInline">Out:</h3>
-              <h4 class="inline">Dock {{ outTrailer.trailerLocation }}</h4>
+              <h4 class="inline">Dock {{ dock }}</h4>
             </div>
             <div v-if="inRequest">
               <h4 class="headerInline">In:</h4>
@@ -96,7 +96,7 @@
             <div class="checkInline custom-control custom-checkbox">
               <input
                 type="checkbox"
-                v-model="inTrailer.urgent"
+                v-model="urgent"
                 class="custom-control-input"
                 id="urgent"
                 checked
@@ -133,12 +133,14 @@ export default {
     return {
       shipDate: "",
       inRequest: false,
+      outRequest: true,
       categoryChange: false,
+      urgent: false,
       trailerNumbers: [],
+      dock: this.clickedTrailer.trailerLocation,
       outTrailer: {
         trailerNumber: this.clickedTrailer.trailerNumber,
         carrier: this.clickedTrailer.carrier,
-        trailerLocation: this.clickedTrailer.trailerLocation,
         category: this.clickedTrailer.category,
         completed: false,
         shipDates: [],
@@ -148,8 +150,7 @@ export default {
       inTrailer: {
         carrier: "",
         special: "",
-        trailerInfo: {},
-        urgent: false
+        trailerInfo: {}
       },
       modal: {
         visible: false,
@@ -175,10 +176,13 @@ export default {
     },
     async submitRequest() {
       const data = {
+        dock: this.dock,
+        outRequest: this.outRequest,
         outTrailer: this.outTrailer,
         inTrailer: this.inTrailer,
         inRequest: this.inRequest,
-        categoryChange: this.categoryChange
+        categoryChange: this.categoryChange,
+        urgent: this.urgent
       };
 
       this.submit = true;
