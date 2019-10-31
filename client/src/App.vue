@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+  <v-app id="app">
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <a class="navbar-brand" href="/#/">
@@ -8,7 +8,7 @@
           src="https://assets.renewalbyandersen.com/-/media/Images/Components/Navigation/header_logo.png?h=64&la=en&w=190&hash=9A5DBCD209227805BE452D77C90F3C21"
           alt
           width="100px"
-        >
+        />
       </a>
       <button
         class="navbar-toggler"
@@ -38,16 +38,19 @@
           <li class="nav-item">
             <a class="nav-link" href="/#/search">Search</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/#/admin">Admin</a>
+          </li>
         </ul>
       </div>
     </nav>
-    <router-view/>
-  </div>
+    <router-view />
+  </v-app>
 </template>
 
 <script>
 import { mapActions } from "vuex";
-import AlertModal from "@/components/AlertModal.vue";
+// import AlertModal from "@/components/AlertModal.vue";
 export default {
   data: function() {
     return {
@@ -59,13 +62,13 @@ export default {
     };
   },
   async mounted() {
-    const trailer = await this.getTrailers();
+    await this.getTrailers();
     // const departedTrailers = await this.getDepartedTrailers();
-    const requests = await this.getRequests();
+    await this.getRequests();
     // const userData = await this.getUserData();
   },
   components: {
-    AlertModal
+    // AlertModal
   },
   methods: {
     ...mapActions([
@@ -76,7 +79,9 @@ export default {
     ])
   },
   sockets: {
-    connect: function() {},
+    connect: function() {
+      console.log("Connected");
+    },
 
     create: function(trailer) {
       if (trailer.name) {
@@ -122,7 +127,7 @@ export default {
       if (requests.name) {
         this.modal.visible = true;
         this.modal.header = "Error";
-        this.modal.text = `Cannot create request - ${requests.routine}`;
+        this.modal.text = `Cannot create request - ${requests.message}`;
       } else {
         this.$store.dispatch("REQUEST", requests);
       }
@@ -146,9 +151,7 @@ export default {
         } else if (res.requests.name) {
           this.modal.visible = true;
           this.modal.header = "Error";
-          this.modal.text = `Cannot get departed trailers - ${
-            res.requests.routine
-          }`;
+          this.modal.text = `Cannot get departed trailers - ${res.requests.routine}`;
         } else {
           this.$store.dispatch("COMPLETED", res);
         }
@@ -170,9 +173,7 @@ export default {
         } else if (res.departed.name) {
           this.modal.visible = true;
           this.modal.header = "Error";
-          this.modal.text = `Cannot get departed trailers - ${
-            res.departed.routine
-          }`;
+          this.modal.text = `Cannot get departed trailers - ${res.departed.routine}`;
         } else {
           this.$store.dispatch("DEPARTED_TRAILER", res);
         }

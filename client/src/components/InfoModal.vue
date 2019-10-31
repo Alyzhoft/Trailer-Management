@@ -8,7 +8,7 @@
       />
     </div>
     <div v-else-if="move">
-      <MoveModal :clickedTrailer="this.trailer" @close="handleMoveModalClose"/>
+      <MoveModal :clickedTrailer="this.trailer" @close="handleMoveModalClose" />
     </div>
     <div v-else-if="out">
       <OutInModal

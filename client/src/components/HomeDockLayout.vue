@@ -85,7 +85,7 @@ export default {
     color: white;
     font-weight: bold;
     position: relative;
-    right: 7px;
+    /* right: 7px; */
     writing-mode: vertical-lr;
     text-orientation: upright;
   }
@@ -170,7 +170,7 @@ export default {
     font-size: 10px;
     color: white;
     position: relative;
-    right: 7px;
+    /* right: 7px; */
     writing-mode: vertical-lr;
     text-orientation: upright;
   }

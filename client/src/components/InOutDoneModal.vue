@@ -1,6 +1,6 @@
 <template>
   <div id="myModal" class="modal-custom">
-    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
 
     <!-- Modal content -->
     <div class="modal-content-custom">
@@ -93,7 +93,7 @@ export default {
       this.data.inTrailerNumber = this.request.intrailernumber;
       this.tnPopulated = true;
     } else {
-      fetch("https://trailermanagementbe.azurewebsites.net/emptyTrailers", {
+      fetch("http://localhost:3000/emptyTrailers", {
         method: "POST",
         body: JSON.stringify({
           carrier: this.request.incarrier
@@ -123,14 +123,12 @@ export default {
         }
       }
       if (create) {
-        let res = await this.$socket.emit("completed", this.data);
+        await this.$socket.emit("completed", this.data);
         this.$emit("close");
       } else {
         this.modal.visible = true;
         this.modal.header = "Alert";
-        this.modal.text = `A Trailer is already in location ${
-          this.data.outPlacement
-        }`;
+        this.modal.text = `A Trailer is already in location ${this.data.outPlacement}`;
       }
     }
   }

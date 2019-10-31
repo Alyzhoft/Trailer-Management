@@ -1,6 +1,6 @@
 <template>
   <div id="myModal" class="modal-custom">
-    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
 
     <!-- Modal content -->
     <div class="modal-content-custom">
@@ -47,7 +47,7 @@
                 class="form-control"
                 id="trailernumber"
                 placeholder="Enter Trailer Number"
-              >
+              />
             </div>
             <div
               class="form-group mb-2"
@@ -58,7 +58,7 @@
             >
               <label for="shipDate">Ship Date</label>
               <div class="input-group mb-3">
-                <input type="date" v-model="shipDate" class="form-control">
+                <input type="date" v-model="shipDate" class="form-control" />
                 <div class="input-group-append">
                   <button @click="addDate();" class="btn btn-outline-primary" type="button">+</button>
                 </div>
@@ -134,7 +134,6 @@ export default {
     }
   },
   mounted() {
-    let shipDates = "";
     if (this.clickedTrailer.shipDates != null) {
       if (this.clickedTrailer.shipDates.length > 1) {
         for (let i = 0; i < this.clickedTrailer.shipDates.length; i++) {
@@ -154,9 +153,8 @@ export default {
         this.trailer.status = "";
         this.trailer.shipDates = [];
       }
-      console.log(this.trailer);
 
-      let res = await this.$socket.emit("update", this.trailer);
+      await this.$socket.emit("update", this.trailer);
       this.$emit("close", this.trailer);
     },
     addDate() {

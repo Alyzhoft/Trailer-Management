@@ -5,6 +5,7 @@ import OffSiteLot from "./views/OffSiteLot";
 import Search from "./views/Search";
 import Requests from "./views/Requests";
 import NewLot from "./views/NewLot";
+import Admin from "./views/Admin";
 
 Vue.use(Router);
 
@@ -34,6 +35,11 @@ export default new Router({
       path: "/requests",
       name: "requests",
       component: Requests
+    },
+    {
+      path: "/admin",
+      name: "admin",
+      component: Admin
     }
   ]
 });

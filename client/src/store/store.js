@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { stat } from "fs";
 
 Vue.use(Vuex);
 Vue.config.devtools = true;
@@ -15,6 +14,7 @@ export const store = new Vuex.Store({
     categories: [
       "Bays",
       "Completed",
+      "Do Not Use",
       "Dunnage",
       "Empties for Shipping",
       "In Process",
@@ -25,28 +25,7 @@ export const store = new Vuex.Store({
       "Storage/Misc. Shipping Trailers",
       "Supermarket/Legacy/Eng"
     ],
-    carriers: [
-      "Dart",
-      "Transport Design",
-      "DRT",
-      "Waletich",
-      "Taylor",
-      "Terminal",
-      "Trucking Proz",
-      "UTS",
-      "J&R",
-      "Kuehl",
-      "American Fast Freight",
-      "Ryder",
-      "Keene’s",
-      "XPO Logistics",
-      "Universal",
-      "XTRA Lease",
-      "Brockman",
-      "Fillmore",
-      "Renewal Green",
-      "Renewal Black"
-    ],
+    carriers: ["Brockman"],
     dockDoors: [
       37,
       36,
@@ -169,6 +148,10 @@ export const store = new Vuex.Store({
       state.user = user;
     },
 
+    getCarriers(state, carriers) {
+      state.carriers = carriers;
+    },
+
     ADD_TRAILER: (state, payload) => {
       state.trailers = payload;
     },
@@ -202,7 +185,7 @@ export const store = new Vuex.Store({
 
   actions: {
     getTrailers(state) {
-      fetch("https://trailermanagementbe.azurewebsites.net/trailers")
+      fetch("http://localhost:3000/trailers")
         .then(res => res.json())
         .then(response => {
           if (response.name) {
@@ -215,7 +198,7 @@ export const store = new Vuex.Store({
     },
 
     getDepartedTrailers(state) {
-      fetch("https://trailermanagementbe.azurewebsites.net/departedtrailers")
+      fetch("http://localhost:3000/departedtrailers")
         .then(res => res.json())
         .then(response => {
           if (response.name) {
@@ -228,7 +211,7 @@ export const store = new Vuex.Store({
     },
 
     getRequests(state) {
-      fetch("https://trailermanagementbe.azurewebsites.net/requests")
+      fetch("http://localhost:3000/requests")
         .then(res => res.json())
         .then(response => {
           if (response.name) {
@@ -241,10 +224,25 @@ export const store = new Vuex.Store({
     },
 
     getUserData(state) {
-      fetch("https://trailermanagement.azurewebsites.net/.auth/me")
-        .then(res => res.json())
+      fetch(`https://trailermanagement.azurewebsites.net/.auth/me`, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        }
+        // mode: "no-cors"
+      })
+        .then(res => res.json)
         .then(user => {
           state.commit("getUserData", user);
+        });
+    },
+
+    getCarriers(state) {
+      // let carriers = [];
+      fetch("http://localhost:3000/carriers")
+        .then(res => res.json())
+        .then(carriers => {
+          state.commit("getCarriers", carriers);
         });
     },
 

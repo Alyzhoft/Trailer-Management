@@ -8,7 +8,7 @@
       </div>
       <div class="modal-body-custom">
         <div class="trailerManagement container mt-3">
-          <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+          <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
         </div>
         <form>
           <fieldset>
@@ -20,7 +20,7 @@
                 class="form-control"
                 id="trailerNumber"
                 readonly
-              >
+              />
             </div>
             <div class="inline">
               <label for="trailerLocation">New Trailer Location</label>

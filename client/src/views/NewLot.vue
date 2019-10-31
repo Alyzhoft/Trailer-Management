@@ -1,8 +1,8 @@
 <template>
   <div class="container-fluid">
     <div>
-      <EntryModal :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose();"/>
-      <InfoModal :clickedTrailer="this.trailer" v-if="clicked" @close="handleModalClose();"/>
+      <EntryModal :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose();" />
+      <InfoModal :clickedTrailer="this.trailer" v-if="clicked" @close="handleModalClose();" />
     </div>
     <span v-on:click.stop="handleEntry" class="addBtn">+</span>
     <h1>New Lot</h1>
@@ -21,7 +21,8 @@
         patioDoors: trailer.category == 'Patio Trailers',
         shippingStorageTrailers: trailer.category == 'Storage/Misc. Shipping Trailers',
         empties: trailer.category == 'Empties for Shipping',
-        receivingStorage: trailer.category == 'Receiving - Storage'
+        receivingStorage: trailer.category == 'Receiving - Storage',
+        doNotUse: trailer.category == 'Do Not Use'
       }"
       :title="trailer.carrier"
       data-toggle="popover"
@@ -35,14 +36,14 @@
 </template>
 
 <script>
-import AlertModal from "@/components/AlertModal.vue";
+// import AlertModal from "@/components/AlertModal.vue";
 import EntryModal from "@/components/EntryModal.vue";
 import InfoModal from "@/components/InfoModal.vue";
 
 export default {
   name: "newlot",
   components: {
-    AlertModal,
+    // AlertModal,
     InfoModal,
     EntryModal
   },
@@ -177,6 +178,10 @@ h4 {
 }
 
 .receivingRush {
+  background-color: magenta;
+}
+
+.doNotUse {
   background-color: red;
 }
 
@@ -200,7 +205,7 @@ p {
   color: white;
   font-size: 10px;
   position: relative;
-  right: 7px;
+  /* right: 7px; */
   writing-mode: vertical-lr;
   text-orientation: upright;
 }

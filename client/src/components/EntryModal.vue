@@ -1,6 +1,6 @@
 <template>
   <div id="myModal" class="modal-custom">
-    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
 
     <!-- Modal content -->
     <div class="modal-content-custom">
@@ -45,7 +45,7 @@
                 id="trailerNumber"
                 placeholder="Enter Trailer Number"
                 required
-              >
+              />
             </div>
             <div class="inline">
               <label for="trailerLocation">Trailer Location</label>
@@ -55,7 +55,7 @@
                 class="form-control"
                 id="trailerNumber"
                 readonly
-              >
+              />
             </div>
             <div
               class="form-group mb-2"
@@ -66,7 +66,7 @@
             >
               <label for="shipDate">Ship Date</label>
               <div class="input-group mb-3">
-                <input type="date" v-model="shipDate" class="form-control">
+                <input type="date" v-model="shipDate" class="form-control" />
                 <div class="input-group-append">
                   <button @click="addDate();" class="btn btn-outline-primary" type="button">+</button>
                 </div>
@@ -86,7 +86,7 @@
               <label for="trailerStatus">Comments</label>
               <textarea class="form-control" v-model="trailer.status" form="trailerStatus" required></textarea>
             </div>
-            <input class="btn btn-primary mt-1 mr-1 mb-1" type="submit" value="Add Trailer">
+            <input class="btn btn-primary mt-1 mr-1 mb-1" type="submit" value="Add Trailer" />
             <button type="button" @click="$emit('close');" class="btn btn-secondary">Cancel</button>
           </fieldset>
         </form>

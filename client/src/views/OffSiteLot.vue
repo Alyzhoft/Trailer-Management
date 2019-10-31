@@ -1,8 +1,8 @@
 <template>
   <div class="container-fluid">
     <div>
-      <EntryModal :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose();"/>
-      <InfoModal :clickedTrailer="this.trailer" v-if="clicked" @close="handleModalClose();"/>
+      <EntryModal :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose();" />
+      <InfoModal :clickedTrailer="this.trailer" v-if="clicked" @close="handleModalClose();" />
     </div>
     <span v-on:click.stop="handleEntryOffSiteLocation" class="addBtn">+</span>
     <h1>Off-Site Lot</h1>
@@ -21,7 +21,8 @@
         patioDoors: trailer.category == 'Patio Trailers',
         shippingStorageTrailers: trailer.category == 'Storage/Misc. Shipping Trailers',
         empties: trailer.category == 'Empties for Shipping',
-        receivingStorage: trailer.category == 'Receiving - Storage'
+        receivingStorage: trailer.category == 'Receiving - Storage',
+        doNotUse: trailer.category == 'Do Not Use'
       }"
       :title="trailer.carrier"
       data-toggle="popover"
@@ -191,6 +192,10 @@ h4 {
 }
 
 .receivingRush {
+  background-color: magenta;
+}
+
+.doNotUse {
   background-color: red;
 }
 
@@ -214,7 +219,7 @@ p {
   color: white;
   font-size: 10px;
   position: relative;
-  right: 7px;
+  /* right: 7px; */
   writing-mode: vertical-lr;
   text-orientation: upright;
 }

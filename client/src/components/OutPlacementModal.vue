@@ -1,6 +1,6 @@
 <template>
   <div id="myModal" class="modal-custom">
-    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
 
     <!-- Modal content -->
     <div class="modal-content-custom">
@@ -65,14 +65,12 @@ export default {
         }
       }
       if (create) {
-        let res = await this.$socket.emit("completed", this.request);
+        await this.$socket.emit("completed", this.request);
         this.$emit("close");
       } else {
         this.modal.visible = true;
         this.modal.header = "Alert";
-        this.modal.text = `A Trailer is already in location ${
-          this.request.outPlacement
-        }`;
+        this.modal.text = `A Trailer is already in location ${this.request.outPlacement}`;
       }
     }
   }

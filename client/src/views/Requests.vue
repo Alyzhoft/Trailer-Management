@@ -92,7 +92,7 @@ export default {
         this.request = request;
         this.inDone = true;
       } else {
-        let res = await this.$socket.emit("completed", request);
+        await this.$socket.emit("completed", request);
       }
     },
 

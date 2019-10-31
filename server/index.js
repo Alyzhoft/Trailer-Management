@@ -96,3 +96,9 @@ app.post("/search", async (req, res) => {
   const results = await queries.trailerSearch(req.body);
   res.json(results.rows);
 });
+
+app.get("/carriers", async (req, res) => {
+  const results = await queries.getCarriers();
+  let carriers = results.rows.map(a => a.carrier);
+  res.json(carriers);
+});
