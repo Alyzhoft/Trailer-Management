@@ -1,97 +1,104 @@
 <template>
   <div id="myModal" class="modal-custom">
-    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
+    <v-content>
+      <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
 
-    <!-- Modal content -->
-    <div class="modal-content-custom">
-      <div class="modal-header-custom">
-        <span class="closeBtn" @click="$emit('close');">&times;</span>
-        <h2>Add Trailer</h2>
-      </div>
-      <div class="modal-body-custom">
-        <div class="trailerManagement container mt-3"></div>
-        <form v-on:submit.prevent="checkForm">
-          <fieldset>
-            <div class="inline">
-              <label for="Category">Category</label>
-              <select
-                class="form-control"
-                v-model="trailer.category"
-                id="Category dropdownMenuOffset"
-                required
-              >
-                <option v-for="c in categories" :key="c">{{c}}</option>
-              </select>
-            </div>
-            <div class="inline">
-              <label for="Carrier">Carrier</label>
-              <select
-                class="form-control"
-                v-model="trailer.carrier"
-                id="Carrier dropdownMenuOffset"
-                required
-              >
-                <option v-for="c in carriers" :key="c">{{c}}</option>
-              </select>
-            </div>
-            <div class="inline">
-              <label for="trailerNumber">Trailer Number</label>
-              <input
-                type="text"
-                minlength="3"
-                maxlength="7"
-                v-model="trailer.trailerNumber"
-                class="form-control"
-                id="trailerNumber"
-                placeholder="Enter Trailer Number"
-                required
-              />
-            </div>
-            <div class="inline">
-              <label for="trailerLocation">Trailer Location</label>
-              <input
-                type="text"
-                v-model="trailer.trailerLocation"
-                class="form-control"
-                id="trailerNumber"
-                readonly
-              />
-            </div>
-            <div
-              class="form-group mb-2"
-              v-if="
+      <!-- Modal content -->
+      <div class="modal-content-custom">
+        <div class="modal-header-custom">
+          <span class="closeBtn" @click="$emit('close');">&times;</span>
+          <h2>Add Trailer</h2>
+        </div>
+        <div class="modal-body-custom">
+          <div class="trailerManagement container mt-3"></div>
+          <form v-on:submit.prevent="checkForm">
+            <fieldset>
+              <div class="inline">
+                <label for="Category">Category</label>
+                <select
+                  class="form-control"
+                  v-model="trailer.category"
+                  id="Category dropdownMenuOffset"
+                  required
+                >
+                  <option v-for="c in categories" :key="c">{{c}}</option>
+                </select>
+              </div>
+              <div class="inline">
+                <label for="Carrier">Carrier</label>
+                <select
+                  class="form-control"
+                  v-model="trailer.carrier"
+                  id="Carrier dropdownMenuOffset"
+                  required
+                >
+                  <option v-for="c in carriers" :key="c">{{c}}</option>
+                </select>
+              </div>
+              <div class="inline">
+                <label for="trailerNumber">Trailer Number</label>
+                <input
+                  type="text"
+                  minlength="3"
+                  maxlength="7"
+                  v-model="trailer.trailerNumber"
+                  class="form-control"
+                  id="trailerNumber"
+                  placeholder="Enter Trailer Number"
+                  required
+                />
+              </div>
+              <div class="inline">
+                <label for="trailerLocation">Trailer Location</label>
+                <input
+                  type="text"
+                  v-model="trailer.trailerLocation"
+                  class="form-control"
+                  id="trailerNumber"
+                  readonly
+                />
+              </div>
+              <div
+                class="form-group mb-2"
+                v-if="
                 trailer.category == 'Patio Trailers' ||
                   trailer.category == 'Storage/Misc. Shipping Trailers' || trailer.category == 'In Process'
               "
-            >
-              <label for="shipDate">Ship Date</label>
-              <div class="input-group mb-3">
-                <input type="date" v-model="shipDate" class="form-control" />
-                <div class="input-group-append">
-                  <button @click="addDate();" class="btn btn-outline-primary" type="button">+</button>
-                </div>
-                <div class="input-group" v-if="trailer.shipDates.length > 0">
-                  <span
-                    v-for="sd in trailer.shipDates"
-                    :key="sd"
-                    class="mt-1 mr-1 badge badge-pill badge-primary"
-                  >
-                    {{ sd }}
-                    <span v-on:click.stop="removeDate(sd);" class="addBtn">x</span>
-                  </span>
+              >
+                <label for="shipDate">Ship Date</label>
+                <div class="input-group mb-3">
+                  <input type="date" v-model="shipDate" class="form-control" />
+                  <div class="input-group-append">
+                    <button @click="addDate();" class="btn btn-outline-primary" type="button">+</button>
+                  </div>
+                  <div class="input-group" v-if="trailer.shipDates.length > 0">
+                    <span
+                      v-for="sd in trailer.shipDates"
+                      :key="sd"
+                      class="mt-1 mr-1 badge badge-pill badge-primary"
+                    >
+                      {{ sd }}
+                      <span v-on:click.stop="removeDate(sd);" class="addBtn">x</span>
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="form-group mb-2">
-              <label for="trailerStatus">Comments</label>
-              <textarea class="form-control" v-model="trailer.status" form="trailerStatus" required></textarea>
-            </div>
-            <input class="btn btn-primary mt-1 mr-1 mb-1" type="submit" value="Add Trailer" />
-            <button type="button" @click="$emit('close');" class="btn btn-secondary">Cancel</button>
-          </fieldset>
-        </form>
+              <div class="form-group mb-2">
+                <label for="trailerStatus">Comments</label>
+                <textarea
+                  class="form-control"
+                  v-model="trailer.status"
+                  form="trailerStatus"
+                  required
+                ></textarea>
+              </div>
+              <input class="btn btn-primary mt-1 mr-1 mb-1" type="submit" value="Add Trailer" />
+              <button type="button" @click="$emit('close');" class="btn btn-secondary">Cancel</button>
+            </fieldset>
+          </form>
+        </div>
       </div>
-    </div>
+    </v-content>
   </div>
 </template>
 
@@ -129,7 +136,11 @@ export default {
       return this.$store.state.carriers.sort();
     },
     categories() {
-      return this.$store.state.categories.sort();
+      return this.$store.state.categories
+        .map(c => {
+          return c.category;
+        })
+        .sort();
     }
   },
   methods: {
@@ -158,9 +169,7 @@ export default {
       } else {
         this.modal.visible = true;
         this.modal.header = "Alert";
-        this.modal.text = `Trailer #: ${
-          this.trailer.trailerNumber
-        } for Carrier: ${this.trailer.carrier} is already in a lot`;
+        this.modal.text = `Trailer #: ${this.trailer.trailerNumber} for Carrier: ${this.trailer.carrier} is already in a lot`;
       }
     },
     addDate() {

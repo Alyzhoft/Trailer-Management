@@ -9,7 +9,8 @@
         id="left"
       >
         <h6>{{ pls }}</h6>
-        <div
+        <!-- eslint-disable -->
+        <!-- <div
           v-for="trailer in trailers"
           v-if="trailer.trailerlocation == `PL-${pls}`"
           :key="trailer._id"
@@ -32,9 +33,26 @@
           data-trigger="hover"
           data-placement="top"
           :data-content="trailer.status"
+        >-->
+        <div
+          v-for="trailer in trailers"
+          v-if="trailer.trailerlocation == `PL-${pls}`"
+          :key="trailer._id"
+          v-on:click.stop="handleOnTrialerClick(trailer);"
+          :class="{
+            'inner-seat': trailer.trailerlocation == `PL-${pls}`,
+            populated: trailer.trailerlocation == `PL-${pls}`,
+          }"
+          v-bind:style="{backgroundColor: trailer.color}"
+          :title="trailer.carrier"
+          data-toggle="popover"
+          data-trigger="hover"
+          data-placement="top"
+          :data-content="trailer.status"
         >
           <p>{{ trailer.trailernumber }}</p>
         </div>
+        <!-- eslint-enable -->
       </div>
     </div>
   </div>
@@ -51,6 +69,8 @@ export default {
     EntryModal
   },
   data: () => ({
+    red: "#FF0000FF",
+    categories: [],
     clicked: false,
     entry: false,
     clickedTrailer: {},
@@ -68,13 +88,27 @@ export default {
   },
   computed: {
     trailers() {
-      return this.$store.state.trailers;
+      const categories = this.$store.state.categories;
+      const trailers = this.$store.state.trailers;
+
+      for (let i = 0; i < trailers.length; i++) {
+        for (let j = 0; j < categories.length; j++) {
+          if (trailers[i].category == categories[j].category) {
+            trailers[i].color = categories[j].color;
+          }
+        }
+      }
+      return trailers;
     },
     primaryLotSpots() {
       return this.$store.state.primaryLotSpots;
     }
   },
   methods: {
+    async getStyle() {
+      console.log("Workng");
+      return { backgroundColor: "#FF0000FF" };
+    },
     async handleOnTrialerClick(trailer) {
       this.clickedTrailer = trailer;
       this.$emit("trailer", this.clickedTrailer);
@@ -266,6 +300,10 @@ export default {
   }
 
   .receivingRush {
+    background-color: magenta;
+  }
+
+  .doNotUse {
     background-color: red;
   }
 

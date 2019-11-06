@@ -1,8 +1,61 @@
 <template>
   <v-app id="app">
     <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
+    <v-navigation-drawer v-model="drawer" app>
+      <v-list dense>
+        <v-list-item @click="drawer = false" link href="/#/requests">
+          <v-list-item-action>
+            <v-icon>mdi-email</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Requests</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item @click="drawer = false" link href="/#/">
+          <v-list-item-action>
+            <v-icon>mdi-truck</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Primary Lot</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item @click="drawer = false" link href="/#/offsitelot">
+          <v-list-item-action>
+            <v-icon>mdi-truck</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Off-Site Lot</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item @click="drawer = false" link href="/#/newlot">
+          <v-list-item-action>
+            <v-icon>mdi-truck</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>New Lot</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item @click="drawer = false" link href="/#/search">
+          <v-list-item-action>
+            <v-icon>mdi-magnify</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Search</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item @click="drawer = false" link href="/#/admin">
+          <v-list-item-action>
+            <v-icon>mdi-contact-mail</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Admin</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <v-app-bar app color="primary" dark>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <a class="navbar-brand" href="/#/">
         <img
           src="https://assets.renewalbyandersen.com/-/media/Images/Components/Navigation/header_logo.png?h=64&la=en&w=190&hash=9A5DBCD209227805BE452D77C90F3C21"
@@ -10,50 +63,23 @@
           width="100px"
         />
       </a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarColor01"
-        aria-controls="navbarColor01"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarColor01">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/#/requests">Requests</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/#/">Primary Lot</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/#/offsitelot">Off-Site Lot</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/#/newlot">New Lot</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/#/search">Search</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/#/admin">Admin</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-    <router-view />
+    </v-app-bar>
+
+    <v-content>
+      <v-container fluid>
+        <router-view />
+      </v-container>
+    </v-content>
   </v-app>
 </template>
 
 <script>
 import { mapActions } from "vuex";
-// import AlertModal from "@/components/AlertModal.vue";
+import AlertModal from "@/components/AlertModal.vue";
 export default {
   data: function() {
     return {
+      drawer: false,
       modal: {
         visible: false,
         text: "",
@@ -65,17 +91,21 @@ export default {
     await this.getTrailers();
     // const departedTrailers = await this.getDepartedTrailers();
     await this.getRequests();
+    await this.getCarriers();
+    await this.getCategories();
     // const userData = await this.getUserData();
   },
   components: {
-    // AlertModal
+    AlertModal
   },
   methods: {
     ...mapActions([
       "getTrailers",
       "getDepartedTrailers",
       "getRequests",
-      "getUserData"
+      "getUserData",
+      "getCarriers",
+      "getCategories"
     ])
   },
   sockets: {
@@ -182,6 +212,68 @@ export default {
           this.modal.visible = true;
           this.modal.header = "Error";
           this.modal.text = `Cannot depart trailer - ${res.routine}`;
+        }
+      }
+    },
+
+    addCarrier: function(carriers) {
+      if (carriers) {
+        if (carriers.name) {
+          this.modal.visible = true;
+          this.modal.header = "Error";
+          this.modal.text = `Cannot get carriers - ${carriers.routine}`;
+        } else {
+          this.$store.dispatch("ADD_CARRIER", carriers);
+        }
+      }
+    },
+
+    deleteCarrier: function(carriers) {
+      if (carriers) {
+        if (carriers.name) {
+          this.modal.visible = true;
+          this.modal.header = "Error";
+          this.modal.text = `Cannot get carriers - ${carriers.routine}`;
+        } else {
+          this.$store.dispatch("DELETE_CARRIER", carriers);
+        }
+      }
+    },
+
+    addCategory: function(categories) {
+      if (categories) {
+        if (categories.name) {
+          this.modal.visible = true;
+          this.modal.header = "Error";
+          this.modal.text = `Cannot get carriers - ${categories.routine}`;
+        } else {
+          console.log(categories);
+
+          this.$store.dispatch("ADD_CATEGORY", categories);
+        }
+      }
+    },
+
+    editCategory: function(categories) {
+      if (categories) {
+        if (categories.name) {
+          this.modal.visible = true;
+          this.modal.header = "Error";
+          this.modal.text = `Cannot get carriers - ${categories.routine}`;
+        } else {
+          this.$store.dispatch("EDIT_CATEGORY", categories);
+        }
+      }
+    },
+
+    deleteCategory: function(categories) {
+      if (categories) {
+        if (categories.name) {
+          this.modal.visible = true;
+          this.modal.header = "Error";
+          this.modal.text = `Cannot get carriers - ${categories.routine}`;
+        } else {
+          this.$store.dispatch("DELETE_CATEGORY", categories);
         }
       }
     }

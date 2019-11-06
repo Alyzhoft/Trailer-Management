@@ -130,7 +130,11 @@ export default {
       return this.$store.state.carriers.sort();
     },
     categories() {
-      return this.$store.state.categories.sort();
+      return this.$store.state.categories
+        .map(c => {
+          return c.category;
+        })
+        .sort();
     }
   },
   mounted() {

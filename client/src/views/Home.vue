@@ -1,42 +1,40 @@
 <template>
   <div class="home">
-    <div class="container-fluid">
-      <TempModal
-        :clickedDock="this.clickedDock"
-        v-if="empty"
-        @close="handleTempModalClose();"
-        @addTrailer="handleAddTrailer"
-        @inTrailer="handleInTrailer"
-      />
-      <EntryModal :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose();"/>
-      <InModal v-if="inTrailer" :clickedDock="this.clickedDock" @close="handleInClose"></InModal>
-      <InfoModal
-        :windowWidth="this.windowWidth"
-        :clickedTrailer="this.trailer"
-        v-if="clicked"
-        @close="handleModalClose();"
-      />
-      <div class="dock">
-        <h1 v-if="windowWidth < 1200" class="mt-2 boarder">Docks Doors</h1>
-        <HomeDockLayout @inTrailer="handleEmptyClicked" @trailer="handleTrailerClicked"/>
-      </div>
-      <div>
-        <div class="row">
-          <div class="primaryLot col-sm">
-            <div>
-              <!-- <span v-on:click.stop="handleEntryPrimaryLocation" class="addBtn">+</span> -->
-              <h1 class="center boarder">Primary Lot</h1>
-              <HomeLotLayout
-                lot="Primary Lot"
-                @inTrailer="handleEntryPrimaryLocation"
-                @trailer="handleTrailerClicked"
-              />
-            </div>
+    <TempModal
+      :clickedDock="this.clickedDock"
+      v-if="empty"
+      @close="handleTempModalClose();"
+      @addTrailer="handleAddTrailer"
+      @inTrailer="handleInTrailer"
+    />
+    <EntryModal :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose();" />
+    <InModal v-if="inTrailer" :clickedDock="this.clickedDock" @close="handleInClose"></InModal>
+    <InfoModal
+      :windowWidth="this.windowWidth"
+      :clickedTrailer="this.trailer"
+      v-if="clicked"
+      @close="handleModalClose();"
+    />
+    <div class="dock">
+      <h1 v-if="windowWidth < 1200" class="mt-2 boarder">Docks Doors</h1>
+      <HomeDockLayout @inTrailer="handleEmptyClicked" @trailer="handleTrailerClicked" />
+    </div>
+    <div>
+      <div class="row">
+        <div class="primaryLot col-sm">
+          <div>
+            <!-- <span v-on:click.stop="handleEntryPrimaryLocation" class="addBtn">+</span> -->
+            <h1 class="center boarder">Primary Lot</h1>
+            <HomeLotLayout
+              lot="Primary Lot"
+              @inTrailer="handleEntryPrimaryLocation"
+              @trailer="handleTrailerClicked"
+            />
           </div>
         </div>
       </div>
-      <div class="building"></div>
     </div>
+    <div class="building"></div>
   </div>
 </template>
 

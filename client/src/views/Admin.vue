@@ -1,22 +1,52 @@
 <template>
   <div>
-    <v-container>
-      <v-btn color="primary">Test</v-btn>
+    <v-container fluid>
+      <v-tabs centered>
+        <v-tab @click="carriersTab = true, categoriesTab = false, usersTab = false">Carriers</v-tab>
+        <v-tab @click="carriersTab = false, categoriesTab = true, usersTab = false">Categories</v-tab>
+        <v-tab @click="carriersTab = false, categoriesTab = false, usersTab = true">Users</v-tab>
+      </v-tabs>
+      <Carriers v-if="carriersTab" />
+      <Categories v-if="categoriesTab" />
+      <div v-if="usersTab">users</div>
     </v-container>
   </div>
 </template>
 
 <script>
-// import AlertModal from "@/components/AlertModal.vue";
+import Carriers from "@/components/Carriers.vue";
+import Categories from "@/components/Categories.vue";
 
 export default {
-  name: "admin",
-  data: () => ({}),
+  name: "Admin",
   components: {
-    // AlertModal
+    Carriers,
+    Categories
   },
-  computed: {},
-  methods: {}
+  data: () => ({
+    dialog: false,
+    deleteCarrier: false,
+    carriersTab: true,
+    categoriesTab: false,
+    usersTab: false
+  }),
+  computed: {
+    carriers() {
+      return this.$store.state.carriers.sort();
+    }
+  },
+  methods: {
+    async handleAddCarrierModalClose() {
+      this.dialog = false;
+    },
+    async handleDeleteCarrierModalClose() {
+      this.deleteCarrier = false;
+    },
+    async handleDeleteCarrier(carrier) {
+      this.carrier = carrier;
+      this.deleteCarrier = true;
+    }
+  }
 };
 </script>
 

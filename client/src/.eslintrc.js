@@ -11,6 +11,8 @@ module.exports = {
     "no-undef": 1,
     "no-console": 1,
     "vue/v-on-style": 1,
-    "vue/no-use-v-if-with-v-for": 1
+    "vue/no-use-v-if-with-v-for": 0,
+    "no-unused-vars": 1,
+    "vue/no-side-effects-in-computed-properties": 1
   }
 };

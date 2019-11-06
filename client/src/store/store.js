@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { stat } from "fs";
 
 Vue.use(Vuex);
 Vue.config.devtools = true;
@@ -11,21 +12,8 @@ export const store = new Vuex.Store({
     trailers: [],
     departedTrailers: [],
     requests: [],
-    categories: [
-      "Bays",
-      "Completed",
-      "Do Not Use",
-      "Dunnage",
-      "Empties for Shipping",
-      "In Process",
-      "Patio Trailers",
-      "Receiving",
-      "Receiving - Rush",
-      "Receiving - Storage",
-      "Storage/Misc. Shipping Trailers",
-      "Supermarket/Legacy/Eng"
-    ],
-    carriers: ["Brockman"],
+    categories: [],
+    carriers: [],
     dockDoors: [
       37,
       36,
@@ -152,6 +140,10 @@ export const store = new Vuex.Store({
       state.carriers = carriers;
     },
 
+    getCategories(state, categories) {
+      state.categories = categories;
+    },
+
     ADD_TRAILER: (state, payload) => {
       state.trailers = payload;
     },
@@ -180,6 +172,26 @@ export const store = new Vuex.Store({
     DEPARTED_TRAILER: (state, payload) => {
       state.trailers = payload.trailers;
       state.departedTrailers = payload.departed;
+    },
+
+    ADD_CARRIER: (state, payload) => {
+      state.carriers = payload;
+    },
+
+    DELETE_CARRIER: (state, payload) => {
+      state.carriers = payload;
+    },
+
+    ADD_CATEGORY: (state, payload) => {
+      state.categories = payload;
+    },
+
+    EDIT_CATEGORY: (state, payload) => {
+      state.categories = payload;
+    },
+
+    DELETE_CATEGORY: (state, payload) => {
+      state.categories = payload;
     }
   },
 
@@ -238,11 +250,18 @@ export const store = new Vuex.Store({
     },
 
     getCarriers(state) {
-      // let carriers = [];
       fetch("http://localhost:3000/carriers")
         .then(res => res.json())
         .then(carriers => {
           state.commit("getCarriers", carriers);
+        });
+    },
+
+    getCategories(state) {
+      fetch("http://localhost:3000/categories")
+        .then(res => res.json())
+        .then(categories => {
+          state.commit("getCategories", categories);
         });
     },
 
@@ -282,6 +301,26 @@ export const store = new Vuex.Store({
 
     DEPARTED_TRAILER: (state, payload) => {
       state.commit("DEPARTED_TRAILER", payload);
+    },
+
+    ADD_CARRIER: (state, payload) => {
+      state.commit("ADD_CARRIER", payload);
+    },
+
+    DELETE_CARRIER: (state, payload) => {
+      state.commit("DELETE_CARRIER", payload);
+    },
+
+    ADD_CATEGORY: (state, payload) => {
+      state.commit("ADD_CATEGORY", payload);
+    },
+
+    EDIT_CATEGORY: (state, payload) => {
+      state.commit("EDIT_CATEGORY", payload);
+    },
+
+    DELETE_CATEGORY: (state, payload) => {
+      state.commit("DELETE_CATEGORY", payload);
     }
   },
   getters: {

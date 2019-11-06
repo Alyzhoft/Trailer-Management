@@ -9,6 +9,8 @@
         id="left"
       >
         <h6>{{ dock }}</h6>
+        <!-- eslint-disable -->
+
         <div
           v-for="trailer in trailers"
           v-if="trailer.trailerlocation == dock"
@@ -23,6 +25,7 @@
         >
           <p>{{ trailer.trailernumber }}</p>
         </div>
+        <!-- eslint-enable -->
       </div>
     </div>
   </div>

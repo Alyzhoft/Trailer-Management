@@ -80,9 +80,23 @@ const getCarriers = async () => {
   const client = await conn.pool.connect();
 
   try {
-    const carriers = await client.query(`SELECT * FROM carriers`);
+    const results = await client.query(`SELECT * FROM carriers`);
     client.release();
+    let carriers = results.rows.map(a => a.carrier);
     return carriers;
+  } catch (error) {
+    client.release();
+    return error;
+  }
+};
+
+const getCategories = async () => {
+  const client = await conn.pool.connect();
+
+  try {
+    const results = await client.query(`SELECT * FROM categories`);
+    client.release();
+    return results.rows;
   } catch (error) {
     client.release();
     return error;
@@ -107,12 +121,24 @@ const insertTrailer = async trailer => {
     }
 
     if (shipDates == undefined) {
-      sqlQuery = `INSERT INTO trailers(trailernumber, carrier, trailerlocation, category, status) VALUES(\'${trailer.trailerNumber}\', \'${trailer.carrier}\', \'${trailer.trailerLocation}\', \'${trailer.category}\', \'${trailer.status}\')`;
+      sqlQuery = `INSERT INTO trailers(trailernumber, carrier, trailerlocation, category, status) VALUES(\'${
+        trailer.trailerNumber
+      }\', \'${trailer.carrier}\', \'${trailer.trailerLocation}\', \'${
+        trailer.category
+      }\', \'${trailer.status}\')`;
     } else {
-      sqlQuery = `INSERT INTO trailers(trailernumber, carrier, trailerlocation, category, status, shipdates) VALUES(\'${trailer.trailerNumber}\', \'${trailer.carrier}\', \'${trailer.trailerLocation}\', \'${trailer.category}\', \'${trailer.status}\', \'${shipDates}\')`;
+      sqlQuery = `INSERT INTO trailers(trailernumber, carrier, trailerlocation, category, status, shipdates) VALUES(\'${
+        trailer.trailerNumber
+      }\', \'${trailer.carrier}\', \'${trailer.trailerLocation}\', \'${
+        trailer.category
+      }\', \'${trailer.status}\', \'${shipDates}\')`;
     }
   } else {
-    sqlQuery = `INSERT INTO trailers(trailernumber, carrier, trailerlocation, category, status) VALUES(\'${trailer.trailerNumber}\', \'${trailer.carrier}\', \'${trailer.trailerLocation}\', \'${trailer.category}\', \'${trailer.status}\')`;
+    sqlQuery = `INSERT INTO trailers(trailernumber, carrier, trailerlocation, category, status) VALUES(\'${
+      trailer.trailerNumber
+    }\', \'${trailer.carrier}\', \'${trailer.trailerLocation}\', \'${
+      trailer.category
+    }\', \'${trailer.status}\')`;
   }
 
   const client = await conn.pool.connect();
@@ -145,12 +171,36 @@ const updateTrailer = async trailer => {
     }
 
     if (shipDates == undefined) {
-      sqlQuery = `UPDATE trailers SET trailernumber = \'${trailer.trailerNumber}\', carrier = \'${trailer.carrier}\', category = \'${trailer.category}\', status = \'${trailer.status}\', shipdates = null,updated = (now() at time zone 'US/Central') WHERE _id = ${trailer._id}`;
+      sqlQuery = `UPDATE trailers SET trailernumber = \'${
+        trailer.trailerNumber
+      }\', carrier = \'${trailer.carrier}\', category = \'${
+        trailer.category
+      }\', status = \'${
+        trailer.status
+      }\', shipdates = null,updated = (now() at time zone 'US/Central') WHERE _id = ${
+        trailer._id
+      }`;
     } else {
-      sqlQuery = `UPDATE trailers SET trailernumber = \'${trailer.trailerNumber}\', carrier = \'${trailer.carrier}\', category = \'${trailer.category}\', status = \'${trailer.status}\', shipdates = \'${shipDates}\', updated = (now() at time zone 'US/Central') WHERE _id = ${trailer._id}`;
+      sqlQuery = `UPDATE trailers SET trailernumber = \'${
+        trailer.trailerNumber
+      }\', carrier = \'${trailer.carrier}\', category = \'${
+        trailer.category
+      }\', status = \'${
+        trailer.status
+      }\', shipdates = \'${shipDates}\', updated = (now() at time zone 'US/Central') WHERE _id = ${
+        trailer._id
+      }`;
     }
   } else {
-    sqlQuery = `UPDATE trailers SET trailernumber = \'${trailer.trailerNumber}\', carrier = \'${trailer.carrier}\', category = \'${trailer.category}\', status = \'${trailer.status}\', updated = (now() at time zone 'US/Central') WHERE _id = ${trailer._id}`;
+    sqlQuery = `UPDATE trailers SET trailernumber = \'${
+      trailer.trailerNumber
+    }\', carrier = \'${trailer.carrier}\', category = \'${
+      trailer.category
+    }\', status = \'${
+      trailer.status
+    }\', updated = (now() at time zone 'US/Central') WHERE _id = ${
+      trailer._id
+    }`;
   }
 
   const client = await conn.pool.connect();
@@ -169,7 +219,11 @@ const moveTrailer = async trailer => {
   const client = await conn.pool.connect();
   try {
     const results = await client.query(
-      `UPDATE trailers SET trailerlocation = \'${trailer.trailerLocation}\', updated = (now() at time zone 'US/Central') WHERE _id = ${trailer._id}`
+      `UPDATE trailers SET trailerlocation = \'${
+        trailer.trailerLocation
+      }\', updated = (now() at time zone 'US/Central') WHERE _id = ${
+        trailer._id
+      }`
     );
     const trailers = await getTrailers();
     client.release();
@@ -214,7 +268,9 @@ const insertDeparted = async trailer => {
   const client = await conn.pool.connect();
   try {
     const results = await client.query(
-      `UPDATE trailers set departed = 'y', departedtime = (now() at time zone 'US/Central') WHERE _id = ${trailer._id}`
+      `UPDATE trailers set departed = 'y', departedtime = (now() at time zone 'US/Central') WHERE _id = ${
+        trailer._id
+      }`
     );
     const trailers = await getTrailers();
     const departed = await getDeparted();
@@ -234,31 +290,63 @@ const request = async data => {
   if (data.inRequest) {
     if (data.categoryChange) {
       if (Object.keys(data.inTrailer.trailerInfo).length === 0) {
-        sqlQuery = `INSERT INTO requests(dock, outtrailernumber, outcarrier, incarrier, urgent, trailer_id, special, outcategory) VALUES(\'${data.outTrailer.trailerLocation}\',\'${data.outTrailer.trailerNumber}\',\'${data.outTrailer.carrier}\',\'${data.inTrailer.carrier}\', \'${data.inTrailer.urgent}\',
+        sqlQuery = `INSERT INTO requests(dock, outtrailernumber, outcarrier, incarrier, urgent, trailer_id, special, outcategory) VALUES(\'${
+          data.outTrailer.trailerLocation
+        }\',\'${data.outTrailer.trailerNumber}\',\'${
+          data.outTrailer.carrier
+        }\',\'${data.inTrailer.carrier}\', \'${data.inTrailer.urgent}\',
           \'${data.outTrailer._id}\',
           \'${data.inTrailer.special}\', \'${data.outTrailer.category}\')`;
       } else {
-        sqlQuery = `INSERT INTO requests(dock, outtrailernumber, outcarrier, incarrier, intrailernumber, intrailerlocation, urgent, trailer_id, special, outcategory) VALUES(\'${data.outTrailer.trailerLocation}\',\'${data.outTrailer.trailerNumber}\',\'${data.outTrailer.carrier}\',\'${data.inTrailer.carrier}\', \'${data.inTrailer.trailerInfo.trailerNumber}\', \'${data.inTrailer.trailerInfo.trailerLocation}\', \'${data.inTrailer.urgent}\',
+        sqlQuery = `INSERT INTO requests(dock, outtrailernumber, outcarrier, incarrier, intrailernumber, intrailerlocation, urgent, trailer_id, special, outcategory) VALUES(\'${
+          data.outTrailer.trailerLocation
+        }\',\'${data.outTrailer.trailerNumber}\',\'${
+          data.outTrailer.carrier
+        }\',\'${data.inTrailer.carrier}\', \'${
+          data.inTrailer.trailerInfo.trailerNumber
+        }\', \'${data.inTrailer.trailerInfo.trailerLocation}\', \'${
+          data.inTrailer.urgent
+        }\',
           \'${data.outTrailer._id}\',
           \'${data.inTrailer.special}\', \'${data.outTrailer.category}\')`;
       }
     } else {
       if (Object.keys(data.inTrailer.trailerInfo).length === 0) {
-        sqlQuery = `INSERT INTO requests(dock, outtrailernumber, outcarrier, incarrier, urgent, trailer_id, special, outcategory) VALUES(\'${data.outTrailer.trailerLocation}\',\'${data.outTrailer.trailerNumber}\',\'${data.outTrailer.carrier}\',\'${data.inTrailer.carrier}\', \'${data.inTrailer.urgent}\',
+        sqlQuery = `INSERT INTO requests(dock, outtrailernumber, outcarrier, incarrier, urgent, trailer_id, special, outcategory) VALUES(\'${
+          data.outTrailer.trailerLocation
+        }\',\'${data.outTrailer.trailerNumber}\',\'${
+          data.outTrailer.carrier
+        }\',\'${data.inTrailer.carrier}\', \'${data.inTrailer.urgent}\',
           \'${data.outTrailer._id}\',
           \'${data.inTrailer.special}\', \'${data.outTrailer.category}\')`;
       } else {
-        sqlQuery = `INSERT INTO requests(dock, outtrailernumber, outcarrier, incarrier, intrailernumber, intrailerlocation, urgent, trailer_id, special) VALUES(\'${data.outTrailer.trailerLocation}\',\'${data.outTrailer.trailerNumber}\',\'${data.outTrailer.carrier}\',\'${data.inTrailer.carrier}\', \'${data.inTrailer.trailerInfo.trailerNumber}\', \'${data.inTrailer.trailerInfo.trailerLocation}\',\'${data.inTrailer.urgent}\',
+        sqlQuery = `INSERT INTO requests(dock, outtrailernumber, outcarrier, incarrier, intrailernumber, intrailerlocation, urgent, trailer_id, special) VALUES(\'${
+          data.outTrailer.trailerLocation
+        }\',\'${data.outTrailer.trailerNumber}\',\'${
+          data.outTrailer.carrier
+        }\',\'${data.inTrailer.carrier}\', \'${
+          data.inTrailer.trailerInfo.trailerNumber
+        }\', \'${data.inTrailer.trailerInfo.trailerLocation}\',\'${
+          data.inTrailer.urgent
+        }\',
           \'${data.outTrailer._id}\',
           \'${data.inTrailer.special}\')`;
       }
     }
   } else {
     if (data.categoryChange) {
-      sqlQuery = `INSERT INTO requests(dock, outtrailernumber, outcarrier, urgent, trailer_id, outcategory) VALUES(\'${data.outTrailer.trailerLocation}\',\'${data.outTrailer.trailerNumber}\',\'${data.outTrailer.carrier}\',\'${data.inTrailer.urgent}\',
+      sqlQuery = `INSERT INTO requests(dock, outtrailernumber, outcarrier, urgent, trailer_id, outcategory) VALUES(\'${
+        data.outTrailer.trailerLocation
+      }\',\'${data.outTrailer.trailerNumber}\',\'${
+        data.outTrailer.carrier
+      }\',\'${data.inTrailer.urgent}\',
         \'${data.outTrailer._id}\', \'${data.outTrailer.category}\')`;
     } else {
-      sqlQuery = `INSERT INTO requests(dock, outtrailernumber, outcarrier, urgent, trailer_id) VALUES(\'${data.outTrailer.trailerLocation}\',\'${data.outTrailer.trailerNumber}\',\'${data.outTrailer.carrier}\',\'${data.inTrailer.urgent}\',
+      sqlQuery = `INSERT INTO requests(dock, outtrailernumber, outcarrier, urgent, trailer_id) VALUES(\'${
+        data.outTrailer.trailerLocation
+      }\',\'${data.outTrailer.trailerNumber}\',\'${
+        data.outTrailer.carrier
+      }\',\'${data.inTrailer.urgent}\',
         \'${data.outTrailer._id}\')`;
     }
   }
@@ -279,11 +367,17 @@ const inRequest = async data => {
   try {
     if (data.inTrailer.trailerNumber) {
       const response = await client.query(
-        `INSERT INTO requests(incarrier, urgent, dock, special, intrailernumber, intrailerlocation) VALUES(\'${data.carrier}\',\'${data.urgent}\', \'${data.dock}\', \'${data.special}\', \'${data.inTrailer.trailerNumber}\', \'${data.inTrailer.trailerLocation}\')`
+        `INSERT INTO requests(incarrier, urgent, dock, special, intrailernumber, intrailerlocation) VALUES(\'${
+          data.carrier
+        }\',\'${data.urgent}\', \'${data.dock}\', \'${data.special}\', \'${
+          data.inTrailer.trailerNumber
+        }\', \'${data.inTrailer.trailerLocation}\')`
       );
     } else {
       const response = await client.query(
-        `INSERT INTO requests(incarrier, urgent, dock, special) VALUES(\'${data.carrier}\',\'${data.urgent}\', \'${data.dock}\', \'${data.special}\')`
+        `INSERT INTO requests(incarrier, urgent, dock, special) VALUES(\'${
+          data.carrier
+        }\',\'${data.urgent}\', \'${data.dock}\', \'${data.special}\')`
       );
     }
 
@@ -301,24 +395,40 @@ const completed = async data => {
   const client = await conn.pool.connect();
   try {
     const requestResponse = await client.query(
-      `UPDATE requests set completed = 'y', completedtime = (now() at time zone 'US/Central') where _id = \'${data._id}\'`
+      `UPDATE requests set completed = 'y', completedtime = (now() at time zone 'US/Central') where _id = \'${
+        data._id
+      }\'`
     );
 
     if (data.outcarrier) {
       if (data.outcategory) {
         const outResponse = await client.query(
-          `UPDATE trailers set trailerlocation = \'${data.outPlacement}\', category = \'${data.outcategory}\', updated = (now() at time zone 'US/Central') where _id = \'${data.trailer_id}\'`
+          `UPDATE trailers set trailerlocation = \'${
+            data.outPlacement
+          }\', category = \'${
+            data.outcategory
+          }\', updated = (now() at time zone 'US/Central') where _id = \'${
+            data.trailer_id
+          }\'`
         );
       } else {
         const outResponse = await client.query(
-          `UPDATE trailers set trailerlocation = \'${data.outPlacement}\', updated = (now() at time zone 'US/Central') where _id = \'${data.trailer_id}\'`
+          `UPDATE trailers set trailerlocation = \'${
+            data.outPlacement
+          }\', updated = (now() at time zone 'US/Central') where _id = \'${
+            data.trailer_id
+          }\'`
         );
       }
     }
 
     if (data.inTrailerNumber) {
       const requestResponse = await client.query(
-        `UPDATE trailers set trailerlocation = \'${data.dock}\', updated = (now() at time zone 'US/Central'), category = 'In Process' where carrier = \'${data.inCarrier}\' and trailernumber = \'${data.inTrailerNumber}\'`
+        `UPDATE trailers set trailerlocation = \'${
+          data.dock
+        }\', updated = (now() at time zone 'US/Central'), category = 'In Process' where carrier = \'${
+          data.inCarrier
+        }\' and trailernumber = \'${data.inTrailerNumber}\'`
       );
     }
     const requests = await getRequests();
@@ -427,6 +537,100 @@ const trailerSearch = async body => {
   }
 };
 
+const addCarrier = async carrier => {
+  const client = await conn.pool.connect();
+  try {
+    if (carrier) {
+      const response = await client.query(
+        `INSERT INTO carriers(carrier) VALUES(\'${carrier}\')`
+      );
+    }
+
+    const carriers = await getCarriers();
+    client.release();
+    return carriers;
+  } catch (error) {
+    client.release();
+    return error;
+  }
+};
+
+const deleteCarrier = async carrier => {
+  const client = await conn.pool.connect();
+  try {
+    if (carrier) {
+      const response = await client.query(
+        `DELETE FROM carriers WHERE carrier = \'${carrier}\'`
+      );
+    }
+
+    const carriers = await getCarriers();
+    client.release();
+    return carriers;
+  } catch (error) {
+    client.release();
+    return error;
+  }
+};
+
+const addCategory = async data => {
+  const client = await conn.pool.connect();
+  try {
+    if (data) {
+      const response = await client.query(
+        `INSERT INTO categories(category, color) VALUES(\'${
+          data.category
+        }\', \'${data.color}\')`
+      );
+    }
+
+    const categories = await getCategories();
+    client.release();
+    return categories;
+  } catch (error) {
+    client.release();
+    return error;
+  }
+};
+
+const editCategory = async data => {
+  const client = await conn.pool.connect();
+  try {
+    if (data) {
+      const response = await client.query(
+        `UPDATE categories SET category = \'${data.category}\', color = \'${
+          data.color
+        }\' WHERE category = \'${data.category}\'`
+      );
+    }
+
+    const categories = await getCategories();
+    client.release();
+    return categories;
+  } catch (error) {
+    client.release();
+    return error;
+  }
+};
+
+const deleteCategory = async data => {
+  const client = await conn.pool.connect();
+  try {
+    if (data) {
+      const response = await client.query(
+        `DELETE FROM categories WHERE category = \'${data}\'`
+      );
+    }
+
+    const categories = await getCategories();
+    client.release();
+    return categories;
+  } catch (error) {
+    client.release();
+    return error;
+  }
+};
+
 module.exports = {
   getTrailers,
   getEmptyTrailers,
@@ -443,5 +647,11 @@ module.exports = {
   inRequest,
   completed,
   getTrailerNumbers,
-  getCarriers
+  getCarriers,
+  addCarrier,
+  deleteCarrier,
+  getCategories,
+  addCategory,
+  editCategory,
+  deleteCategory
 };

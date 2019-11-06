@@ -59,6 +59,31 @@ io.on("connection", socket => {
     const response = await queries.completed(data);
     io.emit("completed", response);
   });
+
+  socket.on("addCarrier", async data => {
+    const response = await queries.addCarrier(data);
+    io.emit("addCarrier", response);
+  });
+
+  socket.on("deleteCarrier", async data => {
+    const response = await queries.deleteCarrier(data);
+    io.emit("deleteCarrier", response);
+  });
+
+  socket.on("addCategory", async data => {
+    const response = await queries.addCategory(data);
+    io.emit("addCategory", response);
+  });
+
+  socket.on("editCategory", async data => {
+    const response = await queries.editCategory(data);
+    io.emit("editCategory", response);
+  });
+
+  socket.on("deleteCategory", async data => {
+    const response = await queries.deleteCategory(data);
+    io.emit("deleteCategory", response);
+  });
 });
 
 app.get("/", (req, res) => {
@@ -99,6 +124,10 @@ app.post("/search", async (req, res) => {
 
 app.get("/carriers", async (req, res) => {
   const results = await queries.getCarriers();
-  let carriers = results.rows.map(a => a.carrier);
-  res.json(carriers);
+  res.json(results);
+});
+
+app.get("/categories", async (req, res) => {
+  const results = await queries.getCategories();
+  res.json(results);
 });
