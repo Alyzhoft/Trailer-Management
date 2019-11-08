@@ -14,16 +14,8 @@
       :class="{
         listLot: trailer.trailerlocation == lot,
         populated: trailer.trailerlocation == lot,
-        inProcess: trailer.category == 'In Process',
-        completed: trailer.category == 'Completed',
-        receiving: trailer.category == 'Receiving',
-        receivingRush: trailer.category == 'Receiving - Rush',
-        patioDoors: trailer.category == 'Patio Trailers',
-        shippingStorageTrailers: trailer.category == 'Storage/Misc. Shipping Trailers',
-        empties: trailer.category == 'Empties for Shipping',
-        receivingStorage: trailer.category == 'Receiving - Storage',
-        doNotUse: trailer.category == 'Do Not Use'
       }"
+      :style="{backgroundColor: trailer.color}"
       :title="trailer.carrier"
       data-toggle="popover"
       data-trigger="hover"
@@ -65,9 +57,20 @@ export default {
   }),
   computed: {
     trailers() {
-      return this.$store.state.trailers.filter(
+      const trailers = this.$store.state.trailers.filter(
         trailer => trailer.trailerlocation == this.lot
       );
+
+      const categories = this.$store.state.categories;
+
+      for (let i = 0; i < trailers.length; i++) {
+        for (let j = 0; j < categories.length; j++) {
+          if (trailers[i].category == categories[j].category) {
+            trailers[i].color = categories[j].color;
+          }
+        }
+      }
+      return trailers;
     }
   },
   updated() {
@@ -172,47 +175,6 @@ h4 {
   color: white;
   font-weight: bold;
   text-align: center;
-}
-
-.inProcess {
-  background-color: gold;
-}
-
-.inProcess p {
-  color: black;
-  font-weight: bold;
-}
-
-.completed {
-  background-color: green;
-}
-
-.receiving {
-  background-color: purple;
-}
-
-.receivingRush {
-  background-color: magenta;
-}
-
-.doNotUse {
-  background-color: red;
-}
-
-.receivingStorage {
-  background-color: navy;
-}
-
-.patioDoors {
-  background-color: rgb(255, 153, 0);
-}
-
-.shippingStorageTrailers {
-  background-color: steelblue;
-}
-
-.empties {
-  background-color: grey;
 }
 
 p {

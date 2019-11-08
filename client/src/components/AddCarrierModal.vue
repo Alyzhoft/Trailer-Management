@@ -33,7 +33,9 @@ export default {
   },
   methods: {
     async addCarrier() {
-      const carriers = this.$store.state.carriers;
+      const carriers = this.$store.state.carriers.map(c => {
+        return c.carrier;
+      });
 
       let create = true;
       for (let i = 0; i < carriers.length; i++) {

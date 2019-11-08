@@ -70,6 +70,7 @@ export default {
       {
         text: "Actions",
         value: "action",
+        align: "right",
         sortable: false
       }
     ],

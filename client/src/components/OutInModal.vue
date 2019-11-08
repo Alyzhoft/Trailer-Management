@@ -161,10 +161,18 @@ export default {
   },
   computed: {
     carriers() {
-      return this.$store.state.carriers.sort();
+      return this.$store.state.carriers
+        .map(c => {
+          return c.carrier;
+        })
+        .sort();
     },
     categories() {
-      return this.$store.state.categories.sort();
+      return this.$store.state.categories
+        .map(c => {
+          return c.category;
+        })
+        .sort();
     }
   },
   methods: {

@@ -9,31 +9,6 @@
         id="left"
       >
         <h6>{{ pls }}</h6>
-        <!-- eslint-disable -->
-        <!-- <div
-          v-for="trailer in trailers"
-          v-if="trailer.trailerlocation == `PL-${pls}`"
-          :key="trailer._id"
-          v-on:click.stop="handleOnTrialerClick(trailer);"
-          :class="{
-            'inner-seat': trailer.trailerlocation == `PL-${pls}`,
-            populated: trailer.trailerlocation == `PL-${pls}`,
-            inProcess: trailer.category == 'In Process',
-            completed: trailer.category == 'Completed',
-            receiving: trailer.category == 'Receiving',
-            receivingRush: trailer.category == 'Receiving - Rush',
-            patioDoors: trailer.category == 'Patio Trailers',
-            shippingStorageTrailers: trailer.category == 'Storage/Misc. Shipping Trailers',
-            empties: trailer.category == 'Empties for Shipping',
-            receivingStorage: trailer.category == 'Receiving - Storage',
-            doNotUse: trailer.category == 'Do Not Use'
-          }"
-          :title="trailer.carrier"
-          data-toggle="popover"
-          data-trigger="hover"
-          data-placement="top"
-          :data-content="trailer.status"
-        >-->
         <div
           v-for="trailer in trailers"
           v-if="trailer.trailerlocation == `PL-${pls}`"
@@ -180,47 +155,6 @@ export default {
     text-align: center;
   }
 
-  .inProcess {
-    background-color: gold;
-  }
-
-  .inProcess p {
-    color: black;
-    font-weight: bold;
-  }
-
-  .completed {
-    background-color: green;
-  }
-
-  .receiving {
-    background-color: purple;
-  }
-
-  .receivingRush {
-    background-color: magenta;
-  }
-
-  .doNotUse {
-    background-color: red;
-  }
-
-  .receivingStorage {
-    background-color: navy;
-  }
-
-  .patioDoors {
-    background-color: rgb(255, 153, 0);
-  }
-
-  .shippingStorageTrailers {
-    background-color: steelblue;
-  }
-
-  .empties {
-    background-color: grey;
-  }
-
   .populated:hover,
   .populated:focus {
     color: #000;
@@ -280,47 +214,6 @@ export default {
     background-color: blue;
     color: white;
     text-align: center;
-  }
-
-  .inProcess {
-    background-color: gold;
-  }
-
-  .inProcess p {
-    color: black;
-    font-weight: bold;
-  }
-
-  .completed {
-    background-color: green;
-  }
-
-  .receiving {
-    background-color: purple;
-  }
-
-  .receivingRush {
-    background-color: magenta;
-  }
-
-  .doNotUse {
-    background-color: red;
-  }
-
-  .receivingStorage {
-    background-color: navy;
-  }
-
-  .patioDoors {
-    background-color: rgb(255, 153, 0);
-  }
-
-  .shippingStorageTrailers {
-    background-color: steelblue;
-  }
-
-  .empties {
-    background-color: grey;
   }
 
   .populated:hover,

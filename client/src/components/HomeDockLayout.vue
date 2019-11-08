@@ -19,9 +19,8 @@
           :class="{
             'inner-seat': trailer.trailerlocation == dock,
             populated: trailer.trailerlocation == dock,
-            inProcess: trailer.category == 'In Process',
-            completed: trailer.category == 'Completed'
           }"
+          :style="{backgroundColor: trailer.color}"
         >
           <p>{{ trailer.trailernumber }}</p>
         </div>
@@ -49,7 +48,17 @@ export default {
   }),
   computed: {
     trailers() {
-      return this.$store.state.trailers;
+      const categories = this.$store.state.categories;
+      const trailers = this.$store.state.trailers;
+
+      for (let i = 0; i < trailers.length; i++) {
+        for (let j = 0; j < categories.length; j++) {
+          if (trailers[i].category == categories[j].category) {
+            trailers[i].color = categories[j].color;
+          }
+        }
+      }
+      return trailers;
     },
     dockDoors() {
       return this.$store.state.dockDoors;
@@ -127,18 +136,6 @@ export default {
     text-align: center;
   }
 
-  .inProcess {
-    background-color: gold;
-  }
-
-  .inProcess p {
-    color: black;
-    font-weight: bold;
-  }
-
-  .completed {
-    background-color: green;
-  }
   .populated:hover,
   .populated:focus {
     color: #000;
@@ -198,19 +195,6 @@ export default {
     background-color: blue;
     color: white;
     text-align: center;
-  }
-
-  .inProcess {
-    background-color: gold;
-  }
-
-  .inProcess p {
-    color: black;
-    font-weight: bold;
-  }
-
-  .completed {
-    background-color: green;
   }
 
   .populated:hover,

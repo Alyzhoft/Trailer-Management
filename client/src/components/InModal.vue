@@ -132,7 +132,11 @@ export default {
       return this.$store.state.dockDoors;
     },
     carriers() {
-      return this.$store.state.carriers.sort();
+      return this.$store.state.carriers
+        .map(c => {
+          return c.carrier;
+        })
+        .sort();
     }
   },
   mounted() {},

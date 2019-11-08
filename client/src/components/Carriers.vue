@@ -1,40 +1,26 @@
 <template>
   <div>
-    <v-btn absolute right @click="dialog = true">
-      <v-icon>mdi-plus</v-icon>Add Carrier
-    </v-btn>
-    <v-simple-table>
-      <template v-slot:default>
-        <thead>
-          <tr>
-            <th class="text-left">Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="carrier in carriers" :key="carrier">
-            <td>{{ carrier }}</td>
-            <v-btn
-              class="mt-3"
-              small
-              color="error"
-              absolute
-              right
-              @click="handleDeleteCarrier(carrier)"
-            >Delete</v-btn>
-          </tr>
-        </tbody>
+    <v-data-table :headers="headers" :items="carriers" class="elevation-1">
+      <template v-slot:top>
+        <v-toolbar flat color="white">
+          <v-spacer></v-spacer>
+          <v-dialog v-model="dialog" max-width="500px">
+            <template v-slot:activator="{ on }">
+              <AddCarrierModal v-if="dialog" @close="handleAddCarrierModalClose();"></AddCarrierModal>
+              <v-btn color="primary" dark class="mb-2" v-on="on">New Carrier</v-btn>
+            </template>
+          </v-dialog>
+        </v-toolbar>
       </template>
-    </v-simple-table>
-    <v-row justify="center">
-      <AddCarrierModal v-if="dialog" @close="handleAddCarrierModalClose();"></AddCarrierModal>
-    </v-row>
-    <v-row justify="center">
-      <DeleteCarrierModal
-        :carrier="this.carrier"
-        v-if="deleteCarrier"
-        @close="handleDeleteCarrierModalClose();"
-      ></DeleteCarrierModal>
-    </v-row>
+      <template v-slot:item.action="{ item }">
+        <v-icon medium @click="deleteItem(item)">mdi-delete</v-icon>
+      </template>
+    </v-data-table>
+    <DeleteCarrierModal
+      :carrier="this.carrier"
+      v-if="deleteCarrier"
+      @close="handleDeleteCarrierModalClose();"
+    ></DeleteCarrierModal>
   </div>
 </template>
 
@@ -51,7 +37,27 @@ export default {
   data() {
     return {
       dialog: false,
-      deleteCarrier: false
+      deleteCarrier: false,
+      headers: [
+        {
+          text: "Carrier",
+          align: "left",
+          sortable: false,
+          value: "carrier"
+        },
+        {
+          text: "Actions",
+          value: "action",
+          align: "right",
+          sortable: false
+        }
+      ],
+      editedIndex: -1,
+      editedItem: {
+        category: "",
+        color: "#FF0000FF"
+      },
+      carrier: ""
     };
   },
   computed: {
@@ -60,6 +66,10 @@ export default {
     }
   },
   methods: {
+    async deleteItem(item) {
+      this.carrier = item.carrier;
+      this.deleteCarrier = true;
+    },
     async handleAddCarrierModalClose() {
       this.dialog = false;
     },

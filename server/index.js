@@ -84,6 +84,21 @@ io.on("connection", socket => {
     const response = await queries.deleteCategory(data);
     io.emit("deleteCategory", response);
   });
+
+  socket.on("addUser", async user => {
+    const response = await queries.addUser(user);
+    io.emit("addUser", response);
+  });
+
+  socket.on("editUser", async user => {
+    const response = await queries.editUser(user);
+    io.emit("editUser", response);
+  });
+
+  socket.on("deleteUser", async user => {
+    const response = await queries.deleteUser(user);
+    io.emit("editUser", response);
+  });
 });
 
 app.get("/", (req, res) => {
@@ -129,5 +144,15 @@ app.get("/carriers", async (req, res) => {
 
 app.get("/categories", async (req, res) => {
   const results = await queries.getCategories();
+  res.json(results);
+});
+
+app.get("/users", async (req, res) => {
+  const results = await queries.getUsers();
+  res.json(results);
+});
+
+app.post("/getUser", async (req, res) => {
+  const results = await queries.getUser(req.body);
   res.json(results);
 });

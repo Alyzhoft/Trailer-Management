@@ -119,10 +119,18 @@ export default {
       return this.$store.state.departedTrailers;
     },
     carriers() {
-      return this.$store.state.carriers.sort();
+      return this.$store.state.carriers
+        .map(c => {
+          return c.carrier;
+        })
+        .sort();
     },
     categories() {
-      return this.$store.state.categories;
+      return this.$store.state.categories
+        .map(c => {
+          return c.category;
+        })
+        .sort();
     }
   },
   methods: {

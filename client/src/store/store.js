@@ -14,6 +14,7 @@ export const store = new Vuex.Store({
     requests: [],
     categories: [],
     carriers: [],
+    users: [],
     dockDoors: [
       37,
       36,
@@ -144,6 +145,10 @@ export const store = new Vuex.Store({
       state.categories = categories;
     },
 
+    getUsers: (state, users) => {
+      state.users = users;
+    },
+
     ADD_TRAILER: (state, payload) => {
       state.trailers = payload;
     },
@@ -192,6 +197,18 @@ export const store = new Vuex.Store({
 
     DELETE_CATEGORY: (state, payload) => {
       state.categories = payload;
+    },
+
+    ADD_USER: (state, payload) => {
+      state.users = payload;
+    },
+
+    EDIT_USER: (state, payload) => {
+      state.users = payload;
+    },
+
+    DELETE_USER: (state, payload) => {
+      state.users = payload;
     }
   },
 
@@ -236,17 +253,30 @@ export const store = new Vuex.Store({
     },
 
     getUserData(state) {
-      fetch(`https://trailermanagement.azurewebsites.net/.auth/me`, {
+      // fetch(`https://trailermanagement.azurewebsites.net/.auth/me`, {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Accept: "application/json"
+      //   }
+      //   // mode: "no-cors"
+      // })
+      //   .then(res => res.json)
+      //   .then(user => {
+      const user = { email: "Alexander.Lyzhoft@Andersencorp.com" };
+      fetch(`http://localhost:3000/getUser`, {
+        method: "POST",
+        body: JSON.stringify({
+          user: user
+        }),
         headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
+          "content-type": "application/json"
         }
-        // mode: "no-cors"
       })
-        .then(res => res.json)
-        .then(user => {
-          state.commit("getUserData", user);
+        .then(res => res.json())
+        .then(userData => {
+          state.commit("getUserData", userData);
         });
+      // });
     },
 
     getCarriers(state) {
@@ -262,6 +292,14 @@ export const store = new Vuex.Store({
         .then(res => res.json())
         .then(categories => {
           state.commit("getCategories", categories);
+        });
+    },
+
+    getUsers(state) {
+      fetch("http://localhost:3000/users")
+        .then(res => res.json())
+        .then(users => {
+          state.commit("getUsers", users);
         });
     },
 
@@ -321,11 +359,27 @@ export const store = new Vuex.Store({
 
     DELETE_CATEGORY: (state, payload) => {
       state.commit("DELETE_CATEGORY", payload);
+    },
+
+    ADD_USER: (state, payload) => {
+      state.commit("ADD_USER", payload);
+    },
+
+    EDIT_USER: (state, payload) => {
+      state.commit("EDIT_USER", payload);
+    },
+
+    DELETE_USER: (state, payload) => {
+      state.commit("DELETE_USER", payload);
     }
   },
   getters: {
     getCurrentTrailers(state) {
       return state.trailers;
+    },
+
+    getUser(state) {
+      return state.user;
     }
   }
 });

@@ -43,7 +43,7 @@
             <v-list-item-title>Search</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item @click="drawer = false" link href="/#/admin">
+        <v-list-item v-if="user.admin" @click="drawer = false" link href="/#/admin">
           <v-list-item-action>
             <v-icon>mdi-contact-mail</v-icon>
           </v-list-item-action>
@@ -93,10 +93,16 @@ export default {
     await this.getRequests();
     await this.getCarriers();
     await this.getCategories();
-    // const userData = await this.getUserData();
+    // await this.getUsers();
+    await this.getUserData();
   },
   components: {
     AlertModal
+  },
+  computed: {
+    user() {
+      return this.$store.state.user;
+    }
   },
   methods: {
     ...mapActions([
@@ -105,7 +111,8 @@ export default {
       "getRequests",
       "getUserData",
       "getCarriers",
-      "getCategories"
+      "getCategories",
+      "getUsers"
     ])
   },
   sockets: {
@@ -274,6 +281,42 @@ export default {
           this.modal.text = `Cannot get carriers - ${categories.routine}`;
         } else {
           this.$store.dispatch("DELETE_CATEGORY", categories);
+        }
+      }
+    },
+
+    addUser: function(users) {
+      if (users) {
+        if (users.name) {
+          this.modal.visible = true;
+          this.modal.header = "Error";
+          this.modal.text = `Cannot get Users - ${categories.routine}`;
+        } else {
+          this.$store.dispatch("ADD_USER", users);
+        }
+      }
+    },
+
+    editUser: function(users) {
+      if (users) {
+        if (users.name) {
+          this.modal.visible = true;
+          this.modal.header = "Error";
+          this.modal.text = `Cannot get Users - ${categories.routine}`;
+        } else {
+          this.$store.dispatch("EDIT_USER", users);
+        }
+      }
+    },
+
+    deleteUser: function(users) {
+      if (users) {
+        if (users.name) {
+          this.modal.visible = true;
+          this.modal.header = "Error";
+          this.modal.text = `Cannot get Users - ${categories.routine}`;
+        } else {
+          this.$store.dispatch("DELETE_USER", users);
         }
       }
     }

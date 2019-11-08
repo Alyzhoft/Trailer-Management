@@ -6,6 +6,7 @@ import Search from "./views/Search";
 import Requests from "./views/Requests";
 import NewLot from "./views/NewLot";
 import Admin from "./views/Admin";
+import { store } from "./store/store";
 
 Vue.use(Router);
 
@@ -39,7 +40,14 @@ export default new Router({
     {
       path: "/admin",
       name: "admin",
-      component: Admin
+      component: Admin,
+      beforeEnter: (to, from, next) => {
+        const user = store.getters.getUser;
+
+        if (user.admin) {
+          next();
+        }
+      }
     }
   ]
 });

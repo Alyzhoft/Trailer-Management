@@ -1,5 +1,32 @@
 const conn = require("./connection");
 
+const getUsers = async () => {
+  const client = await conn.pool.connect();
+  try {
+    const results = await client.query("SELECT * FROM users");
+    client.release();
+    return results.rows;
+  } catch (error) {
+    client.release();
+    return error;
+  }
+};
+
+const getUser = async body => {
+  const user = body.user;
+  const client = await conn.pool.connect();
+  try {
+    const results = await client.query(
+      `SELECT * FROM users WHERE UPPER(email) = \'${user.email.toUpperCase()}\'`
+    );
+    client.release();
+    return results.rows[0];
+  } catch (error) {
+    client.release();
+    return error;
+  }
+};
+
 const getTrailers = async () => {
   const client = await conn.pool.connect();
   try {
@@ -82,8 +109,7 @@ const getCarriers = async () => {
   try {
     const results = await client.query(`SELECT * FROM carriers`);
     client.release();
-    let carriers = results.rows.map(a => a.carrier);
-    return carriers;
+    return results.rows;
   } catch (error) {
     client.release();
     return error;
@@ -631,6 +657,66 @@ const deleteCategory = async data => {
   }
 };
 
+const addUser = async user => {
+  const client = await conn.pool.connect();
+  try {
+    if (user) {
+      const response = await client.query(
+        `INSERT INTO users(firstname, lastname, email, admin) VALUES(\'${
+          user.firstname
+        }\', \'${user.lastname}\', \'${user.email}\', \'${user.admin}\')`
+      );
+    }
+
+    const users = await getUsers();
+    client.release();
+    return users;
+  } catch (error) {
+    client.release();
+    return error;
+  }
+};
+
+const editUser = async user => {
+  const client = await conn.pool.connect();
+  try {
+    if (user) {
+      const response = await client.query(
+        `UPDATE users set firstname = \'${user.firstname}\', lastname = \'${
+          user.lastname
+        }\', email = \'${user.email}\', admin = \'${
+          user.admin
+        }\' where id = \'${user.id}\'`
+      );
+    }
+
+    const users = await getUsers();
+    client.release();
+    return users;
+  } catch (error) {
+    client.release();
+    return error;
+  }
+};
+
+const deleteUser = async user => {
+  const client = await conn.pool.connect();
+  try {
+    if (user) {
+      const response = await client.query(
+        `DELETE FROM users where id = \'${user.id}\'`
+      );
+    }
+
+    const users = await getUsers();
+    client.release();
+    return users;
+  } catch (error) {
+    client.release();
+    return error;
+  }
+};
+
 module.exports = {
   getTrailers,
   getEmptyTrailers,
@@ -653,5 +739,10 @@ module.exports = {
   getCategories,
   addCategory,
   editCategory,
-  deleteCategory
+  deleteCategory,
+  getUsers,
+  getUser,
+  addUser,
+  editUser,
+  deleteUser
 };

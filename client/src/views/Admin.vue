@@ -8,7 +8,7 @@
       </v-tabs>
       <Carriers v-if="carriersTab" />
       <Categories v-if="categoriesTab" />
-      <div v-if="usersTab">users</div>
+      <User v-if="usersTab" />
     </v-container>
   </div>
 </template>
@@ -16,36 +16,28 @@
 <script>
 import Carriers from "@/components/Carriers.vue";
 import Categories from "@/components/Categories.vue";
+import User from "@/components/User.vue";
+import { mapActions } from "vuex";
 
 export default {
   name: "Admin",
   components: {
     Carriers,
-    Categories
+    Categories,
+    User
   },
   data: () => ({
-    dialog: false,
     deleteCarrier: false,
     carriersTab: true,
     categoriesTab: false,
     usersTab: false
   }),
-  computed: {
-    carriers() {
-      return this.$store.state.carriers.sort();
-    }
+  async mounted() {
+    await this.getUsers();
   },
+  computed: {},
   methods: {
-    async handleAddCarrierModalClose() {
-      this.dialog = false;
-    },
-    async handleDeleteCarrierModalClose() {
-      this.deleteCarrier = false;
-    },
-    async handleDeleteCarrier(carrier) {
-      this.carrier = carrier;
-      this.deleteCarrier = true;
-    }
+    ...mapActions(["getUsers"])
   }
 };
 </script>
