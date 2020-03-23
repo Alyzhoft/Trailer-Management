@@ -20,7 +20,11 @@ const getUser = async body => {
       `SELECT * FROM users WHERE UPPER(email) = \'${user.email.toUpperCase()}\'`
     );
     client.release();
-    return results.rows[0];
+    if (results.rows.length > 0) {
+      return results.rows[0];
+    } else {
+      return results.rows;
+    }
   } catch (error) {
     client.release();
     return error;

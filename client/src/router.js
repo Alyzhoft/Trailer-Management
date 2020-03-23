@@ -6,6 +6,7 @@ import Search from "./views/Search";
 import Requests from "./views/Requests";
 import NewLot from "./views/NewLot";
 import Admin from "./views/Admin";
+import Message from "./views/Message";
 import { store } from "./store/store";
 
 Vue.use(Router);
@@ -36,6 +37,11 @@ export default new Router({
       path: "/requests",
       name: "requests",
       component: Requests
+    },
+    {
+      path: "/message",
+      name: "message",
+      component: Message
     },
     {
       path: "/admin",
