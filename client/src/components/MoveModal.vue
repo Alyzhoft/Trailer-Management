@@ -8,7 +8,7 @@
       </div>
       <div class="modal-body-custom">
         <div class="trailerManagement container mt-3">
-          <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+          <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
         </div>
         <form>
           <fieldset>
@@ -20,15 +20,19 @@
                 class="form-control"
                 id="trailerNumber"
                 readonly
-              >
+              />
             </div>
             <div class="inline">
               <label for="trailerLocation">New Trailer Location</label>
               <select class="form-control" v-model="trailer.trailerLocation" id="trailerLocation">
                 <option>Off-Site Lot</option>
-                <option>New Lot</option>
+                <option>PL</option>
+                <option
+                  v-for="rvacDockNumber in rvacDockDoors"
+                  :key="rvacDockNumber"
+                >{{ rvacDockNumber }}</option>
                 <option v-for="dockNumber in dockDoors" :key="dockNumber">{{ dockNumber }}</option>
-                <option v-for="pls in primaryLotSpots" :key="`PL-${pls}`">PL-{{ pls }}</option>
+                <option v-for="sls in secondaryLotSpots" :key="`SL-${sls}`">SL-{{ sls }}</option>
               </select>
             </div>
             <button
@@ -71,8 +75,11 @@ export default {
     dockDoors() {
       return this.$store.state.dockDoors;
     },
-    primaryLotSpots() {
-      return this.$store.state.primaryLotSpots;
+    rvacDockDoors() {
+      return this.$store.state.RVACdockDoors;
+    },
+    secondaryLotSpots() {
+      return this.$store.state.secondaryLotSpots;
     }
   },
   methods: {
@@ -83,7 +90,7 @@ export default {
       if (
         this.trailer.trailerLocation != "Primary Lot" &&
         this.trailer.trailerLocation != "Off-Site Lot" &&
-        this.trailer.trailerLocation != "New Lot"
+        this.trailer.trailerLocation != "PL"
       ) {
         for (let i = 0; i < trailers.length; i++) {
           if (trailers[i].trailerlocation === this.trailer.trailerLocation) {

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <a class="navbar-brand" href="/#/">
@@ -8,7 +8,7 @@
           src="https://assets.renewalbyandersen.com/-/media/Images/Components/Navigation/header_logo.png?h=64&la=en&w=190&hash=9A5DBCD209227805BE452D77C90F3C21"
           alt
           width="100px"
-        >
+        />
       </a>
       <button
         class="navbar-toggler"
@@ -27,13 +27,16 @@
             <a class="nav-link" href="/#/requests">Requests</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/#/">Primary Lot</a>
+            <a class="nav-link" href="/#/">RMAN</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/#/rvac">RVAC</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/#/offsitelot">Off-Site Lot</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/#/newlot">New Lot</a>
+            <a class="nav-link" href="/#/primarylot">Primary Lot</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/#/search">Search</a>
@@ -41,7 +44,7 @@
         </ul>
       </div>
     </nav>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 

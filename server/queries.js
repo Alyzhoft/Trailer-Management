@@ -49,7 +49,7 @@ const getTrailerNumbers = async body => {
 
   try {
     const requestResponse = await client.query(
-      `SELECT trailernumber, _id, trailerlocation FROM trailers WHERE (trailerlocation like ('PL-%') or trailerlocation like 'Off-Site Lot' or trailerlocation like 'New Lot') AND departed != 'y' AND carrier = \'${carrier}\'`
+      `SELECT trailernumber, _id, trailerlocation FROM trailers WHERE (trailerlocation like ('SL-%') or trailerlocation like 'Off-Site Lot' or trailerlocation like 'PL') AND departed != 'y' AND carrier = \'${carrier}\'`
     );
     client.release();
     return requestResponse;
@@ -66,7 +66,7 @@ const getEmptyTrailers = async body => {
 
   try {
     const requestResponse = await client.query(
-      `SELECT trailernumber, _id, trailerlocation FROM trailers WHERE (trailerlocation like ('PL-%') or trailerlocation like 'Off-Site Lot' or trailerlocation like 'New Lot') AND departed != 'y' AND category = 'Empties for Shipping' AND carrier = \'${carrier}\'`
+      `SELECT trailernumber, _id, trailerlocation FROM trailers WHERE (trailerlocation like ('SL-%') or trailerlocation like 'Off-Site Lot' or trailerlocation like 'PL') AND departed != 'y' AND category = 'Empties for Shipping' AND carrier = \'${carrier}\'`
     );
     client.release();
     return requestResponse;

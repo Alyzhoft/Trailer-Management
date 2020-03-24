@@ -2,35 +2,24 @@
   <div>
     <div class="noWrap">
       <div
-        v-for="sls in secondaryLotSpots"
-        v-on:click="handleEntryLocation(sls)"
-        :key="sls"
+        v-for="dock in dockDoors"
+        v-on:click="handleEntryLocation(dock);"
+        :key="dock"
         class="trailers"
         id="left"
       >
-        <h6>{{ sls }}</h6>
+        <h6>{{ dock }}</h6>
         <div
           v-for="trailer in trailers"
-          v-if="trailer.trailerlocation == `SL-${sls}`"
+          v-if="trailer.trailerlocation == dock"
           :key="trailer._id"
           v-on:click.stop="handleOnTrialerClick(trailer);"
           :class="{
-            'inner-seat': trailer.trailerlocation == `SL-${sls}`,
-            populated: trailer.trailerlocation == `SL-${sls}`,
+            'inner-seat': trailer.trailerlocation == dock,
+            populated: trailer.trailerlocation == dock,
             inProcess: trailer.category == 'In Process',
-            completed: trailer.category == 'Completed',
-            receiving: trailer.category == 'Receiving',
-            receivingRush: trailer.category == 'Receiving - Rush',
-            patioDoors: trailer.category == 'Patio Trailers',
-            shippingStorageTrailers: trailer.category == 'Storage/Misc. Shipping Trailers',
-            empties: trailer.category == 'Empties for Shipping',
-            receivingStorage: trailer.category == 'Receiving - Storage'
+            completed: trailer.category == 'Completed'
           }"
-          :title="trailer.carrier"
-          data-toggle="popover"
-          data-trigger="hover"
-          data-placement="top"
-          :data-content="trailer.status"
         >
           <p>{{ trailer.trailernumber }}</p>
         </div>
@@ -44,7 +33,7 @@ import InfoModal from "./InfoModal.vue";
 import EntryModal from "@/components/EntryModal.vue";
 
 export default {
-  name: "HomeLotLayout",
+  name: "RVACDockLayout",
   components: {
     InfoModal,
     EntryModal
@@ -53,24 +42,14 @@ export default {
     clicked: false,
     entry: false,
     clickedTrailer: {},
-    sls: ""
+    clickedDock: ""
   }),
-  updated() {
-    $(document).ready(function() {
-      $('[data-toggle="popover"]').popover();
-    });
-  },
-  mounted() {
-    $(document).ready(function() {
-      $('[data-toggle="popover"]').popover();
-    });
-  },
   computed: {
     trailers() {
       return this.$store.state.trailers;
     },
-    secondaryLotSpots() {
-      return this.$store.state.secondaryLotSpots;
+    dockDoors() {
+      return this.$store.state.RVACdockDoors;
     }
   },
   methods: {
@@ -79,9 +58,9 @@ export default {
       this.$emit("trailer", this.clickedTrailer);
       // this.clicked = true;
     },
-    async handleEntryLocation(sls) {
-      this.sls = sls.toString();
-      this.$emit("inTrailer", this.sls);
+    async handleEntryLocation(dock) {
+      this.clickedDock = dock.toString();
+      this.$emit("inTrailer", this.clickedDock);
     },
     async handleModalClose() {
       this.clickedTrailer = {};
@@ -97,9 +76,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 @media screen and (min-width: 1200px) {
-  /* .noWrap {
+  .noWrap {
     white-space: nowrap;
-  } */
+  }
 
   .populated p {
     font-size: 10px;
@@ -128,13 +107,13 @@ export default {
     width: 100%;
     height: 6.1em;
     border-radius: 4px;
-    margin: -10px 0px 0px 0px;
+    margin: -127px 0px 0px 0px;
     background: #d8d8d8;
     position: relative;
   }
 
   h6 {
-    /* margin-top: 100px; */
+    margin-top: 100px;
     color: black;
     background: white;
   }
@@ -157,31 +136,6 @@ export default {
   .completed {
     background-color: green;
   }
-
-  .receiving {
-    background-color: purple;
-  }
-
-  .receivingRush {
-    background-color: red;
-  }
-
-  .receivingStorage {
-    background-color: navy;
-  }
-
-  .patioDoors {
-    background-color: rgb(255, 153, 0);
-  }
-
-  .shippingStorageTrailers {
-    background-color: steelblue;
-  }
-
-  .empties {
-    background-color: grey;
-  }
-
   .populated:hover,
   .populated:focus {
     color: #000;
@@ -254,30 +208,6 @@ export default {
 
   .completed {
     background-color: green;
-  }
-
-  .receiving {
-    background-color: purple;
-  }
-
-  .receivingRush {
-    background-color: red;
-  }
-
-  .receivingStorage {
-    background-color: navy;
-  }
-
-  .patioDoors {
-    background-color: rgb(255, 153, 0);
-  }
-
-  .shippingStorageTrailers {
-    background-color: steelblue;
-  }
-
-  .empties {
-    background-color: grey;
   }
 
   .populated:hover,

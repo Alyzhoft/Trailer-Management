@@ -4,7 +4,8 @@ import Home from "./views/Home.vue";
 import OffSiteLot from "./views/OffSiteLot";
 import Search from "./views/Search";
 import Requests from "./views/Requests";
-import NewLot from "./views/NewLot";
+import PrimaryLot from "./views/PrimaryLot";
+import RVAC from "./views/RVAC";
 
 Vue.use(Router);
 
@@ -21,9 +22,9 @@ export default new Router({
       component: OffSiteLot
     },
     {
-      path: "/newlot",
-      name: "newlot",
-      component: NewLot
+      path: "/primarylot",
+      name: "primarylot",
+      component: PrimaryLot
     },
     {
       path: "/search",
@@ -34,6 +35,11 @@ export default new Router({
       path: "/requests",
       name: "requests",
       component: Requests
+    },
+    {
+      path: "/rvac",
+      name: "rvac",
+      component: RVAC
     }
   ]
 });

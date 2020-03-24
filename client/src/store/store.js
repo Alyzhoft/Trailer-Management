@@ -45,7 +45,8 @@ export const store = new Vuex.Store({
       "Brockman",
       "Fillmore",
       "Renewal Green",
-      "Renewal Black"
+      "Renewal Black",
+      "Teams"
     ],
     dockDoors: [
       37,
@@ -85,7 +86,44 @@ export const store = new Vuex.Store({
       2,
       1
     ],
-    primaryLotSpots: [
+    RVACdockDoors: [
+      74,
+      73,
+      72,
+      71,
+      70,
+      69,
+      68,
+      67,
+      66,
+      65,
+      64,
+      63,
+      62,
+      61,
+      60,
+      59,
+      58,
+      57,
+      56,
+      55,
+      54,
+      53,
+      52,
+      51,
+      50,
+      49,
+      48,
+      47,
+      46,
+      45,
+      44,
+      43,
+      42,
+      41,
+      40
+    ],
+    secondaryLotSpots: [
       1,
       2,
       3,
@@ -202,7 +240,7 @@ export const store = new Vuex.Store({
 
   actions: {
     getTrailers(state) {
-      fetch("https://trailermanagementbe.azurewebsites.net/trailers")
+      fetch("http://localhost:3000/trailers")
         .then(res => res.json())
         .then(response => {
           if (response.name) {
@@ -215,7 +253,7 @@ export const store = new Vuex.Store({
     },
 
     getDepartedTrailers(state) {
-      fetch("https://trailermanagementbe.azurewebsites.net/departedtrailers")
+      fetch("http://localhost:3000/departedtrailers")
         .then(res => res.json())
         .then(response => {
           if (response.name) {
@@ -228,7 +266,7 @@ export const store = new Vuex.Store({
     },
 
     getRequests(state) {
-      fetch("https://trailermanagementbe.azurewebsites.net/requests")
+      fetch("http://localhost:3000/requests")
         .then(res => res.json())
         .then(response => {
           if (response.name) {

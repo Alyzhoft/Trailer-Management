@@ -25,12 +25,12 @@
           <div class="primaryLot col-sm">
             <div>
               <!-- <span v-on:click.stop="handleEntryPrimaryLocation" class="addBtn">+</span> -->
-              <h1 class="center boarder">Secondary Lot</h1>
-              <HomeLotLayout
+              <h1 class="center boarder">RVAC</h1>
+              <!-- <HomeLotLayout
                 lot="Primary Lot"
                 @inTrailer="handleEntryPrimaryLocation"
                 @trailer="handleTrailerClicked"
-              />
+              />-->
             </div>
           </div>
         </div>
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import HomeDockLayout from "@/components/HomeDockLayout.vue";
+import HomeDockLayout from "@/components/RVACDockLayout.vue";
 import HomeLotLayout from "@/components/HomeLotLayout.vue";
 import EntryModal from "@/components/EntryModal.vue";
 import InfoModal from "@/components/InfoModal.vue";
@@ -49,7 +49,7 @@ import InModal from "@/components/InModal.vue";
 import TempModal from "@/components/TempModal.vue";
 
 export default {
-  name: "home",
+  name: "rvac",
   components: {
     HomeDockLayout,
     HomeLotLayout,
@@ -86,10 +86,10 @@ export default {
     handleResize() {
       this.windowWidth = window.innerWidth;
     },
-    async handleEntryPrimaryLocation(value) {
-      this.clickedDock = `SL-${value}`;
-      this.entry = true;
-    },
+    // async handleEntryPrimaryLocation(value) {
+    //   this.clickedDock = `PL-${value}`;
+    //   this.entry = true;
+    // },
     async handleEntryModalClose() {
       this.entry = false;
       this.clickedDock = "";

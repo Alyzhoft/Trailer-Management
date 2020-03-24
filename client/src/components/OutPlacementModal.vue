@@ -1,6 +1,6 @@
 <template>
   <div id="myModal" class="modal-custom">
-    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
 
     <!-- Modal content -->
     <div class="modal-content-custom">
@@ -12,8 +12,8 @@
         <div>
           <select class="form-control" v-model="outPlacement" id="Carrier dropdownMenuOffset">
             <option>Off-Site Lot</option>
-            <option>New Lot</option>
-            <option v-for="pls in primaryLotSpots" :key="pls">PL-{{pls}}</option>
+            <option>PL</option>
+            <option v-for="sls in secondaryLotSpots" :key="sls">SL-{{sls}}</option>
           </select>
         </div>
 
@@ -45,8 +45,8 @@ export default {
     };
   },
   computed: {
-    primaryLotSpots() {
-      return this.$store.state.primaryLotSpots;
+    secondaryLotSpots() {
+      return this.$store.state.secondaryLotSpots;
     }
   },
   methods: {
@@ -59,7 +59,7 @@ export default {
           trailers[i].trailerlocation.toUpperCase() ==
             this.request.outPlacement.toUpperCase() &&
           (this.request.outPlacement != "Off-Site Lot" &&
-            this.request.outPlacement != "New Lot")
+            this.request.outPlacement != "PL")
         ) {
           create = false;
         }

@@ -62,7 +62,7 @@ export default {
       this.data.inTrailerNumber = this.request.intrailernumber;
       this.tnPopulated = true;
     } else {
-      fetch("https://trailermanagementbe.azurewebsites.net/emptyTrailers", {
+      fetch("http://localhost:3000/emptyTrailers", {
         method: "POST",
         body: JSON.stringify({
           carrier: this.request.incarrier

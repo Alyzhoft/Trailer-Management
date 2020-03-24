@@ -1,6 +1,6 @@
 <template>
   <div id="myModal" class="modal-custom">
-    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
 
     <!-- Modal content -->
     <div class="modal-content-custom">
@@ -22,8 +22,8 @@
                 required
               >
                 <option>Off-Site Lot</option>
-                <option>New Lot</option>
-                <option v-for="pls in primaryLotSpots" :key="pls">PL-{{pls}}</option>
+                <option>PL</option>
+                <option v-for="sls in secondaryLotSpots" :key="sls">SL-{{sls}}</option>
               </select>
             </div>
           </div>
@@ -84,8 +84,8 @@ export default {
     };
   },
   computed: {
-    primaryLotSpots() {
-      return this.$store.state.primaryLotSpots;
+    secondaryLotSpots() {
+      return this.$store.state.secondaryLotSpots;
     }
   },
   mounted() {
@@ -93,7 +93,7 @@ export default {
       this.data.inTrailerNumber = this.request.intrailernumber;
       this.tnPopulated = true;
     } else {
-      fetch("https://trailermanagementbe.azurewebsites.net/emptyTrailers", {
+      fetch("http://localhost:3000/emptyTrailers", {
         method: "POST",
         body: JSON.stringify({
           carrier: this.request.incarrier
@@ -117,7 +117,7 @@ export default {
           trailers[i].trailerlocation.toUpperCase() ==
             this.data.outPlacement.toUpperCase() &&
           (this.data.outPlacement != "Off-Site Lot" &&
-            this.data.outPlacement != "New Lot")
+            this.data.outPlacement != "PL")
         ) {
           create = false;
         }

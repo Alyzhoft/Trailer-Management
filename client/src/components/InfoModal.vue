@@ -8,7 +8,7 @@
       />
     </div>
     <div v-else-if="move">
-      <MoveModal :clickedTrailer="this.trailer" @close="handleMoveModalClose"/>
+      <MoveModal :clickedTrailer="this.trailer" @close="handleMoveModalClose" />
     </div>
     <div v-else-if="out">
       <OutInModal
@@ -66,7 +66,7 @@
             >Departed</button>
             <button
               v-if="
-                !trailer.trailerLocation.startsWith('PL-') &&
+                !trailer.trailerLocation.startsWith('SL-') &&
                   trailer.trailerLocation != 'Off-Site Lot'
               "
               class="btn btn-primary mr-1 mb-1 inline"

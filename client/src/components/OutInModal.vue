@@ -1,6 +1,6 @@
 <template>
   <div id="myModal" class="modal-custom">
-    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
 
     <!-- Modal content -->
     <div class="modal-content-custom">
@@ -90,7 +90,7 @@
                 id="inRequest"
                 checked
                 @change="handleCheckBox"
-              >
+              />
               <label class="custom-control-label" for="inRequest">In Request</label>
             </div>
             <div class="checkInline custom-control custom-checkbox">
@@ -100,7 +100,7 @@
                 class="custom-control-input"
                 id="urgent"
                 checked
-              >
+              />
               <label class="custom-control-label" for="urgent">Urgent</label>
             </div>
             <div class="checkInline custom-control custom-checkbox">
@@ -110,7 +110,7 @@
                 class="custom-control-input"
                 id="categoryChange"
                 checked
-              >
+              />
               <label class="custom-control-label" for="categoryChange">Category Change</label>
             </div>
           </fieldset>
@@ -201,7 +201,7 @@ export default {
 
     async getTrailerNumbers() {
       const carrier = this.inTrailer.carrier;
-      fetch("https://trailermanagementbe.azurewebsites.net/trailerNumbers", {
+      fetch("http://localhost:3000/trailerNumbers", {
         method: "POST",
         body: JSON.stringify({
           carrier: carrier

@@ -1,11 +1,11 @@
 <template>
   <div class="container-fluid">
     <div>
-      <EntryModal :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose();"/>
-      <InfoModal :clickedTrailer="this.trailer" v-if="clicked" @close="handleModalClose();"/>
+      <EntryModal :clickedDock="this.clickedDock" v-if="entry" @close="handleEntryModalClose();" />
+      <InfoModal :clickedTrailer="this.trailer" v-if="clicked" @close="handleModalClose();" />
     </div>
     <span v-on:click.stop="handleEntry" class="addBtn">+</span>
-    <h1>New Lot</h1>
+    <h1>Primary Lot</h1>
     <div
       v-for="trailer in trailers"
       v-on:click="handleOnTrialerClick(trailer);"
@@ -40,14 +40,14 @@ import EntryModal from "@/components/EntryModal.vue";
 import InfoModal from "@/components/InfoModal.vue";
 
 export default {
-  name: "newlot",
+  name: "primaryLot",
   components: {
     AlertModal,
     InfoModal,
     EntryModal
   },
   data: () => ({
-    lot: "New Lot",
+    lot: "PL",
     windowWidth: "",
     entry: false,
     clicked: false,
@@ -125,7 +125,7 @@ export default {
       this.clicked = false;
     },
     async handleEntry() {
-      this.clickedDock = "New Lot";
+      this.clickedDock = "PL";
       this.entry = true;
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <div @keyup.enter="search">
-    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal"/>
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
 
     <div class="container">
       <div class="mt-2 mb-2 form-inline">
@@ -10,7 +10,7 @@
             v-model="trailerNumber"
             placeholder="Trailer Number"
             class="form-control"
-          >
+          />
           <div class="input-group-append">
             <button class="btn btn-outline-primary" type="button" @click="search">🔍</button>
           </div>
@@ -34,7 +34,7 @@
             class="custom-control-input"
             id="customCheck1"
             checked
-          >
+          />
           <label class="custom-control-label" for="customCheck1">Departed</label>
         </div>
         <!-- <button type="button" @click="search" class="btn btn-secondary ml-2">Search</button> -->
@@ -123,7 +123,7 @@ export default {
   },
   methods: {
     search() {
-      fetch("https://trailermanagementbe.azurewebsites.net/search", {
+      fetch("http://localhost:3000/search", {
         method: "POST",
         body: JSON.stringify({
           startDateTime: this.startDateTime,
