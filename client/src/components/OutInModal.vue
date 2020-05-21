@@ -1,6 +1,10 @@
 <template>
   <div id="myModal" class="modal-custom">
-    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
+    <AlertModal
+      v-if="modal.visible"
+      @close="modal.visible = false;"
+      :modalInfo="modal"
+    />
 
     <!-- Modal content -->
     <div class="modal-content-custom">
@@ -27,7 +31,7 @@
                   v-model="inTrailer.carrier"
                   @change="getTrailerNumbers"
                 >
-                  <option v-for="c in carriers" :key="c">{{c}}</option>
+                  <option v-for="c in carriers" :key="c">{{ c }}</option>
                 </select>
               </div>
               <div class="inline">
@@ -40,9 +44,13 @@
                 >
                   <option
                     v-for="tn in trailerNumbers"
-                    :value="{trailerLocation: tn.trailerlocation, trailerNumber: tn.trailernumber}"
+                    :value="{
+                      trailerLocation: tn.trailerlocation,
+                      trailerNumber: tn.trailernumber
+                    }"
                     :key="tn._id"
-                  >{{tn.trailernumber}}</option>
+                    >{{ tn.trailernumber }}</option
+                  >
                 </select>
               </div>
               <div class="inline">
@@ -71,7 +79,7 @@
                   required
                 >
                   <option value selected disabled>Category</option>
-                  <option v-for="c in categories" :key="c">{{c}}</option>
+                  <option v-for="c in categories" :key="c">{{ c }}</option>
                 </select>
               </div>
             </div>
@@ -80,8 +88,16 @@
               type="button"
               @click="submitRequest();"
               class="btn btn-primary mt-1 mr-1 mb-1"
-            >Submit</button>
-            <button type="button" @click="$emit('cancle');" class="btn btn-secondary mr-2">Cancel</button>
+            >
+              Submit
+            </button>
+            <button
+              type="button"
+              @click="$emit('cancle');"
+              class="btn btn-secondary mr-2"
+            >
+              Cancel
+            </button>
             <div class="checkInline custom-control custom-checkbox">
               <input
                 type="checkbox"
@@ -91,7 +107,9 @@
                 checked
                 @change="handleCheckBox"
               />
-              <label class="custom-control-label" for="inRequest">In Request</label>
+              <label class="custom-control-label" for="inRequest"
+                >In Request</label
+              >
             </div>
             <div class="checkInline custom-control custom-checkbox">
               <input
@@ -111,7 +129,9 @@
                 id="categoryChange"
                 checked
               />
-              <label class="custom-control-label" for="categoryChange">Category Change</label>
+              <label class="custom-control-label" for="categoryChange"
+                >Category Change</label
+              >
             </div>
           </fieldset>
         </form>
@@ -201,7 +221,7 @@ export default {
 
     async getTrailerNumbers() {
       const carrier = this.inTrailer.carrier;
-      fetch("http://localhost:3000/trailerNumbers", {
+      fetch("https://trailermanagementbe.azurewebsites.net/trailerNumbers", {
         method: "POST",
         body: JSON.stringify({
           carrier: carrier

@@ -13,11 +13,12 @@
           </div>
           <div>
             <h3 class="headerInline">Carrier:</h3>
-            <h4 v-if="!tnPopulated" class="inline">{{ this.request.incarrier }}</h4>
-            <h4
-              v-if="tnPopulated"
-              class="inline"
-            >{{ this.request.incarrier }} - {{ this.request.intrailernumber }}</h4>
+            <h4 v-if="!tnPopulated" class="inline">
+              {{ this.request.incarrier }}
+            </h4>
+            <h4 v-if="tnPopulated" class="inline">
+              {{ this.request.incarrier }} - {{ this.request.intrailernumber }}
+            </h4>
           </div>
           <div v-if="!tnPopulated">
             <h3 class="headerInline">Trailer Number:</h3>
@@ -28,11 +29,15 @@
                 id="trailerNumber dropdownMenuOffset"
                 required
               >
-                <option v-for="r in results" :key="r._id">{{ r.trailernumber }}</option>
+                <option v-for="r in results" :key="r._id">{{
+                  r.trailernumber
+                }}</option>
               </select>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary mt-1 mr-1 mb-1">Complete</button>
+          <button type="submit" class="btn btn-primary mt-1 mr-1 mb-1">
+            Complete
+          </button>
         </div>
       </form>
     </div>
@@ -62,7 +67,7 @@ export default {
       this.data.inTrailerNumber = this.request.intrailernumber;
       this.tnPopulated = true;
     } else {
-      fetch("http://localhost:3000/emptyTrailers", {
+      fetch("https://trailermanagementbe.azurewebsites.net/emptyTrailers", {
         method: "POST",
         body: JSON.stringify({
           carrier: this.request.incarrier

@@ -240,7 +240,7 @@ export const store = new Vuex.Store({
 
   actions: {
     getTrailers(state) {
-      fetch("http://localhost:3000/trailers")
+      fetch("https://trailermanagementbe.azurewebsites.net/trailers")
         .then(res => res.json())
         .then(response => {
           if (response.name) {
@@ -253,7 +253,7 @@ export const store = new Vuex.Store({
     },
 
     getDepartedTrailers(state) {
-      fetch("http://localhost:3000/departedtrailers")
+      fetch("https://trailermanagementbe.azurewebsites.net/departedtrailers")
         .then(res => res.json())
         .then(response => {
           if (response.name) {
@@ -266,7 +266,7 @@ export const store = new Vuex.Store({
     },
 
     getRequests(state) {
-      fetch("http://localhost:3000/requests")
+      fetch("https://trailermanagementbe.azurewebsites.net/requests")
         .then(res => res.json())
         .then(response => {
           if (response.name) {

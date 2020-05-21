@@ -1,6 +1,10 @@
 <template>
   <div @keyup.enter="search">
-    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
+    <AlertModal
+      v-if="modal.visible"
+      @close="modal.visible = false;"
+      :modalInfo="modal"
+    />
 
     <div class="container">
       <div class="mt-2 mb-2 form-inline">
@@ -12,19 +16,33 @@
             class="form-control"
           />
           <div class="input-group-append">
-            <button class="btn btn-outline-primary" type="button" @click="search">🔍</button>
+            <button
+              class="btn btn-outline-primary"
+              type="button"
+              @click="search"
+            >
+              🔍
+            </button>
           </div>
         </div>
         <div class="inline mr-sm-2">
-          <select class="form-control" v-model="category" id="Category dropdownMenuOffset">
+          <select
+            class="form-control"
+            v-model="category"
+            id="Category dropdownMenuOffset"
+          >
             <option value selected disabled>Category</option>
-            <option v-for="c in categories" :key="c">{{c}}</option>
+            <option v-for="c in categories" :key="c">{{ c }}</option>
           </select>
         </div>
         <div class="inline mr-sm-2">
-          <select class="form-control" v-model="carrier" id="Carrier dropdownMenuOffset">
+          <select
+            class="form-control"
+            v-model="carrier"
+            id="Carrier dropdownMenuOffset"
+          >
             <option value selected disabled>Carrier</option>
-            <option v-for="c in carriers" :key="c">{{c}}</option>
+            <option v-for="c in carriers" :key="c">{{ c }}</option>
           </select>
         </div>
         <div class="custom-control custom-checkbox">
@@ -35,10 +53,16 @@
             id="customCheck1"
             checked
           />
-          <label class="custom-control-label" for="customCheck1">Departed</label>
+          <label class="custom-control-label" for="customCheck1"
+            >Departed</label
+          >
         </div>
-        <!-- <button type="button" @click="search" class="btn btn-secondary ml-2">Search</button> -->
-        <button type="button" @click="clear" class="btn btn-secondary ml-2">Clear</button>
+        <!--
+          <button type="button" @click="search" class="btn btn-secondary ml-2">Search</button>
+        -->
+        <button type="button" @click="clear" class="btn btn-secondary ml-2">
+          Clear
+        </button>
       </div>
       <div v-if="departedSearch">
         <table class="table table-hover table-responsive">
@@ -123,7 +147,7 @@ export default {
   },
   methods: {
     search() {
-      fetch("http://localhost:3000/search", {
+      fetch("https://trailermanagementbe.azurewebsites.net/search", {
         method: "POST",
         body: JSON.stringify({
           startDateTime: this.startDateTime,
@@ -165,5 +189,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -1,12 +1,16 @@
 <template>
   <div id="myModal" class="modal-custom">
-    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
+    <AlertModal
+      v-if="modal.visible"
+      @close="modal.visible = false;"
+      :modalInfo="modal"
+    />
 
     <!-- Modal content -->
     <div class="modal-content-custom">
       <div class="modal-header-custom">
         <span class="closeBtn" @click="$emit('close');">&times;</span>
-        <h2>Dock: {{this.clickedDock}}</h2>
+        <h2>Dock: {{ this.clickedDock }}</h2>
       </div>
       <div class="modal-body-custom">
         <div class="trailerManagement container mt-3"></div>
@@ -22,7 +26,7 @@
                   @change="getTrailerNumbers"
                   required
                 >
-                  <option v-for="c in carriers" :key="c">{{c}}</option>
+                  <option v-for="c in carriers" :key="c">{{ c }}</option>
                 </select>
               </div>
               <div v-if="bolTrailerNumber">
@@ -34,14 +38,22 @@
                 >
                   <option
                     v-for="tn in trailerNumbers"
-                    :value="{trailerLocation: tn.trailerlocation, trailerNumber: tn.trailernumber}"
+                    :value="{
+                      trailerLocation: tn.trailerlocation,
+                      trailerNumber: tn.trailernumber
+                    }"
                     :key="tn._id"
-                  >{{tn.trailernumber}}</option>
+                    >{{ tn.trailernumber }}</option
+                  >
                 </select>
               </div>
               <div v-if="bolSpecial">
                 <label for="Carrier">Special</label>
-                <select class="form-control" v-model="special" id="Carrier dropdownMenuOffset">
+                <select
+                  class="form-control"
+                  v-model="special"
+                  id="Carrier dropdownMenuOffset"
+                >
                   <option>E-Track</option>
                   <option>Reinforced</option>
                   <option>Not Reinforced</option>
@@ -54,8 +66,16 @@
               type="button"
               @click="submitRequest();"
               class="btn btn-primary mt-1 mr-1 mb-1"
-            >Submit</button>
-            <button type="button" @click="$emit('close');" class="btn btn-secondary mr-2">Cancel</button>
+            >
+              Submit
+            </button>
+            <button
+              type="button"
+              @click="$emit('close');"
+              class="btn btn-secondary mr-2"
+            >
+              Cancel
+            </button>
             <div class="checkInline custom-control custom-checkbox">
               <input
                 type="checkbox"
@@ -74,7 +94,9 @@
                 id="trailerNumberCheck"
                 checked
               />
-              <label class="custom-control-label" for="trailerNumberCheck">Trailer Number</label>
+              <label class="custom-control-label" for="trailerNumberCheck"
+                >Trailer Number</label
+              >
             </div>
             <div class="checkInline custom-control custom-checkbox">
               <input
@@ -166,7 +188,7 @@ export default {
 
     async getTrailerNumbers() {
       const carrier = this.carrier;
-      fetch("http://localhost:3000/trailerNumbers", {
+      fetch("https://trailermanagementbe.azurewebsites.net/trailerNumbers", {
         method: "POST",
         body: JSON.stringify({
           carrier: carrier
