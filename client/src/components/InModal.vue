@@ -1,16 +1,12 @@
 <template>
   <div id="myModal" class="modal-custom">
-    <AlertModal
-      v-if="modal.visible"
-      @close="modal.visible = false;"
-      :modalInfo="modal"
-    />
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
 
     <!-- Modal content -->
     <div class="modal-content-custom">
       <div class="modal-header-custom">
         <span class="closeBtn" @click="$emit('close');">&times;</span>
-        <h2>Dock: {{ this.clickedDock }}</h2>
+        <h2>Dock: {{this.clickedDock}}</h2>
       </div>
       <div class="modal-body-custom">
         <div class="trailerManagement container mt-3"></div>
@@ -21,38 +17,34 @@
                 <label for="Carrier">Carrier</label>
                 <select
                   class="form-control"
-                  v-model="carrier"
+                  v-model="inTrailer.carrier"
                   id="Carrier dropdownMenuOffset"
                   @change="getTrailerNumbers"
                   required
                 >
-                  <option v-for="c in carriers" :key="c">{{ c }}</option>
+                  <option v-for="c in carriers" :key="c">{{c}}</option>
                 </select>
               </div>
               <div v-if="bolTrailerNumber">
                 <label for="trailerNumber">Trailer Number</label>
                 <select
                   class="form-control"
-                  v-model="inTrailer"
+                  v-model="inTrailer.trailerInfo"
                   id="trailerNumber dropdownMenuOffset"
                 >
                   <option
                     v-for="tn in trailerNumbers"
-                    :value="{
-                      trailerLocation: tn.trailerlocation,
-                      trailerNumber: tn.trailernumber
-                    }"
+                    :value="{trailerLocation: tn.trailerlocation, trailerNumber: tn.trailernumber}"
                     :key="tn._id"
-                    >{{ tn.trailernumber }}</option
-                  >
+                  >{{tn.trailernumber}}</option>
                 </select>
               </div>
               <div v-if="bolSpecial">
-                <label for="Carrier">Special</label>
+                <label for="Special">Special</label>
                 <select
                   class="form-control"
-                  v-model="special"
-                  id="Carrier dropdownMenuOffset"
+                  v-model="inTrailer.special"
+                  id="Special dropdownMenuOffset"
                 >
                   <option>E-Track</option>
                   <option>Reinforced</option>
@@ -66,16 +58,8 @@
               type="button"
               @click="submitRequest();"
               class="btn btn-primary mt-1 mr-1 mb-1"
-            >
-              Submit
-            </button>
-            <button
-              type="button"
-              @click="$emit('close');"
-              class="btn btn-secondary mr-2"
-            >
-              Cancel
-            </button>
+            >Submit</button>
+            <button type="button" @click="$emit('close');" class="btn btn-secondary mr-2">Cancel</button>
             <div class="checkInline custom-control custom-checkbox">
               <input
                 type="checkbox"
@@ -94,9 +78,7 @@
                 id="trailerNumberCheck"
                 checked
               />
-              <label class="custom-control-label" for="trailerNumberCheck"
-                >Trailer Number</label
-              >
+              <label class="custom-control-label" for="trailerNumberCheck">Trailer Number</label>
             </div>
             <div class="checkInline custom-control custom-checkbox">
               <input
@@ -128,14 +110,16 @@ export default {
   },
   data: function() {
     return {
-      carrier: "",
-      inRequest: false,
+      inRequest: true,
       urgent: false,
       bolSpecial: false,
       bolTrailerNumber: false,
-      inTrailer: {},
+      inTrailer: {
+        carrier: "",
+        special: "",
+        trailerInfo: {}
+      },
       trailerNumbers: [],
-      special: "",
       modal: {
         visible: false,
         text: "",
@@ -160,7 +144,7 @@ export default {
         dock: this.clickedDock,
         special: this.special,
         inTrailer: this.inTrailer,
-        inRequest: true
+        inRequest: this.inRequest
       };
       this.submit = true;
       const requests = this.$store.state.requests;
@@ -171,12 +155,12 @@ export default {
       }
 
       if (this.submit) {
-        if (!data.carrier) {
+        if (!data.inTrailer.carrier) {
           this.modal.visible = true;
           this.modal.header = "Alert";
           this.modal.text = "A Carrier must be selected";
         } else {
-          let res = await this.$socket.emit("inRequest", data);
+          let res = await this.$socket.emit("request", data);
           this.$emit("close", this.trailer);
         }
       } else {
@@ -187,7 +171,7 @@ export default {
     },
 
     async getTrailerNumbers() {
-      const carrier = this.carrier;
+      const carrier = this.inTrailer.carrier;
       fetch("https://trailermanagementbe.azurewebsites.net/trailerNumbers", {
         method: "POST",
         body: JSON.stringify({

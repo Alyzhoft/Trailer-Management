@@ -15,6 +15,7 @@ export const store = new Vuex.Store({
     categories: [
       "Bays",
       "Completed",
+      "Do Not Use",
       "Dunnage",
       "Empties for Shipping",
       "In Process",
@@ -240,7 +241,7 @@ export const store = new Vuex.Store({
 
   actions: {
     getTrailers(state) {
-      fetch("https://trailermanagementbe.azurewebsites.net/trailers")
+      fetch("http://localhost:3000/trailers")
         .then(res => res.json())
         .then(response => {
           if (response.name) {
@@ -253,7 +254,7 @@ export const store = new Vuex.Store({
     },
 
     getDepartedTrailers(state) {
-      fetch("https://trailermanagementbe.azurewebsites.net/departedtrailers")
+      fetch("http://localhost:3000/departedtrailers")
         .then(res => res.json())
         .then(response => {
           if (response.name) {
@@ -266,7 +267,7 @@ export const store = new Vuex.Store({
     },
 
     getRequests(state) {
-      fetch("https://trailermanagementbe.azurewebsites.net/requests")
+      fetch("http://localhost:3000/requests")
         .then(res => res.json())
         .then(response => {
           if (response.name) {

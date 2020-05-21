@@ -1,10 +1,6 @@
 <template>
   <div id="myModal" class="modal-custom">
-    <AlertModal
-      v-if="modal.visible"
-      @close="modal.visible = false;"
-      :modalInfo="modal"
-    />
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
 
     <!-- Modal content -->
     <div class="modal-content-custom">
@@ -19,7 +15,7 @@
           <fieldset>
             <div>
               <h3 class="headerInline">Out:</h3>
-              <h4 class="inline">Dock {{ outTrailer.trailerLocation }}</h4>
+              <h4 class="inline">Dock {{ dock }}</h4>
             </div>
             <div v-if="inRequest">
               <h4 class="headerInline">In:</h4>
@@ -29,9 +25,9 @@
                   class="form-control"
                   id="Carrier dropdownMenuOffset"
                   v-model="inTrailer.carrier"
-                  @change="getTrailerNumbers"
+                  @change="getTrailerNumbers()"
                 >
-                  <option v-for="c in carriers" :key="c">{{ c }}</option>
+                  <option v-for="c in carriers" :key="c">{{c}}</option>
                 </select>
               </div>
               <div class="inline">
@@ -44,13 +40,9 @@
                 >
                   <option
                     v-for="tn in trailerNumbers"
-                    :value="{
-                      trailerLocation: tn.trailerlocation,
-                      trailerNumber: tn.trailernumber
-                    }"
+                    :value="{trailerLocation: tn.trailerlocation, trailerNumber: tn.trailernumber}"
                     :key="tn._id"
-                    >{{ tn.trailernumber }}</option
-                  >
+                  >{{tn.trailernumber}}</option>
                 </select>
               </div>
               <div class="inline">
@@ -79,7 +71,7 @@
                   required
                 >
                   <option value selected disabled>Category</option>
-                  <option v-for="c in categories" :key="c">{{ c }}</option>
+                  <option v-for="c in categories" :key="c">{{c}}</option>
                 </select>
               </div>
             </div>
@@ -88,16 +80,8 @@
               type="button"
               @click="submitRequest();"
               class="btn btn-primary mt-1 mr-1 mb-1"
-            >
-              Submit
-            </button>
-            <button
-              type="button"
-              @click="$emit('cancle');"
-              class="btn btn-secondary mr-2"
-            >
-              Cancel
-            </button>
+            >Submit</button>
+            <button type="button" @click="$emit('cancle');" class="btn btn-secondary mr-2">Cancel</button>
             <div class="checkInline custom-control custom-checkbox">
               <input
                 type="checkbox"
@@ -107,14 +91,12 @@
                 checked
                 @change="handleCheckBox"
               />
-              <label class="custom-control-label" for="inRequest"
-                >In Request</label
-              >
+              <label class="custom-control-label" for="inRequest">In Request</label>
             </div>
             <div class="checkInline custom-control custom-checkbox">
               <input
                 type="checkbox"
-                v-model="inTrailer.urgent"
+                v-model="urgent"
                 class="custom-control-input"
                 id="urgent"
                 checked
@@ -129,9 +111,7 @@
                 id="categoryChange"
                 checked
               />
-              <label class="custom-control-label" for="categoryChange"
-                >Category Change</label
-              >
+              <label class="custom-control-label" for="categoryChange">Category Change</label>
             </div>
           </fieldset>
         </form>
@@ -142,7 +122,6 @@
 
 <script>
 import AlertModal from "@/components/AlertModal.vue";
-
 export default {
   name: "OutInModal",
   props: ["clickedTrailer"],
@@ -153,12 +132,14 @@ export default {
     return {
       shipDate: "",
       inRequest: false,
+      outRequest: true,
       categoryChange: false,
+      urgent: false,
       trailerNumbers: [],
+      dock: this.clickedTrailer.trailerLocation,
       outTrailer: {
         trailerNumber: this.clickedTrailer.trailerNumber,
         carrier: this.clickedTrailer.carrier,
-        trailerLocation: this.clickedTrailer.trailerLocation,
         category: this.clickedTrailer.category,
         completed: false,
         shipDates: [],
@@ -168,8 +149,7 @@ export default {
       inTrailer: {
         carrier: "",
         special: "",
-        trailerInfo: {},
-        urgent: false
+        trailerInfo: {}
       },
       modal: {
         visible: false,
@@ -195,12 +175,14 @@ export default {
     },
     async submitRequest() {
       const data = {
+        dock: this.dock,
+        outRequest: this.outRequest,
         outTrailer: this.outTrailer,
         inTrailer: this.inTrailer,
         inRequest: this.inRequest,
-        categoryChange: this.categoryChange
+        categoryChange: this.categoryChange,
+        urgent: this.urgent
       };
-
       this.submit = true;
       const requests = this.$store.state.requests;
       for (let i = 0; i < requests.length; i++) {
@@ -208,7 +190,6 @@ export default {
           this.submit = false;
         }
       }
-
       if (this.submit) {
         let res = await this.$socket.emit("request", data);
         this.$emit("close", this.trailer);
@@ -218,10 +199,9 @@ export default {
         this.modal.text = "Request has already been submitted for this dock";
       }
     },
-
     async getTrailerNumbers() {
       const carrier = this.inTrailer.carrier;
-      fetch("https://trailermanagementbe.azurewebsites.net/trailerNumbers", {
+      fetch("http://localhost:3000/trailerNumbers", {
         method: "POST",
         body: JSON.stringify({
           carrier: carrier
@@ -255,7 +235,6 @@ export default {
     background-color: rgb(0, 0, 0); /* Fallback color */
     background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
   }
-
   /* Modal Content */
   .modal-content-custom {
     position: relative;
@@ -266,13 +245,11 @@ export default {
     width: 80%;
     border-radius: 20px;
   }
-
   .btn {
     display: inline-block;
     width: calc(50% - 10px);
   }
 }
-
 @media screen and (min-width: 1200px) {
   .inline {
     display: inline-block;
@@ -293,7 +270,6 @@ export default {
     background-color: rgb(0, 0, 0); /* Fallback color */
     background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
   }
-
   /* Modal Content */
   .modal-content-custom {
     position: relative;
@@ -304,40 +280,33 @@ export default {
     width: 50%;
     border-radius: 20px;
   }
-
   .right {
     float: right;
   }
-
   .headerInline {
     display: inline-block;
     margin-right: 10px;
   }
-
   div.inline {
     display: inline-block;
     margin-right: 10px;
     width: calc(30% - 5px);
   }
-
   .checkInline {
     display: inline-block;
     margin-right: 10px;
     /* width: calc(30% - 5px); */
   }
 }
-
 /* Modal Header */
 .modal-header-custom {
   padding: 0px 16px;
   color: white;
 }
-
 /* Modal Body */
 .modal-body-custom {
   padding: 0px 16px;
 }
-
 /* The Close Button */
 .closeBtn {
   position: absolute;
@@ -347,7 +316,6 @@ export default {
   font-size: 28px;
   font-weight: bold;
 }
-
 .closeBtn:hover,
 .closeBtn:focus {
   color: #000;

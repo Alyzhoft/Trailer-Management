@@ -1,5 +1,6 @@
 <template>
   <div id="myModal" class="modal-custom">
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
     <!-- Modal content -->
     <div class="modal-content-custom">
       <div class="modal-header-custom">
@@ -13,12 +14,11 @@
           </div>
           <div>
             <h3 class="headerInline">Carrier:</h3>
-            <h4 v-if="!tnPopulated" class="inline">
-              {{ this.request.incarrier }}
-            </h4>
-            <h4 v-if="tnPopulated" class="inline">
-              {{ this.request.incarrier }} - {{ this.request.intrailernumber }}
-            </h4>
+            <h4 v-if="!tnPopulated" class="inline">{{ this.request.incarrier }}</h4>
+            <h4
+              v-if="tnPopulated"
+              class="inline"
+            >{{ this.request.incarrier }} - {{ this.request.intrailernumber }}</h4>
           </div>
           <div v-if="!tnPopulated">
             <h3 class="headerInline">Trailer Number:</h3>
@@ -29,15 +29,15 @@
                 id="trailerNumber dropdownMenuOffset"
                 required
               >
-                <option v-for="r in results" :key="r._id">{{
+                <option v-for="r in results" :key="r._id">
+                  {{
                   r.trailernumber
-                }}</option>
+                  }}
+                </option>
               </select>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary mt-1 mr-1 mb-1">
-            Complete
-          </button>
+          <button type="submit" class="btn btn-primary mt-1 mr-1 mb-1">Complete</button>
         </div>
       </form>
     </div>
@@ -45,15 +45,25 @@
 </template>
 
 <script>
+import AlertModal from "@/components/AlertModal.vue";
+
 export default {
   name: "modal",
   props: {
     request: Object
   },
+  components: {
+    AlertModal
+  },
   data: function() {
     return {
       results: [],
       tnPopulated: false,
+      modal: {
+        visible: false,
+        text: "",
+        header: ""
+      },
       data: {
         _id: this.request._id,
         inTrailerNumber: "",
@@ -67,7 +77,7 @@ export default {
       this.data.inTrailerNumber = this.request.intrailernumber;
       this.tnPopulated = true;
     } else {
-      fetch("https://trailermanagementbe.azurewebsites.net/emptyTrailers", {
+      fetch("http://localhost:3000/emptyTrailers", {
         method: "POST",
         body: JSON.stringify({
           carrier: this.request.incarrier
@@ -86,6 +96,25 @@ export default {
     async completeRequest() {
       let res = await this.$socket.emit("completed", this.data);
       this.$emit("close");
+      let create = true;
+      const trailers = this.$store.state.trailers;
+      for (let i = 0; i < trailers.length; i++) {
+        if (
+          trailers[i].trailerlocation.toUpperCase() ==
+            this.data.dock.toUpperCase() &&
+          (this.data.dock != "Off-Site Lot" && this.data.dock != "New Lot")
+        ) {
+          create = false;
+        }
+      }
+      if (create) {
+        let res = await this.$socket.emit("completed", this.data);
+        this.$emit("close");
+      } else {
+        this.modal.visible = true;
+        this.modal.header = "Alert";
+        this.modal.text = `A Trailer is already in location ${this.data.dock}`;
+      }
     }
   }
 };

@@ -1,10 +1,6 @@
 <template>
   <div id="myModal" class="modal-custom">
-    <AlertModal
-      v-if="modal.visible"
-      @close="modal.visible = false;"
-      :modalInfo="modal"
-    />
+    <AlertModal v-if="modal.visible" @close="modal.visible = false;" :modalInfo="modal" />
 
     <!-- Modal content -->
     <div class="modal-content-custom">
@@ -27,16 +23,12 @@
               >
                 <option>Off-Site Lot</option>
                 <option>PL</option>
-                <option v-for="sls in secondaryLotSpots" :key="sls"
-                  >SL-{{ sls }}</option
-                >
+                <option v-for="sls in secondaryLotSpots" :key="sls">SL-{{ sls }}</option>
               </select>
             </div>
           </div>
           <div class="mt-1">
-            <h4 v-if="!tnPopulated" class="headerInline">
-              In: {{ this.request.incarrier }} -
-            </h4>
+            <h4 v-if="!tnPopulated" class="headerInline">In: {{ this.request.incarrier }} -</h4>
             <h4 v-else-if="tnPopulated" class="headerInline">
               In: {{ this.request.incarrier }} -
               {{ this.request.intrailernumber }}
@@ -48,15 +40,15 @@
                 id="inTrailerNumber dropdownMenuOffset"
                 required
               >
-                <option v-for="r in results" :key="r._id">{{
+                <option v-for="r in results" :key="r._id">
+                  {{
                   r.trailernumber
-                }}</option>
+                  }}
+                </option>
               </select>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary mt-1 mr-1 mb-1">
-            Complete
-          </button>
+          <button type="submit" class="btn btn-primary mt-1 mr-1 mb-1">Complete</button>
         </form>
       </div>
     </div>
@@ -105,7 +97,7 @@ export default {
       this.data.inTrailerNumber = this.request.intrailernumber;
       this.tnPopulated = true;
     } else {
-      fetch("https://trailermanagementbe.azurewebsites.net/emptyTrailers", {
+      fetch("http://localhost:3000/emptyTrailers", {
         method: "POST",
         body: JSON.stringify({
           carrier: this.request.incarrier

@@ -21,7 +21,8 @@
         patioDoors: trailer.category == 'Patio Trailers',
         shippingStorageTrailers: trailer.category == 'Storage/Misc. Shipping Trailers',
         empties: trailer.category == 'Empties for Shipping',
-        receivingStorage: trailer.category == 'Receiving - Storage'
+        receivingStorage: trailer.category == 'Receiving - Storage',
+        doNotUse: trailer.category == 'Do Not Use'
       }"
       :title="trailer.carrier"
       data-toggle="popover"
@@ -177,6 +178,10 @@ h4 {
 }
 
 .receivingRush {
+  background-color: magenta;
+}
+
+.doNotUse {
   background-color: red;
 }
 
